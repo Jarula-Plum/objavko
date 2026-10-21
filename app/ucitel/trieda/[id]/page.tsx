@@ -1,0 +1,114 @@
+import Link from 'next/link'
+import { notFound } from 'next/navigation'
+import Logo from '@/components/Logo'
+import { requireUser } from '@/lib/supabase/server'
+import { AVATARS, GAMES, bestStars, stars } from '@/lib/games'
+import { addChild, deleteClass, removeChild, renameClass } from '../../actions'
+
+type Props = { params: Promise<{ id: string }> }
+
+export default async function ClassPage({ params }: Props) {
+  const { id } = await params
+  const { supabase } = await requireUser()
+  const { data: cls } = await supabase.from('classes').select('id, name').eq('id', id).maybeSingle()
+  if (!cls) notFound()
+  const { data: kids = [] } = await supabase
+    .from('children').select('id, name, avatar').eq('class_id', id).order('created_at')
+  const ids = (kids ?? []).map((k) => k.id)
+  const { data: results } = ids.length
+    ? await supabase.from('results').select('child_id, game_id, stars').in('child_id', ids)
+    : { data: [] }
+  const best = bestStars(results ?? [])
+
+  return (
+    <div className="wrap">
+      <header className="top">
+        <Logo sub="Pre učiteľku" />
+        <div className="row">
+          <Link href="/ucitel" className="ghost">← Moje triedy</Link>
+          <Link href={`/hraj/${id}`} className="cta">Hrať s triedou</Link>
+        </div>
+      </header>
+      <div className="cols">
+        <section className="panel">
+          <h2 style={{ fontSize: 26 }}>Trieda {cls.name} · prehľad pokroku</h2>
+          {kids?.length ? (
+            <div className="tbl">
+              <table>
+                <thead>
+                  <tr><th>Dieťa</th>{GAMES.map((g) => <th key={g.id}>{g.name}</th>)}</tr>
+                </thead>
+                <tbody>
+                  {kids.map((k) => (
+                    <tr key={k.id}>
+                      <td><strong>{k.avatar} {k.name}</strong></td>
+                      {GAMES.map((g) => {
+                        const v = best[k.id]?.[g.id] ?? 0
+                        return <td key={g.id}><span className={`s s${v}`}>{v ? stars(v) : '–'}</span></td>
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="note">V triede zatiaľ nie sú deti. Pridaj ich vpravo.</p>
+          )}
+          <p className="note">★★★ zvláda samo, ★★☆ potrebuje trochu precvičiť, ★☆☆ treba podporu. Zobrazuje sa najlepší výsledok dieťaťa.</p>
+        </section>
+
+        <aside className="panel">
+          <form action={renameClass} className="field">
+            <input type="hidden" name="id" value={id} />
+            <label htmlFor="cls-name" className="label">Názov triedy</label>
+            <div className="row" style={{ flexWrap: 'nowrap' }}>
+              <input id="cls-name" name="name" defaultValue={cls.name} required maxLength={40} className="inp" />
+              <button className="ghost" style={{ flex: 'none' }}>Uložiť</button>
+            </div>
+          </form>
+
+          <ul className="roster">
+            {kids?.map((k) => (
+              <li key={k.id}>
+                <span className="av">{k.avatar}</span>
+                <span className="nm">{k.name}</span>
+                <form action={removeChild}>
+                  <input type="hidden" name="id" value={k.id} />
+                  <input type="hidden" name="class_id" value={id} />
+                  <button className="x" aria-label={`Odobrať ${k.name}`}>Odobrať</button>
+                </form>
+              </li>
+            ))}
+          </ul>
+
+          <form action={addChild} className="field">
+            <input type="hidden" name="class_id" value={id} />
+            <span className="label">Pridať žiaka</span>
+            <div className="avpick" role="radiogroup" aria-label="Ikonka dieťaťa">
+              {AVATARS.map((a, i) => (
+                <span key={a}>
+                  <input type="radio" name="avatar" id={`av-${i}`} value={a} defaultChecked={i === (kids?.length ?? 0) % AVATARS.length} />
+                  <label htmlFor={`av-${i}`}>{a}</label>
+                </span>
+              ))}
+            </div>
+            <div className="row" style={{ flexWrap: 'nowrap' }}>
+              <input name="name" aria-label="Meno žiaka" placeholder="Meno alebo prezývka" required maxLength={24} autoComplete="off" className="inp" />
+              <button className="cta" style={{ flex: 'none' }}>Pridať</button>
+            </div>
+            <p className="note">Stačí krstné meno alebo prezývka. Dieťa nepotrebuje e-mail ani heslo.</p>
+          </form>
+
+          <details>
+            <summary className="note" style={{ cursor: 'pointer' }}>Odstrániť triedu</summary>
+            <form action={deleteClass} className="field" style={{ marginTop: 8 }}>
+              <input type="hidden" name="id" value={id} />
+              <p className="note">Zmažú sa aj všetci žiaci a ich výsledky. Nedá sa to vrátiť.</p>
+              <button className="ghost" style={{ color: 'var(--bad)', alignSelf: 'flex-start' }}>Áno, odstrániť triedu</button>
+            </form>
+          </details>
+        </aside>
+      </div>
+    </div>
+  )
+}
