@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type ReactNode } from 'react'
 import { stars, type Game } from '@/lib/games'
+import { THEMES, firstLetter, syllables, type Theme } from '@/lib/themes'
 
 export function say(text: string) {
   try {
@@ -26,7 +27,7 @@ const shuffle = <T,>(a: T[]) => {
 }
 const pick = <T,>(a: T[], n: number) => shuffle(a).slice(0, n)
 
-type Option = { content: ReactNode; correct: boolean; label: string }
+type Option = { content: ReactNode; correct: boolean; label: string; word?: boolean }
 type Round = { prompt: ReactNode; stage?: ReactNode; speech: string; options: Option[] }
 
 function Shell({ game, onBack, speech, dots, children }: {
@@ -108,7 +109,7 @@ function Quiz({ game, rounds, onDone, onBack }: { game: Game; rounds: Round[]; o
         {r.options.map((o, idx) => (
           <button
             key={`${i}-${idx}-${wrong?.idx === idx ? wrong.n : 0}`}
-            className={`opt ${right === idx ? 'right' : ''} ${wrong?.idx === idx ? 'wrong' : ''}`}
+            className={`opt ${o.word ? 'word' : ''} ${right === idx ? 'right' : ''} ${wrong?.idx === idx ? 'wrong' : ''}`}
             aria-label={o.label}
             onClick={() => choose(idx)}
           >
@@ -120,15 +121,15 @@ function Quiz({ game, rounds, onDone, onBack }: { game: Game; rounds: Round[]; o
   )
 }
 
-function Memory({ game, onDone, onBack }: { game: Game; onDone: (s: number) => void; onBack: () => void }) {
+function Memory({ game, theme, onDone, onBack }: { game: Game; theme: Theme; onDone: (s: number) => void; onBack: () => void }) {
   const [deck] = useState(() => {
-    const animals = pick(['🐶', '🐱', '🐰', '🦊', '🐻', '🐷', '🐮', '🐔', '🐸', '🦁'], 6)
-    return shuffle([...animals, ...animals])
+    const pics = pick(theme.items.map((t) => t.e), 6)
+    return shuffle([...pics, ...pics])
   })
   const [open, setOpen] = useState<number[]>([])
   const [done, setDone] = useState<number[]>([])
   const [moves, setMoves] = useState(0)
-  const speech = 'Nájdi dve rovnaké zvieratká.'
+  const speech = 'Nájdi dva rovnaké obrázky.'
   useEffect(() => { say(speech) }, [])
 
   const flip = (idx: number) => {
@@ -149,13 +150,13 @@ function Memory({ game, onDone, onBack }: { game: Game; onDone: (s: number) => v
 
   return (
     <Shell game={game} onBack={onBack} speech={speech}>
-      <div className="prompt">Nájdi dve <b>rovnaké</b> zvieratká</div>
+      <div className="prompt">Nájdi dva <b>rovnaké</b> obrázky</div>
       <div className="memo">
         {deck.map((e, idx) => {
           const shown = open.includes(idx) || done.includes(idx)
           return (
             <button key={idx} className={`card ${open.includes(idx) ? 'open' : ''} ${done.includes(idx) ? 'done' : ''}`}
-              aria-label={shown ? e : 'Kartička'} onClick={() => flip(idx)}>
+              aria-label={shown ? theme.items.find((t) => t.e === e)?.w.toLowerCase() ?? e : 'Kartička'} onClick={() => flip(idx)}>
               <span>{e}</span>
             </button>
           )
@@ -171,18 +172,31 @@ const COLORS = [
   { n: 'červenú', v: '#E53935' }, { n: 'modrú', v: '#1E63D6' }, { n: 'zelenú', v: '#2E9D4F' },
   { n: 'žltú', v: '#FFD21F' }, { n: 'oranžovú', v: '#FF8A1F' }, { n: 'fialovú', v: '#8E44C9' },
 ]
-const WORDS: [string, string][] = [['MAČKA', '🐱'], ['PES', '🐶'], ['SLNKO', '☀️'], ['AUTO', '🚗'], ['RYBA', '🐟'], ['OVCA', '🐑'], ['LOPTA', '⚽'], ['KVET', '🌸'], ['DOM', '🏠'], ['BANÁN', '🍌'], ['TORTA', '🎂'], ['VLAK', '🚂']]
+const LETTERS = 'ABCČDEFGHIJKLĽMNOPRSŠTUVZŽ'.split('')
+const FACES = [
+  { e: '😀', n: 'veselú' }, { e: '😢', n: 'smutnú' }, { e: '😠', n: 'nahnevanú' },
+  { e: '😮', n: 'prekvapenú' }, { e: '😨', n: 'vystrašenú' }, { e: '😴', n: 'ospalú' },
+]
+const MATERIALS = ['DREVO', 'KOV', 'SKLO', 'PAPIER', 'PLAST', 'LÁTKA']
+const THINGS = [
+  { e: '🪑', w: 'stolička', m: 'DREVO' }, { e: '🪵', w: 'poleno', m: 'DREVO' }, { e: '✏️', w: 'ceruzka', m: 'DREVO' }, { e: '🪜', w: 'rebrík', m: 'DREVO' },
+  { e: '🥄', w: 'lyžica', m: 'KOV' }, { e: '🔑', w: 'kľúč', m: 'KOV' }, { e: '🔨', w: 'kladivo', m: 'KOV' }, { e: '🪙', w: 'minca', m: 'KOV' },
+  { e: '🍾', w: 'fľaša', m: 'SKLO' }, { e: '🪟', w: 'okno', m: 'SKLO' }, { e: '👓', w: 'okuliare', m: 'SKLO' }, { e: '🥛', w: 'pohár', m: 'SKLO' },
+  { e: '📰', w: 'noviny', m: 'PAPIER' }, { e: '📖', w: 'kniha', m: 'PAPIER' }, { e: '✉️', w: 'obálka', m: 'PAPIER' }, { e: '📦', w: 'krabica', m: 'PAPIER' },
+  { e: '🥤', w: 'pohárik', m: 'PLAST' }, { e: '🪣', w: 'vedierko', m: 'PLAST' }, { e: '🧸', w: 'hračka', m: 'PLAST' }, { e: '🪥', w: 'kefka na zuby', m: 'PLAST' },
+  { e: '🧦', w: 'ponožka', m: 'LÁTKA' }, { e: '👕', w: 'tričko', m: 'LÁTKA' }, { e: '🧣', w: 'šál', m: 'LÁTKA' }, { e: '🧤', w: 'rukavice', m: 'LÁTKA' },
+]
+const MOVES = ['vyskoč', 'tlieskni', 'urob drep', 'dupni nohou', 'zamávaj rukami ako vtáčik', 'skoč ako žabka', 'otoč sa dokola', 'natiahni sa k slniečku']
 
-function makeRounds(id: Game['id']): Round[] {
+function makeRounds(id: Game['id'], theme: Theme): Round[] {
   const range = Array.from({ length: 5 }, (_, i) => i)
   if (id === 'pocty') {
-    const things: [string, string][] = [['🍎', 'jabĺčok'], ['⭐', 'hviezdičiek'], ['🐞', 'lienok'], ['🎈', 'balónov'], ['🐟', 'rybičiek'], ['🌼', 'kvetov']]
     return range.map(() => {
       const n = 1 + Math.floor(Math.random() * 8)
-      const [e, word] = things[Math.floor(Math.random() * things.length)]
+      const item = theme.items[Math.floor(Math.random() * theme.items.length)]
       const nums = shuffle([n, ...pick([1, 2, 3, 4, 5, 6, 7, 8].filter((x) => x !== n), 2)])
       return {
-        prompt: <>Koľko je tu <b>{word}</b>?</>, stage: Array(n).fill(e).join(''), speech: `Koľko je tu ${word}?`,
+        prompt: <>Koľko ich je? <b>Spočítaj</b></>, stage: Array(n).fill(item.e).join(''), speech: 'Spočítaj, koľko ich je.',
         options: nums.map((x) => ({ content: x, correct: x === n, label: NUM_WORDS[x] })),
       }
     })
@@ -200,23 +214,93 @@ function makeRounds(id: Game['id']): Round[] {
     })
   }
   if (id === 'tiene') {
-    const items = shuffle(['🦒', '🐘', '🚲', '🦋', '🐌', '🎸', '✈️', '🐙', '🦖', '🍄'])
+    const items = shuffle(theme.items)
     return range.map((i) => {
       const t = items[i]
       return {
-        prompt: <>Ktorý <b>tieň</b> patrí k obrázku?</>, stage: t, speech: 'Ktorý tieň patrí k obrázku?',
+        prompt: <>Ktorý <b>tieň</b> patrí k obrázku?</>, stage: t.e, speech: `Ktorý tieň patrí k obrázku ${t.w.toLowerCase()}?`,
         options: shuffle([t, ...pick(items.filter((x) => x !== t), 2)]).map((x) => ({
-          content: <span className="shadow">{x}</span>, correct: x === t, label: 'tieň',
+          content: <span className="shadow">{x.e}</span>, correct: x === t, label: 'tieň',
         })),
       }
     })
   }
+  if (id === 'nepatri') {
+    const ownEmoji = new Set(theme.items.map((t) => t.e))
+    const others = THEMES.filter((t) => t.id !== theme.id).flatMap((t) => t.items).filter((x) => !ownEmoji.has(x.e))
+    return range.map(() => {
+      const odd = others[Math.floor(Math.random() * others.length)]
+      return {
+        prompt: <>Čo sem <b>nepatrí</b>? Téma: {theme.name.toLowerCase()}</>, speech: `Ktorý obrázok sem nepatrí? Téma je ${theme.name.toLowerCase()}.`,
+        options: shuffle([...pick(theme.items, 3).map((x) => ({ x, correct: false })), { x: odd, correct: true }]).map(({ x, correct }) => ({
+          content: x.e, correct, label: x.w.toLowerCase(),
+        })),
+      }
+    })
+  }
+  if (id === 'slabiky') {
+    const order = shuffle(theme.items.filter((x) => syllables(x) <= 4))
+    return range.map((i) => {
+      const x = order[i % order.length]
+      const n = syllables(x)
+      return {
+        prompt: <>Vytlieskaj slovo <b>{x.w.toLowerCase()}</b>. Koľko slabík má?</>, stage: x.e,
+        speech: `Vytlieskaj slovo ${x.w.toLowerCase()}. Koľko slabík má?`,
+        options: [1, 2, 3, 4].map((k) => ({ content: k, correct: k === n, label: NUM_WORDS[k] })),
+      }
+    })
+  }
+  if (id === 'najdi') {
+    const order = shuffle(theme.items)
+    return range.map((i) => {
+      const t = order[i]
+      return {
+        prompt: <>Ťukni na obrázok: <b>{t.w.toLowerCase()}</b></>, speech: `Ťukni na obrázok ${t.w.toLowerCase()}.`,
+        options: shuffle([t, ...pick(order.filter((x) => x !== t), 3)]).map((x) => ({ content: x.e, correct: x === t, label: x.w.toLowerCase() })),
+      }
+    })
+  }
+  if (id === 'emocie') {
+    const order = shuffle(FACES)
+    return range.map((i) => {
+      const f = order[i]
+      return {
+        prompt: <>Ťukni na <b>{f.n}</b> tváričku</>, speech: `Ťukni na ${f.n} tváričku.`,
+        options: shuffle([f, ...pick(FACES.filter((x) => x !== f), 3)]).map((x) => ({ content: x.e, correct: x === f, label: x.n })),
+      }
+    })
+  }
+  if (id === 'materialy') {
+    const order = shuffle(THINGS)
+    return range.map((i) => {
+      const t = order[i]
+      return {
+        prompt: <>Z čoho je <b>{t.w}</b>?</>, stage: t.e, speech: `Z čoho je ${t.w}?`,
+        options: shuffle([t.m, ...pick(MATERIALS.filter((m) => m !== t.m), 2)]).map((m) => ({
+          content: m.toLowerCase(), correct: m === t.m, label: m.toLowerCase(), word: true,
+        })),
+      }
+    })
+  }
+  if (id === 'pohyb') {
+    const moves = shuffle(MOVES)
+    return range.map((i) => {
+      const n = 2 + Math.floor(Math.random() * 4)
+      const item = theme.items[Math.floor(Math.random() * theme.items.length)]
+      const m = moves[i]
+      return {
+        prompt: <><b>{m[0].toUpperCase() + m.slice(1)}</b> toľkokrát, koľko vidíš obrázkov</>, stage: Array(n).fill(item.e).join(''),
+        speech: `Spočítaj obrázky a ${m} toľkokrát.`,
+        options: [{ content: 'Hotovo ✓', correct: true, label: 'hotovo', word: true }],
+      }
+    })
+  }
   // pismena
-  const order = shuffle(WORDS)
+  const order = shuffle(theme.items)
   return range.map((i) => {
-    const [w, e] = order[i]
-    const first = w[0]
-    const letters = shuffle([first, ...pick('ABDEKLMOPRSTUV'.split('').filter((x) => x !== first), 2)])
+    const { w, e } = order[i]
+    const first = firstLetter(w)
+    const letters = shuffle([first, ...pick(LETTERS.filter((x) => x !== first && x !== w[0]), 2)])
     return {
       prompt: <>Na aké písmeno začína slovo <b>{w.toLowerCase()}</b>?</>, stage: e, speech: `Na aké písmeno začína slovo ${w.toLowerCase()}?`,
       options: letters.map((l) => ({ content: l, correct: l === first, label: l })),
@@ -224,8 +308,8 @@ function makeRounds(id: Game['id']): Round[] {
   })
 }
 
-export function GameView({ game, onDone, onBack }: { game: Game; onDone: (s: number) => void; onBack: () => void }) {
-  const [rounds] = useState(() => (game.id === 'pexeso' ? [] : makeRounds(game.id)))
-  if (game.id === 'pexeso') return <Memory game={game} onDone={onDone} onBack={onBack} />
+export function GameView({ game, theme, onDone, onBack }: { game: Game; theme: Theme; onDone: (s: number) => void; onBack: () => void }) {
+  const [rounds] = useState(() => (game.id === 'pexeso' ? [] : makeRounds(game.id, theme)))
+  if (game.id === 'pexeso') return <Memory game={game} theme={theme} onDone={onDone} onBack={onBack} />
   return <Quiz game={game} rounds={rounds} onDone={onDone} onBack={onBack} />
 }
