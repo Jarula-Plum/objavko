@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { AREAS, GAMES, stars, type Game } from '@/lib/games'
 import { MONTHS, THEMES, currentTheme, themeOf } from '@/lib/themes'
-import { Finished, GameView } from './Games'
+import { Finished, GameView, LEVELS, type Level } from './Games'
 
 // Poradové číslo týždňa (pondelok až nedeľa) od roku 1970
 const weekNo = () => Math.floor((Date.now() / 864e5 - 4 + new Date().getTimezoneOffset() / -1440) / 7)
@@ -38,6 +38,22 @@ export default function Play({ classId, className, kids, initialBest }: {
   }
   const kid = kids.find((k) => k.id === kidId)
 
+  // Úroveň (vek) si pamätáme pre každé dieťa na tomto zariadení
+  const [levels, setLevels] = useState<Record<string, Level>>({})
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('objavko-urovne') ?? '{}')
+      if (saved && typeof saved === 'object') setLevels(saved)
+    } catch {}
+  }, [])
+  const level: Level = (kid && [1, 2, 3].includes(levels[kid.id]) ? levels[kid.id] : 2) as Level
+  const chooseLevel = (n: Level) => {
+    if (!kid) return
+    const next = { ...levels, [kid.id]: n }
+    setLevels(next)
+    try { localStorage.setItem('objavko-urovne', JSON.stringify(next)) } catch {}
+  }
+
   if (!kid) {
     return (
       <section className="panel" style={{ alignItems: 'flex-start' }}>
@@ -64,7 +80,7 @@ export default function Play({ classId, className, kids, initialBest }: {
       </>
     )
   }
-  if (game) return <GameView key={round} game={game} theme={theme} onDone={done} onBack={back} />
+  if (game) return <GameView key={round} game={game} theme={theme} level={level} onDone={done} onBack={back} />
 
   return (
     <>
@@ -73,6 +89,14 @@ export default function Play({ classId, className, kids, initialBest }: {
         {kids.map((k) => (
           <button key={k.id} className="kid" aria-pressed={k.id === kidId} onClick={() => setKidId(k.id)}>
             <span className="av">{k.avatar}</span>{k.name}
+          </button>
+        ))}
+      </div>
+      <div className="label">Úroveň pre {kid.name}</div>
+      <div className="levels" role="radiogroup" aria-label={`Úroveň pre ${kid.name}`}>
+        {LEVELS.map((l) => (
+          <button key={l.n} role="radio" aria-checked={l.n === level} className="level" onClick={() => chooseLevel(l.n)}>
+            <span aria-hidden="true">{l.pic}</span>{l.name}
           </button>
         ))}
       </div>
@@ -93,7 +117,7 @@ export default function Play({ classId, className, kids, initialBest }: {
           <span>{theme.items.map((x) => x.e).join(' ')}</span>
         </div>
       </div>
-      <div className="label">Hry pre {kid.name}</div>
+      <div className="label">Hry pre {kid.name} · {LEVELS[level - 1].name}</div>
       {AREAS.map((area) => (
         <section key={area} className="area">
           <h2>{area}</h2>
