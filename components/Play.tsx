@@ -105,7 +105,7 @@ export default function Play({ classId, className, kids, initialBest }: {
         {MONTHS.map((m) => (
           <optgroup key={m.n} label={`${m.name} · ${m.title}`}>
             {THEMES.filter((t) => t.month === m.n).map((t) => (
-              <option key={t.id} value={t.id}>{t.week ? `${t.week}. týždeň: ` : 'Navyše: '}{t.name}</option>
+              <option key={t.id} value={t.id}>{t.week ? `${t.week}. týždeň: ` : t.month ? 'Navyše: ' : ''}{t.name}</option>
             ))}
           </optgroup>
         ))}

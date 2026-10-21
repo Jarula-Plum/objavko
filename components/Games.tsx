@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type ReactNode } from 'react'
 import { stars, type Game } from '@/lib/games'
-import { THEMES, firstLetter, syllables, type Theme } from '@/lib/themes'
+import { THEMES, firstLetter, rhymeKey, sounds, syllables, type Item, type Theme } from '@/lib/themes'
 
 export function say(text: string) {
   try {
@@ -31,7 +31,7 @@ type Option = { content: ReactNode; correct: boolean; label: string; word?: bool
 type Round = {
   prompt: ReactNode; stage?: ReactNode; speech: string; options: Option[]
   // hide: odpovede sa ukážu až po tomto čase (ms); play: zvuk kola; cross: rozloženie hore/dole/vľavo/vpravo/v strede
-  hide?: number; play?: () => void; cross?: boolean
+  hide?: number; play?: () => void; cross?: boolean; row?: string
 }
 
 // Jednoduché zvuky cez Web Audio: údery bubna a tóny
@@ -133,7 +133,7 @@ function Quiz({ game, rounds, onDone, onBack }: { game: Game; rounds: Round[]; o
     <Shell game={game} onBack={onBack} speech={r.speech} dots={{ i, log }} onRepeat={() => { say(r.speech); r.play?.() }}>
       <div className="prompt">{r.prompt}</div>
       {r.stage && <div className="stage">{r.stage}</div>}
-      <div className={`opts ${r.cross ? 'cross' : ''}`} style={{ visibility: shown ? 'visible' : 'hidden' }}>
+      <div className={`opts ${r.cross ? 'cross' : ''} ${r.row ?? ''}`} style={{ visibility: shown ? 'visible' : 'hidden' }}>
         {r.options.map((o, idx) => (
           <button
             key={`${i}-${idx}-${wrong?.idx === idx ? wrong.n : 0}`}
@@ -150,22 +150,27 @@ function Quiz({ game, rounds, onDone, onBack }: { game: Game; rounds: Round[]; o
   )
 }
 
-function Memory({ game, theme, level, onDone, onBack }: { game: Game; theme: Theme; level: Level; onDone: (s: number) => void; onBack: () => void }) {
+// Pexeso s obrázkami, alebo so zvukmi (podľa Montessori zvukových valčekov): rovnaké tóny tvoria dvojicu
+const PITCHES = [[196, 440, 880], [196, 330, 523, 880], [196, 262, 330, 440, 587, 880]]
+function Memory({ game, theme, level, sound, onDone, onBack }: {
+  game: Game; theme: Theme; level: Level; sound?: boolean; onDone: (s: number) => void; onBack: () => void
+}) {
   const pairs = [3, 4, 6][level - 1]
   const [deck] = useState(() => {
-    const pics = pick(theme.items.map((t) => t.e), pairs)
+    const pics = sound ? PITCHES[level - 1].map(String) : pick(theme.items.map((t) => t.e), pairs)
     return shuffle([...pics, ...pics])
   })
   const [open, setOpen] = useState<number[]>([])
   const [done, setDone] = useState<number[]>([])
   const [moves, setMoves] = useState(0)
-  const speech = 'Nájdi dva rovnaké obrázky.'
+  const speech = sound ? 'Ťukni na kartičku a počúvaj. Nájdi dva rovnaké zvuky.' : 'Nájdi dva rovnaké obrázky.'
   useEffect(() => { say(speech) }, [])
 
   const flip = (idx: number) => {
     if (open.length === 2 || open.includes(idx) || done.includes(idx)) return
     const o = [...open, idx]
     setOpen(o)
+    if (sound) tone(Number(deck[idx]), 0, 0.7)
     if (o.length < 2) return
     const m = moves + 1
     setMoves(m)
@@ -180,14 +185,15 @@ function Memory({ game, theme, level, onDone, onBack }: { game: Game; theme: The
 
   return (
     <Shell game={game} onBack={onBack} speech={speech}>
-      <div className="prompt">Nájdi dva <b>rovnaké</b> obrázky</div>
+      <div className="prompt">Nájdi dva <b>rovnaké</b> {sound ? 'zvuky' : 'obrázky'}</div>
       <div className="memo">
         {deck.map((e, idx) => {
           const shown = open.includes(idx) || done.includes(idx)
           return (
             <button key={idx} className={`card ${open.includes(idx) ? 'open' : ''} ${done.includes(idx) ? 'done' : ''}`}
-              aria-label={shown ? theme.items.find((t) => t.e === e)?.w.toLowerCase() ?? e : 'Kartička'} onClick={() => flip(idx)}>
-              <span>{e}</span>
+              aria-label={sound ? (done.includes(idx) ? 'nájdená dvojica' : 'zvuková kartička') : shown ? theme.items.find((t) => t.e === e)?.w.toLowerCase() ?? e : 'Kartička'}
+              onClick={() => flip(idx)}>
+              <span>{sound ? (done.includes(idx) ? '🎵' : '🔊') : e}</span>
             </button>
           )
         })}
@@ -297,6 +303,35 @@ const HYGIENE = [
 ]
 const HYGIENE_OTHER = [{ e: '⚽', w: 'lopta' }, { e: '🍭', w: 'lízanka' }, { e: '🧸', w: 'macko' }, { e: '🖍️', w: 'pastelka' }, { e: '🎈', w: 'balón' }]
 
+const ARROWS = [{ a: '⬆️', dx: 0, dy: -1 }, { a: '⬇️', dx: 0, dy: 1 }, { a: '⬅️', dx: -1, dy: 0 }, { a: '➡️', dx: 1, dy: 0 }]
+const HUMAN = [
+  { t: 'Kto má city a môže byť smutný?', a: 0 }, { t: 'Kto potrebuje jesť a spať?', a: 0 },
+  { t: 'Kto potrebuje nabiť batériu?', a: 1 }, { t: 'Kto urobí len to, na čo ho niekto naprogramoval?', a: 1 },
+  { t: 'Kto sa môže pomýliť?', a: 2 }, { t: 'Kto sa môže učiť nové veci?', a: 2 },
+  { t: 'Kto vie objať smutného kamaráta?', a: 0 }, { t: 'Kto vie veľmi rýchlo spočítať veľa čísel?', a: 1 },
+  { t: 'Kto môže pomáhať ľuďom?', a: 2 }, { t: 'Kto má kamarátov a rodinu?', a: 0 },
+]
+const WHO = [{ e: '👧', n: 'človek' }, { e: '🤖', n: 'robot' }, { e: '👧🤖', n: 'obaja' }]
+const FEELINGS = [
+  { t: 'Dostal darček na narodeniny.', f: 0 }, { t: 'Rozbila sa mu obľúbená hračka.', f: 1 },
+  { t: 'Niekto mu zobral lopatku a nevrátil ju.', f: 2 }, { t: 'V noci začalo hrmieť.', f: 4 },
+  { t: 'Z krabice zrazu vyskočil zajačik.', f: 3 }, { t: 'Celý deň behal vonku a je večer.', f: 5 },
+  { t: 'Kamarát ho pozval na oslavu.', f: 0 }, { t: 'Mamička musela odísť na dlhú cestu.', f: 1 },
+  { t: 'Niekto mu kopol do stavby z kociek.', f: 2 }, { t: 'Stratil sa mamke v obchode.', f: 4 },
+]
+const KIND = [
+  { e: '🤕', t: 'Kamarát spadol a plače.', ok: '🤗 Pomôžem mu a utíšim ho.', bad: ['😂 Vysmejem sa mu.', '🚶 Odídem preč.', '🙈 Nevšímam si ho.'] },
+  { e: '😔', t: 'Kamarátka je smutná, nemá sa s kým hrať.', ok: '🤝 Zavolám ju hrať sa.', bad: ['🙈 Nevšímam si ju.', '😝 Vyplazím na ňu jazyk.', '🏃 Utečem od nej.'] },
+  { e: '😡', t: 'Som veľmi nahnevaný.', ok: '🌬️ Zhlboka sa nadýchnem a poviem, čo ma hnevá.', bad: ['👊 Udriem niekoho.', '🧸 Hodím hračku.', '😱 Kričím na všetkých.'] },
+  { e: '🌙', t: 'Bojím sa tmy.', ok: '🗣️ Poviem to mamke alebo pani učiteľke.', bad: ['😡 Kričím na všetkých.', '🤐 Nikomu nič nepoviem.', '👊 Búcham do dverí.'] },
+  { e: '🖼️', t: 'Kamarát mi dal svoju kresbu.', ok: '🙏 Poďakujem a poteším sa.', bad: ['🗑️ Hodím ju do koša.', '🙄 Poviem, že je škaredá.', '🚶 Odídem bez slova.'] },
+  { e: '🧸', t: 'Niekto mi zobral hračku.', ok: '🗣️ Pokojne poviem: Vráť mi ju, prosím.', bad: ['👊 Udriem ho.', '🦷 Pohryziem ho.', '😱 Kričím a hádžem veci.'] },
+  { e: '🎲', t: 'Kamarát vyhral hru a ja som prehral.', ok: '🤝 Zablahoželám mu.', bad: ['😤 Rozhádžem hru.', '😠 Poviem, že podvádzal.', '🚪 Urazím sa a odídem.'] },
+]
+const SHOP = [{ e: '🍎', w: 'jablko' }, { e: '🥛', w: 'mlieko' }, { e: '🍞', w: 'chlieb' }, { e: '🧸', w: 'macko' }, { e: '🍌', w: 'banán' }, { e: '🎈', w: 'balón' }, { e: '🖍️', w: 'pastelky' }, { e: '⚽', w: 'lopta' }]
+const coins = (list: number[]) => <span className="coins">{list.map((c, k) => <span key={k} className={`coin c${c}`}>{c}€</span>)}</span>
+const stack = (h: number, k?: number) => <span key={k} className="stack">{Array.from({ length: h }, (_, j) => <i key={j} />)}</span>
+
 const MOVES = ['vyskoč', 'tlieskni', 'urob drep', 'dupni nohou', 'zamávaj rukami ako vtáčik', 'skoč ako žabka', 'otoč sa dokola', 'natiahni sa k slniečku']
 
 // Úroveň podľa veku: 1 = 3–4 roky, 2 = 4–5 rokov, 3 = 5–6 rokov
@@ -308,7 +343,7 @@ const rand = (lo: number, hi: number) => lo + Math.floor(Math.random() * (hi - l
 const nums = (lo: number, hi: number) => Array.from({ length: hi - lo + 1 }, (_, k) => lo + k)
 
 // Hry, ktoré si náročnosť nastavujú samy; ostatným sa podľa úrovne uberie počet možností
-const OWN_LEVELS: Game['id'][] = ['pocty', 'slabiky', 'viac', 'velkost', 'poradie', 'poloha', 'pohyb', 'rytmus']
+const OWN_LEVELS: Game['id'][] = ['krokovanie', 'robotik', 'rymy', 'pocty', 'slabiky', 'viac', 'velkost', 'poradie', 'poloha', 'pohyb', 'rytmus']
 
 function makeRounds(id: Game['id'], theme: Theme, lv: Level): Round[] {
   const rounds = baseRounds(id, theme, lv)
@@ -644,6 +679,182 @@ function baseRounds(id: Game['id'], theme: Theme, lv: Level): Round[] {
       options: shuffle([h.ok, ...pick(HYGIENE_OTHER, 3)]).map((x) => ({ content: x.e, correct: x === h.ok, label: x.w })),
     }))
   }
+  if (id === 'krokovanie') {
+    return range.map(() => {
+      const who = pick(theme.items, 1)[0]
+      const moves = lv === 1 ? [rand(1, 3)] : lv === 2 ? [rand(2, 3), -rand(1, 2)] : [rand(1, 3), -rand(1, 3), rand(1, 2)]
+      let lo = 0, hi = 0, pos = 0
+      for (const m of moves) { pos += m; lo = Math.min(lo, pos); hi = Math.max(hi, pos) }
+      const start = rand(-lo, 6 - hi)
+      const end = start + moves.reduce((a, b) => a + b, 0)
+      const say_ = moves.map((m) => `${Math.abs(m)} ${Math.abs(m) === 1 ? 'krok' : 'kroky'} ${m > 0 ? 'dopredu' : 'dozadu'}`).join(', potom ')
+      return {
+        prompt: <>{who.w[0] + who.w.slice(1).toLowerCase()} urobí {say_}. <b>Kam sa dostane?</b></>,
+        stage: <span className="seq">{moves.map((m) => (m > 0 ? '➡️' : '⬅️').repeat(Math.abs(m))).join(' ')}</span>,
+        speech: `${who.w.toLowerCase()} urobí ${say_}. Kam sa dostane?`, row: 'path',
+        options: Array.from({ length: 7 }, (_, k) => ({ content: k === start ? who.e : '', correct: k === end, label: `políčko ${k + 1}` })),
+      }
+    })
+  }
+  if (id === 'schody') {
+    return range.map(() => {
+      const n = lv + 2
+      const gap = rand(1, n)
+      const wrong = pick(nums(1, n + 1).filter((h) => h !== gap), 3)
+      return {
+        prompt: <>Ktorý <b>schod</b> chýba?</>,
+        stage: <span className="stairs">{nums(1, n).map((h) => (h === gap ? <span key={h} className="stack gap">❓</span> : stack(h, h)))}</span>,
+        speech: 'Pozri sa na schody. Ktorý schod chýba?',
+        options: shuffle([gap, ...wrong]).map((h) => ({ content: stack(h), correct: h === gap, label: `${NUM_WORDS[h] ?? h} kocky`, word: true })),
+      }
+    })
+  }
+  if (id === 'autobus') {
+    return range.map(() => {
+      const who = pick(theme.items, 1)[0]
+      let n = lv === 1 ? rand(1, 3) : rand(2, 5)
+      const steps: number[] = lv === 1 ? [rand(1, 2)] : lv === 2 ? [-rand(1, Math.min(2, n)), rand(1, 3)] : []
+      if (lv === 3) for (let k = 0; k < 2; k++) { const off = -rand(0, Math.min(2, n)); const on = rand(1, 3); steps.push(off, on); n += off + on }
+      const start = lv === 3 ? n - steps.reduce((a, b) => a + b, 0) : n
+      const total = start + steps.reduce((a, b) => a + b, 0)
+      const lines = steps.filter((x) => x !== 0)
+      const choice = shuffle([total, ...pick(nums(Math.max(0, total - 3), total + 3).filter((x) => x !== total), 3)])
+      const verb = (x: number) => (x > 0 ? 'nastúpi' : 'vystúpi') + (Math.abs(x) > 1 && Math.abs(x) < 5 ? 'a' : '')
+      const tell = lines.map((x) => `${Math.abs(x)} ${verb(x)}`).join(', potom ')
+      return {
+        prompt: <>V autobuse {start === 1 ? 'je' : 'sú'} {start}. {tell[0].toUpperCase() + tell.slice(1)}. <b>Koľko ich je teraz v autobuse?</b></>,
+        stage: <span className="bus"><span>🚌 {who.e.repeat(start) || '–'}</span>{lines.map((x, k) => <span key={k}>{x > 0 ? '⬆️' : '⬇️'} {verb(x)} {who.e.repeat(Math.abs(x))}</span>)}</span>,
+        speech: `V autobuse ${start === 1 ? 'je' : 'sú'} ${start}. Na zastávke ${tell}. Koľko ich je teraz v autobuse?`,
+        options: choice.map((x) => ({ content: x, correct: x === total, label: String(x) })),
+      }
+    })
+  }
+  if (id === 'stavby') {
+    return range.map(() => {
+      const cols = Array.from({ length: lv + 1 }, () => rand(1, lv === 1 ? 2 : 3))
+      const total = cols.reduce((a, b) => a + b, 0)
+      return {
+        prompt: <>Z koľkých <b>kociek</b> je stavba?</>, stage: <span className="stairs">{cols.map((h, k) => stack(h, k))}</span>,
+        speech: 'Spočítaj kocky. Z koľkých kociek je stavba?',
+        options: shuffle([total, ...pick(nums(Math.max(1, total - 3), total + 3).filter((x) => x !== total), 3)]).map((x) => ({ content: x, correct: x === total, label: String(x) })),
+      }
+    })
+  }
+  if (id === 'parkety') {
+    const palette = ['#E53935', '#1E63D6', '#FFD21F', '#2E9D4F', '#8E44C9']
+    return range.map(() => {
+      const cs = pick(palette, lv === 3 ? 3 : 2)
+      const rule = lv === 1 ? (r: number, c: number) => (r + c) % 2 : lv === 2 ? pick([(r: number, c: number) => (r + c) % 2, (r: number) => r % 2, (_: number, c: number) => c % 2], 1)[0] : (r: number, c: number) => (r + c) % 3
+      const gap = rand(0, 8)
+      const want = cs[rule(Math.floor(gap / 3), gap % 3)]
+      const cells = Array.from({ length: 9 }, (_, k) => k === gap ? null : cs[rule(Math.floor(k / 3), k % 3)])
+      return {
+        prompt: <>Ktorý dielik <b>doplní</b> parketu?</>,
+        stage: <span className="parquet">{cells.map((c, k) => <i key={k} style={{ background: c ?? 'transparent' }}>{c ? '' : '❓'}</i>)}</span>,
+        speech: 'Pozri sa na parketu. Ktorý dielik do nej patrí?',
+        options: shuffle([want, ...pick(palette.filter((c) => c !== want), 3)]).map((c) => ({ content: <span className="swatch" style={{ background: c }} />, correct: c === want, label: 'dielik' })),
+      }
+    })
+  }
+  if (id === 'nakup') {
+    return range.map(() => {
+      const it = pick(SHOP, 1)[0]
+      const price = lv === 1 ? rand(1, 3) : lv === 2 ? rand(2, 5) : rand(3, 6)
+      const pile = (v: number) => (lv === 3 ? [...Array(Math.floor(v / 2)).fill(2), ...(v % 2 ? [1] : [])] : Array(v).fill(1))
+      const wrong = pick(nums(1, price + 3).filter((x) => x !== price), 3)
+      return {
+        prompt: <>{it.w[0].toUpperCase() + it.w.slice(1)} stojí <b>{lv === 1 ? coins(Array(price).fill(1)) : `${price} €`}</b>. Ktorými mincami zaplatíš presne?</>,
+        stage: it.e, speech: `${it.w} stojí ${price} ${price === 1 ? 'euro' : price < 5 ? 'eurá' : 'eur'}. Ktorými mincami zaplatíš presne?`,
+        options: shuffle([price, ...wrong]).map((v) => ({ content: coins(pile(v)), correct: v === price, label: `${v} eur`, word: true })),
+      }
+    })
+  }
+  if (id === 'robotik') {
+    const size = lv === 3 ? 4 : 3
+    return range.map(() => {
+      const steps = lv
+      const walk = (x: number, y: number, seq: typeof ARROWS) => seq.reduce(([a, b], m) => [a + m.dx, b + m.dy], [x, y])
+      const inside = (x: number, y: number) => x >= 0 && y >= 0 && x < size && y < size
+      let sx = 0, sy = 0, path: typeof ARROWS = []
+      for (;;) {
+        sx = rand(0, size - 1); sy = rand(0, size - 1); path = Array.from({ length: steps }, () => pick(ARROWS, 1)[0])
+        let ok = true, x = sx, y = sy
+        for (const m of path) { x += m.dx; y += m.dy; if (!inside(x, y) || (x === sx && y === sy)) ok = false }
+        if (ok) break
+      }
+      const [tx, ty] = walk(sx, sy, path)
+      const wrongs: (typeof ARROWS)[] = []
+      for (let tries = 0; wrongs.length < 3 && tries < 200; tries++) {
+        const w = Array.from({ length: steps }, () => pick(ARROWS, 1)[0])
+        const [wx, wy] = walk(sx, sy, w)
+        if ((wx !== tx || wy !== ty) && !wrongs.some((o) => o.map((m) => m.a).join() === w.map((m) => m.a).join())) wrongs.push(w)
+      }
+      return {
+        prompt: <>Ktorými šípkami dôjde <b>robot</b> k batérii?</>,
+        stage: <span className="grid" style={{ gridTemplateColumns: `repeat(${size}, 44px)` }}>{Array.from({ length: size * size }, (_, k) => {
+          const x = k % size, y = Math.floor(k / size)
+          return <i key={k}>{x === sx && y === sy ? '🤖' : x === tx && y === ty ? '🔋' : ''}</i>
+        })}</span>,
+        speech: 'Ktorými šípkami dôjde robot k batérii?',
+        options: shuffle([path, ...wrongs]).map((seq) => ({ content: seq.map((m) => m.a).join(''), correct: seq === path, label: seq.map((m) => ({ '⬆️': 'hore', '⬇️': 'dole', '⬅️': 'vľavo', '➡️': 'vpravo' }[m.a])).join(', '), word: true })),
+      }
+    })
+  }
+  if (id === 'clovek') {
+    return shuffle(HUMAN).slice(0, 5).map((h) => ({
+      prompt: <>{h.t}</>, stage: '👧 🤖', speech: `${h.t} Človek, robot, alebo obaja?`,
+      options: WHO.map((w, k) => ({ content: `${w.e} ${w.n}`, correct: k === h.a, label: w.n, word: true })),
+    }))
+  }
+  if (id === 'situacie') {
+    return shuffle(FEELINGS).slice(0, 5).map((x) => ({
+      prompt: <>{x.t} <b>Ako sa asi cíti?</b></>, speech: `${x.t} Ako sa asi cíti?`,
+      options: shuffle([FACES[x.f], ...pick(FACES.filter((_, k) => k !== x.f), 3)]).map((f) => ({ content: f.e, correct: f === FACES[x.f], label: f.n })),
+    }))
+  }
+  if (id === 'empatia') {
+    return shuffle(KIND).slice(0, 5).map((x) => ({
+      prompt: <>{x.t} <b>Čo urobím?</b></>, stage: x.e, speech: `${x.t} Čo urobím? ${[x.ok, ...x.bad].map((o) => o.slice(o.indexOf(' ') + 1)).join(' ')}`.slice(0, 400),
+      options: shuffle([x.ok, ...x.bad]).map((o) => ({ content: o, correct: o === x.ok, label: o.slice(o.indexOf(' ') + 1), word: true })),
+    }))
+  }
+  if (id === 'rymy') {
+    const all = THEMES.flatMap((t) => t.items)
+    const partners = (x: Item) => all.filter((y) => y.w !== x.w && y.e !== x.e && rhymeKey(y) && rhymeKey(y) === rhymeKey(x))
+    const own = theme.items.filter((x) => partners(x).length)
+    const pool = shuffle(own.length >= 3 ? own : all.filter((x) => partners(x).length))
+    return range.map((i) => {
+      const x = pool[i % pool.length]
+      const ok = pick(partners(x), 1)[0]
+      const others = shuffle([...theme.items, ...shuffle(all)]).filter((y, k, a) =>
+        rhymeKey(y) !== rhymeKey(x) && y.e !== x.e && y.e !== ok.e && a.findIndex((z) => z.e === y.e) === k)
+      const opts = shuffle([ok, ...others.slice(0, lv)])
+      const names = opts.map((o) => o.w.toLowerCase())
+      return {
+        prompt: <>Čo sa rýmuje so slovom <b>{x.w.toLowerCase()}</b>?</>, stage: x.e,
+        speech: `Čo sa rýmuje so slovom ${x.w.toLowerCase()}? ${names.slice(0, -1).join(', ')}, alebo ${names[names.length - 1]}?`,
+        options: opts.map((o) => ({ content: <span style={{ fontSize: 48 }}>{o.e}<small className="cap">{o.w.toLowerCase()}</small></span>, correct: o === ok, label: o.w.toLowerCase(), word: true })),
+      }
+    })
+  }
+  if (id === 'posledna') {
+    const usable = (x: Item) => { const s = sounds(x); return s && s[s.length - 1].length === 1 || s?.[s.length - 1] === 'CH' }
+    const own = theme.items.filter(usable)
+    const end = (x: Item) => sounds(x)!.slice(-1)[0]
+    // rôzne koncové hlásky, nech nie je stále A: najprv po jednom slove na každú hlásku
+    const mix = shuffle([...shuffle(own), ...shuffle(THEMES.flatMap((t) => t.items).filter(usable))])
+    const pool = [...mix.filter((x, k) => mix.findIndex((y) => end(y) === end(x)) === k), ...mix]
+    return range.map((i) => {
+      const x = pool[i]
+      const s = sounds(x)!
+      const last = s[s.length - 1]
+      const letters = shuffle([last, ...pick(LETTERS.filter((l) => l !== last && l !== firstLetter(x.w)), 3)])
+      return {
+        prompt: <>Na akú hlásku <b>končí</b> slovo {x.w.toLowerCase()}?</>, stage: x.e, speech: `Na akú hlásku končí slovo ${x.w.toLowerCase()}?`,
+        options: letters.map((l) => ({ content: l, correct: l === last, label: l })),
+      }
+    })
+  }
   // pismena
   const order = shuffle(theme.items)
   return range.map((i) => {
@@ -657,10 +868,152 @@ function baseRounds(id: Game['id'], theme: Theme, lv: Level): Round[] {
   })
 }
 
+// Zoradenie: dieťa ťuká na veci v správnom poradí (Montessori ružová veža, farebné tabuľky, postupy).
+type OrderItem = { content: ReactNode; label: string }
+type OrderRound = { prompt: ReactNode; speech: string; items: OrderItem[]; tower?: boolean }
+const STEPS = [
+  [{ e: '💧', w: 'Pustím vodu.' }, { e: '🧼', w: 'Namydlím si ruky.' }, { e: '💦', w: 'Opláchnem ruky.' }, { e: '🧻', w: 'Utriem si ruky.' }],
+  [{ e: '🕳️', w: 'Vykopem jamku.' }, { e: '🌰', w: 'Vložím semienko.' }, { e: '💧', w: 'Polejem ho.' }, { e: '🌱', w: 'Vyrastie klíček.' }],
+  [{ e: '🥚', w: 'Vajíčko.' }, { e: '🐣', w: 'Kuriatko sa liahne.' }, { e: '🐥', w: 'Kuriatko rastie.' }, { e: '🐔', w: 'Sliepka.' }],
+  [{ e: '🍞', w: 'Vezmem chlieb.' }, { e: '🧈', w: 'Natriem maslo.' }, { e: '🧀', w: 'Dám naň syr.' }, { e: '😋', w: 'Zjem ho.' }],
+  [{ e: '🪥', w: 'Vezmem kefku.' }, { e: '🦷', w: 'Čistím si zuby.' }, { e: '💦', w: 'Vypláchnem ústa.' }, { e: '😁', w: 'Zuby sa lesknú.' }],
+  [{ e: '🧦', w: 'Oblečiem si ponožky.' }, { e: '👟', w: 'Obujem si topánky.' }, { e: '🎀', w: 'Zaviažem šnúrky.' }, { e: '🏃', w: 'Idem von.' }],
+  [{ e: '⚪', w: 'Gúľam veľkú guľu.' }, { e: '⚪', w: 'Položím na ňu menšiu guľu.' }, { e: '🥕', w: 'Dám mu mrkvový nos.' }, { e: '⛄', w: 'Snehuliak je hotový.' }],
+]
+const HUES = [0, 210, 130, 280, 30]
+
+function orderRounds(id: Game['id'], lv: Level): OrderRound[] {
+  const n = lv + 2
+  if (id === 'veza') {
+    return Array.from({ length: 5 }, () => {
+      const sizes = Array.from({ length: n }, (_, k) => 84 - k * Math.round(60 / (n - 1)))
+      return {
+        prompt: <>Postav <b>vežu</b>: ťukaj od najväčšej kocky po najmenšiu</>, speech: 'Postav vežu. Ťukaj od najväčšej kocky po najmenšiu.', tower: true,
+        items: sizes.map((px) => ({ content: <span className="cube" style={{ width: px, height: px }} />, label: `kocka ${px}` })),
+      }
+    })
+  }
+  if (id === 'odtiene') {
+    return shuffle(HUES).map((h) => ({
+      prompt: <>Ťukaj od najsvetlejšej <b>farby</b> po najtmavšiu</>, speech: 'Ťukaj od najsvetlejšej farby po najtmavšiu.',
+      items: Array.from({ length: n }, (_, k) => ({ content: <span className="swatch" style={{ background: `hsl(${h} 75% ${88 - k * Math.round(58 / (n - 1))}%)` }} />, label: `odtieň ${k + 1}` })),
+    }))
+  }
+  return shuffle(STEPS).slice(0, 5).map((seq) => {
+    const part = lv === 1 ? seq.slice(0, 3) : seq
+    return {
+      prompt: <>Čo sa robí <b>najskôr</b>? Ťukaj po poradí</>, speech: `Ťukaj po poradí, čo sa robí najskôr a čo potom. ${part.map((x) => x.w).join(' ')}`,
+      items: part.map((x) => ({ content: <span style={{ fontSize: 40 }}>{x.e}<small className="cap">{x.w}</small></span>, label: x.w })),
+    }
+  })
+}
+
+function Order({ game, level, onDone, onBack }: { game: Game; level: Level; onDone: (s: number) => void; onBack: () => void }) {
+  const [rounds] = useState(() => orderRounds(game.id, level).map((r) => ({ ...r, view: shuffle(r.items.map((_, k) => k)) })))
+  const [i, setI] = useState(0)
+  const [got, setGot] = useState(0)
+  const [log, setLog] = useState<boolean[]>([])
+  const [missed, setMissed] = useState(false)
+  const [wrong, setWrong] = useState<{ k: number; n: number } | null>(null)
+  const r = rounds[i]
+  useEffect(() => { say(r.speech) }, [r])
+
+  const tap = (k: number) => {
+    if (k < got) return
+    if (k !== got) { setMissed(true); setWrong({ k, n: (wrong?.n ?? 0) + 1 }); say('Skús ešte raz'); return }
+    const g = got + 1
+    setGot(g)
+    if (g < r.items.length) return
+    const l = [...log, !missed]
+    setLog(l)
+    say('Výborne!')
+    setTimeout(() => {
+      if (i + 1 >= rounds.length) { const ok = l.filter(Boolean).length; onDone(ok === 5 ? 3 : ok >= 3 ? 2 : 1) }
+      else { setI(i + 1); setGot(0); setMissed(false); setWrong(null) }
+    }, 1000)
+  }
+
+  return (
+    <Shell game={game} onBack={onBack} speech={r.speech} dots={{ i, log }}>
+      <div className="prompt">{r.prompt}</div>
+      <div className={`stage tray ${r.tower ? 'tower' : ''}`}>{r.items.slice(0, got).map((x, k) => <span key={k}>{x.content}</span>)}</div>
+      <div className="opts">
+        {r.view.filter((k) => k >= got).map((k) => (
+          <button key={`${i}-${k}-${wrong?.k === k ? wrong.n : 0}`} className={`opt ${game.id === 'postup' ? 'word' : ''} ${wrong?.k === k ? 'wrong' : ''}`}
+            aria-label={r.items[k].label} onClick={() => tap(k)}>{r.items[k].content}</button>
+        ))}
+      </div>
+    </Shell>
+  )
+}
+
+// Eľkoninove okienka: dieťa pri vyslovovaní posúva žetón do okienka za každú slabiku alebo hlásku.
+// Na úrovni 3–4 a 4–5 rokov vidí presný počet okienok (opora), na úrovni 5–6 rokov ho určí samo.
+function Boxes({ game, theme, level, by, onDone, onBack }: {
+  game: Game; theme: Theme; level: Level; by: 'slabiky' | 'hlasky'; onDone: (s: number) => void; onBack: () => void
+}) {
+  const [rounds] = useState(() => {
+    const top = by === 'slabiky' ? [2, 3, 4][level - 1] : [3, 4, 6][level - 1]
+    const count = (x: Item) => (by === 'slabiky' ? syllables(x) : sounds(x)?.length ?? 99)
+    const ok = (x: Item) => count(x) <= top && count(x) >= (by === 'slabiky' ? 1 : 2)
+    const own = theme.items.filter(ok)
+    return shuffle(own.length >= 5 ? own : [...shuffle(own), ...shuffle(THEMES.flatMap((t) => t.items).filter((x) => ok(x) && !own.includes(x)))]).slice(0, 5)
+      .map((x) => ({ x, n: count(x) }))
+  })
+  const [i, setI] = useState(0)
+  const [filled, setFilled] = useState(0)
+  const [log, setLog] = useState<boolean[]>([])
+  const [missed, setMissed] = useState(false)
+  const [shake, setShake] = useState(0)
+  const r = rounds[i]
+  const unit = by === 'slabiky' ? 'slabiku' : 'hlásku'
+  const speech = `Povedz pomaly slovo ${r.x.w.toLowerCase()}. Za každú ${unit} ťukni na žetón.`
+  const slots = level === 3 ? (by === 'slabiky' ? 5 : 7) : r.n
+  useEffect(() => { say(speech) }, [speech])
+
+  const next = (good: boolean) => {
+    const l = [...log, good]
+    setLog(l)
+    say(`Výborne! ${r.x.w.toLowerCase()}`)
+    setTimeout(() => {
+      if (i + 1 >= rounds.length) { const k = l.filter(Boolean).length; onDone(k === 5 ? 3 : k >= 3 ? 2 : 1) }
+      else { setI(i + 1); setFilled(0); setMissed(false) }
+    }, 1300)
+  }
+  const check = () => {
+    if (filled === r.n) next(!missed)
+    else { setMissed(true); setShake((k) => k + 1); setFilled(0); say('Skús ešte raz, pomaly.') }
+  }
+
+  return (
+    <Shell game={game} onBack={onBack} speech={speech} dots={{ i, log }}>
+      <div className="prompt">Povedz pomaly <b>{r.x.w.toLowerCase()}</b> a za každú {unit} posuň žetón</div>
+      <div className="stage">{r.x.e}</div>
+      <div key={shake} className={`boxes ${shake ? 'wrong' : ''}`} aria-label={`Okienka: ${filled} z ${slots}`}>
+        {Array.from({ length: slots }, (_, k) => <span key={k} className="box">{k < filled ? '🔴' : ''}</span>)}
+      </div>
+      <div className="opts">
+        <button className="opt" aria-label="žetón" disabled={filled >= slots} onClick={() => {
+          const f = filled + 1
+          setFilled(f)
+          if (level < 3 && f === r.n) next(true)
+        }}>🔴</button>
+        {level === 3 && <button className="opt word" onClick={check} disabled={!filled}>Hotovo ✓</button>}
+        <button className="opt word" onClick={() => setFilled(0)} aria-label="znova">↺</button>
+      </div>
+    </Shell>
+  )
+}
+
 export function GameView({ game, theme, level, onDone, onBack }: {
   game: Game; theme: Theme; level: Level; onDone: (s: number) => void; onBack: () => void
 }) {
-  const [rounds] = useState(() => (game.id === 'pexeso' ? [] : makeRounds(game.id, theme, level)))
+  const [rounds] = useState(() => (['pexeso', 'zvuky', 'veza', 'odtiene', 'postup', 'okienka', 'hlasky'].includes(game.id) ? [] : makeRounds(game.id, theme, level)))
   if (game.id === 'pexeso') return <Memory game={game} theme={theme} level={level} onDone={onDone} onBack={onBack} />
+  if (game.id === 'zvuky') return <Memory game={game} theme={theme} level={level} sound onDone={onDone} onBack={onBack} />
+  if (['veza', 'odtiene', 'postup'].includes(game.id)) return <Order game={game} level={level} onDone={onDone} onBack={onBack} />
+  if (game.id === 'okienka' || game.id === 'hlasky') {
+    return <Boxes game={game} theme={theme} level={level} by={game.id === 'okienka' ? 'slabiky' : 'hlasky'} onDone={onDone} onBack={onBack} />
+  }
   return <Quiz game={game} rounds={rounds} onDone={onDone} onBack={onBack} />
 }

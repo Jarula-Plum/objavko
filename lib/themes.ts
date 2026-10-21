@@ -20,6 +20,7 @@ export const MONTHS: Month[] = [
   { n: 4, name: 'Apríl', title: 'Cesta za dobrodružstvom' },
   { n: 5, name: 'Máj', title: 'Farebný svet' },
   { n: 6, name: 'Jún', title: 'Leto volá' },
+  { n: 0, name: 'Ďalšie témy', title: 'kedykoľvek počas roka' },
 ]
 
 export const THEMES: Theme[] = [
@@ -171,6 +172,16 @@ export const THEMES: Theme[] = [
   { id: 'leto', name: 'Hurá, leto volá', pic: '☀️', month: 6, items: [
     i('☀️', 'SLNKO'), i('🍉', 'MELÓN'), i('🍦', 'ZMRZLINA'), i('🩱', 'PLAVKY'), i('🐚', 'MUŠĽA'), i('🕶️', 'OKULIARE'), i('⛵', 'LOĎ'), i('⛺', 'STAN'),
   ] },
+  // Ďalšie témy, kedykoľvek počas roka
+  { id: 'obchod', name: 'Môj obchod (finančná gramotnosť)', pic: '🛒', month: 0, items: [
+    i('🪙', 'MINCA'), i('💶', 'BANKOVKA'), i('👛', 'PEŇAŽENKA'), i('🛒', 'VOZÍK'), i('🏪', 'OBCHOD'), i('🐷', 'POKLADNIČKA'), i('🏷️', 'CENOVKA'), i('🧺', 'KOŠÍK'),
+  ] },
+  { id: 'ai', name: 'Ja a umelá inteligencia', pic: '🤖', month: 0, items: [
+    i('🤖', 'ROBOT'), i('💻', 'POČÍTAČ'), i('📱', 'MOBIL'), i('🎧', 'SLÚCHADLÁ'), i('⌨️', 'KLÁVESNICA'), i('🖱️', 'MYŠ'), i('📺', 'TELEVÍZOR'), i('🧠', 'MOZOG'),
+  ] },
+  { id: 'srdiecko', name: 'Čo cíti moje srdiečko a čo to tvoje?', pic: '💛', month: 0, items: [
+    i('💛', 'SRDIEČKO'), i('😀', 'RADOSŤ'), i('😢', 'SMÚTOK'), i('😠', 'HNEV'), i('😨', 'STRACH'), i('😮', 'PREKVAPENIE'), i('🤗', 'OBJATIE'), i('😴', 'ÚNAVA'),
+  ] },
 ]
 
 export const themeOf = (id: string | undefined) => THEMES.find((t) => t.id === id)
@@ -198,4 +209,30 @@ export function syllables(item: Item) {
     else if ('rlŕĺ'.includes(c) && k > 0 && !V.includes(p) && !V.includes(nx)) n++
   }
   return Math.max(1, n)
+}
+
+// Hlásky slova pre Eľkoninove okienka: CH, DZ, DŽ a dvojhlásky ia, ie, iu sú jedna hláska.
+// Slová s cudzím ia (BATÉRIA) majú prepísaný počet slabík a do hláskových hier ich nedávame.
+export function sounds(item: Item): string[] | null {
+  if (item.s) return null
+  const w = item.w
+  const out: string[] = []
+  for (let k = 0; k < w.length; k++) {
+    const two = w.slice(k, k + 2)
+    if (['CH', 'DZ', 'DŽ'].includes(two) || (w[k] === 'I' && 'AEU'.includes(w[k + 1] ?? '') && k > 0)) { out.push(two); k++ }
+    else out.push(w[k])
+  }
+  return out
+}
+
+// Rýmová koncovka: od poslednej samohlásky, pri slove na samohlásku od predposlednej; dĺžne sa nerozlišujú.
+// Slová na samohlásku s jedinou samohláskou (MRKVA, SLNKO) koncovku nemajú.
+export function rhymeKey(item: Item) {
+  const w = item.w.toLowerCase().normalize('NFD').replace(/[\u0301\u0302\u0308]/g, '').normalize('NFC').replace(/ia/g, 'a').replace(/ie/g, 'e').replace(/iu/g, 'u')
+  const V = 'aeiouy'
+  const idx = [...w].map((c, k) => (V.includes(c) ? k : -1)).filter((k) => k >= 0)
+  const open = V.includes(w[w.length - 1])
+  if (!idx.length || (open && idx.length < 2)) return ''
+  const fromVowel = open ? idx[idx.length - 2] : idx[idx.length - 1]
+  return w.slice(fromVowel)
 }
