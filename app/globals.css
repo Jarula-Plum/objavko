@@ -53,6 +53,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .area { margin: 10px 0 22px; }
 .area h2 { font-size: 20px; margin: 0 0 10px; }
 .opt.word { font-size: 26px; min-width: 140px; }
+.opt .grp { display: block; max-width: 180px; font-size: 32px; line-height: 1.25; letter-spacing: 2px; }
+.seq { font-size: clamp(30px, 8vw, 56px); letter-spacing: 4px; overflow-wrap: anywhere; }
+.stds { margin-top: 14px; }
+.stds summary { cursor: pointer; font-weight: 800; }
+.stds h3 { font-size: 15px; margin: 14px 0 4px; }
+.stds li { font-size: 14px; margin: 4px 0; }
+.stds li span { color: var(--muted); }
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
 .tile { border: 0; text-align: left; background: var(--surface); border-radius: var(--r); padding: 18px; display: flex; flex-direction: column; gap: 10px; min-height: 190px; position: relative; overflow: hidden; transition: transform .15s; text-decoration: none; color: inherit; }
 .tile:hover { transform: translateY(-3px); }

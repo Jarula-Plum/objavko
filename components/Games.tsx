@@ -186,6 +186,43 @@ const THINGS = [
   { e: '🥤', w: 'pohárik', m: 'PLAST' }, { e: '🪣', w: 'vedierko', m: 'PLAST' }, { e: '🧸', w: 'hračka', m: 'PLAST' }, { e: '🪥', w: 'kefka na zuby', m: 'PLAST' },
   { e: '🧦', w: 'ponožka', m: 'LÁTKA' }, { e: '👕', w: 'tričko', m: 'LÁTKA' }, { e: '🧣', w: 'šál', m: 'LÁTKA' }, { e: '🧤', w: 'rukavice', m: 'LÁTKA' },
 ]
+// Človek a príroda: živé bytosti; jedlo, časti tela a rozprávkové bytosti sa v hre Živé či neživé nepýtame
+const LIVE = new Set(('DIEŤA MAČKA PES KRČEK RYBKA BABKA DEDKO KOHÚT JEŽ JEŽKO VEVERIČKA MEDVEĎ LÍŠKA KAČKA LABUŤ LASTOVIČKA ' +
+  'LEKÁRKA POLICAJT TUČNIAK KAPOR ZAJAC SRNKA SOVA SÝKORKA LYŽIAR KLAUN TANEČNICA HASIČ KUCHÁRKA FARMÁR UČITEĽKA STAVBÁR ' +
+  'KOZMONAUT ŽABA RYBA BOBOR VYDRA KORYTNAČKA RAK KRAVA PRASA OVCA KOZA KÔŇ TULIPÁN KLÍČOK VČELA MOTÝĽ LIENKA KVET VTÁČIK ' +
+  'KURIATKO ZAJAČIK BARANČEK STROM SMREK JELEŇ DIVIAK SLNEČNICA KAKTUS MAMA OTEC BÁBÄTKO SESTRA BRAT MRAVEC HÚSENICA KOBYLKA ' +
+  'SLIMÁK BYLINKA ĎATELINA LEV SLON ŽIRAFA ZEBRA OPICA KROKODÍL HROCH').split(' '))
+const UNSURE = new Set(('JABLKO HRUŠKA HROZNO MRKVA ZEMIAK KUKURICA TEKVICA GAŠTAN CHLIEB MLIEKO KOLÁČ CITRÓN MED BROKOLICA ' +
+  'CUKRÍK HRANOLKY HAMBURGER LÍZANKA MANDARÍNKA ČOKOLÁDA KOLÁČIK ŠIŠKA VAJÍČKO JAHODA UHORKA BAKLAŽÁN ČAJ CESNAK TORTA MELÓN ' +
+  'ZMRZLINA KYTICA HRIB LIST KOSŤ BACIL DRAK VÍLA ČARODEJNÍK PRINCEZNÁ JEDNOROŽEC ANJEL ČERT MIKULÁŠ MAMUT DINOSAURUS OKO UCHO ' +
+  'NOS ÚSTA RUKA NOHA ZUB MOZOG JAZYK RODINA SNEHULIAK ROBOT VODA KVAPKA').split(' '))
+const BEHAVIOUR = [
+  { e: '🤝', t: 'Podelím sa s kamarátom o hračky.', ok: true }, { e: '🧹', t: 'Pomôžem upratať hračky.', ok: true },
+  { e: '👋', t: 'Ráno pozdravím: Dobré ráno!', ok: true }, { e: '🙏', t: 'Poviem prosím a ďakujem.', ok: true },
+  { e: '🧼', t: 'Pred jedlom si umyjem ruky.', ok: true }, { e: '🤗', t: 'Utíšim smutného kamaráta.', ok: true },
+  { e: '🚦', t: 'Cez cestu idem len na zelenú.', ok: true }, { e: '👂', t: 'Počúvam, keď niekto rozpráva.', ok: true },
+  { e: '👊', t: 'Udriem kamaráta.', ok: false }, { e: '🍬', t: 'Vezmem kamarátovi cukrík bez opýtania.', ok: false },
+  { e: '😡', t: 'Kričím a búcham dverami.', ok: false }, { e: '⚽', t: 'Vybehnem za loptou na cestu.', ok: false },
+  { e: '🧸', t: 'Vytrhnem kamarátovi hračku z ruky.', ok: false }, { e: '🌷', t: 'Trhám kvety v parku.', ok: false },
+  { e: '📚', t: 'Hodím knihu na zem.', ok: false }, { e: '🗣️', t: 'Skáčem druhým do reči.', ok: false },
+]
+const FOOD = [
+  { e: '🍎', w: 'jablko', ok: true }, { e: '🥕', w: 'mrkva', ok: true }, { e: '🥦', w: 'brokolica', ok: true }, { e: '🍌', w: 'banán', ok: true },
+  { e: '🥛', w: 'mlieko', ok: true }, { e: '🍇', w: 'hrozno', ok: true }, { e: '💧', w: 'voda', ok: true }, { e: '🥒', w: 'uhorka', ok: true },
+  { e: '🍐', w: 'hruška', ok: true }, { e: '🥗', w: 'šalát', ok: true }, { e: '🐟', w: 'ryba', ok: true }, { e: '🥚', w: 'vajíčko', ok: true },
+  { e: '🍭', w: 'lízanka', ok: false }, { e: '🍬', w: 'cukrík', ok: false }, { e: '🍟', w: 'hranolky', ok: false }, { e: '🍔', w: 'hamburger', ok: false },
+  { e: '🍩', w: 'šiška', ok: false }, { e: '🥤', w: 'sladká limonáda', ok: false }, { e: '🍫', w: 'čokoláda', ok: false }, { e: '🌭', w: 'párok v rožku', ok: false },
+]
+const yesNo = (correctYes: boolean, yes: string, no: string): Option[] => [
+  { content: `👍 ${yes}`, correct: correctYes, label: yes, word: true },
+  { content: `👎 ${no}`, correct: !correctYes, label: no, word: true },
+]
+// Päť kôl s oboma správnymi odpoveďami: 3 jedného druhu a 2 druhého, náhodne
+const mixed = <T,>(good: T[], bad: T[]) => {
+  const g = Math.random() < 0.5 ? 3 : 2
+  return shuffle([...pick(good, g), ...pick(bad, 5 - g)])
+}
+
 const MOVES = ['vyskoč', 'tlieskni', 'urob drep', 'dupni nohou', 'zamávaj rukami ako vtáčik', 'skoč ako žabka', 'otoč sa dokola', 'natiahni sa k slniečku']
 
 function makeRounds(id: Game['id'], theme: Theme): Round[] {
@@ -294,6 +331,77 @@ function makeRounds(id: Game['id'], theme: Theme): Round[] {
         options: [{ content: 'Hotovo ✓', correct: true, label: 'hotovo', word: true }],
       }
     })
+  }
+  if (id === 'viac') {
+    const items = shuffle(theme.items)
+    const same = Math.floor(Math.random() * 5)
+    return range.map((i) => {
+      const x = items[i]
+      const a = 1 + Math.floor(Math.random() * 7)
+      let b = 1 + Math.floor(Math.random() * 7)
+      if (i === same) b = a
+      else while (b === a) b = 1 + Math.floor(Math.random() * 7)
+      const less = i % 2 === 1
+      const ans = a === b ? 'eq' : (a > b) !== less ? 'a' : 'b'
+      const q = less ? 'menej' : 'viac'
+      return {
+        prompt: <>Kde je <b>{q}</b>? Ak je to rovnako, ťukni na =</>, speech: `Kde je ${q}? Ak je ich rovnako, ťukni na rovná sa.`,
+        options: [
+          { content: <span className="grp">{Array(a).fill(x.e).join('')}</span>, correct: ans === 'a', label: `skupina ${NUM_WORDS[a]}`, word: true },
+          { content: '=', correct: ans === 'eq', label: 'rovnako' },
+          { content: <span className="grp">{Array(b).fill(x.e).join('')}</span>, correct: ans === 'b', label: `skupina ${NUM_WORDS[b]}`, word: true },
+        ],
+      }
+    })
+  }
+  if (id === 'velkost') {
+    const items = shuffle(theme.items)
+    return range.map((i) => {
+      const x = items[i]
+      const big = i % 2 === 0
+      const sizes = shuffle([30, 54, 84])
+      const target = big ? 84 : 30
+      return {
+        prompt: <>Ťukni na <b>{big ? 'najväčší' : 'najmenší'}</b> obrázok</>, speech: `Ťukni na ${big ? 'najväčší' : 'najmenší'} obrázok.`,
+        options: sizes.map((px) => ({ content: <span style={{ fontSize: px }}>{x.e}</span>, correct: px === target, label: px === 84 ? 'veľký' : px === 30 ? 'malý' : 'stredný' })),
+      }
+    })
+  }
+  if (id === 'postupnost') {
+    const patterns = [[0, 1], [0, 0, 1], [0, 1, 1], [0, 1, 2]]
+    return range.map((i) => {
+      const pat = patterns[i % patterns.length]
+      const pics = pick(theme.items, 3)
+      const len = pat.length * 2 + 1
+      const row = Array.from({ length: len }, (_, k) => pics[pat[k % pat.length]])
+      const next = pics[pat[len % pat.length]]
+      return {
+        prompt: <>Čo bude <b>ďalej</b>?</>, stage: <span className="seq">{row.map((x) => x.e).join(' ')} ❓</span>, speech: 'Pozri sa na rad obrázkov. Čo bude ďalej?',
+        options: shuffle(pics).map((x) => ({ content: x.e, correct: x === next, label: x.w.toLowerCase() })),
+      }
+    })
+  }
+  if (id === 'zive') {
+    const all = THEMES.flatMap((t) => t.items).filter((x) => !UNSURE.has(x.w))
+    const own = theme.items.filter((x) => !UNSURE.has(x.w))
+    const live = own.filter((x) => LIVE.has(x.w)).length >= 3 ? own.filter((x) => LIVE.has(x.w)) : all.filter((x) => LIVE.has(x.w))
+    const dead = own.filter((x) => !LIVE.has(x.w)).length >= 3 ? own.filter((x) => !LIVE.has(x.w)) : all.filter((x) => !LIVE.has(x.w))
+    return mixed(live, dead).map((x) => ({
+      prompt: <>Je <b>{x.w.toLowerCase()}</b> živé, alebo neživé?</>, stage: x.e, speech: `Je ${x.w.toLowerCase()} živé, alebo neživé?`,
+      options: yesNo(LIVE.has(x.w), 'živé', 'neživé'),
+    }))
+  }
+  if (id === 'spravanie') {
+    return mixed(BEHAVIOUR.filter((b) => b.ok), BEHAVIOUR.filter((b) => !b.ok)).map((b) => ({
+      prompt: <>{b.t} <b>Je to správne?</b></>, stage: b.e, speech: `${b.t} Je to správne?`,
+      options: yesNo(b.ok, 'správne', 'nesprávne'),
+    }))
+  }
+  if (id === 'zdrave') {
+    return mixed(FOOD.filter((f) => f.ok), FOOD.filter((f) => !f.ok)).map((f) => ({
+      prompt: <>Je <b>{f.w}</b> zdravé jedlo?</>, stage: f.e, speech: `Je ${f.w} zdravé jedlo?`,
+      options: yesNo(f.ok, 'zdravé', 'nezdravé'),
+    }))
   }
   // pismena
   const order = shuffle(theme.items)
