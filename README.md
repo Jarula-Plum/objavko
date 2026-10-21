@@ -2,6 +2,8 @@
 
 Hravé učenie pre materské školy: interaktívne hry podľa ŠVP pre MŠ, vlastné triedy učiteliek a prehľad pokroku detí.
 
+Beží na [carozvedko.vercel.app](https://carozvedko.vercel.app). Každá zmena v tomto repozitári sa na Verceli nasadí automaticky.
+
 Postavené na Next.js (web) a Supabase (prihlásenie a databáza so serverom v EÚ). Hostuje sa na Verceli.
 
 ## Čo aplikácia vie (verzia 0.1)
