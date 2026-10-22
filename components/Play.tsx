@@ -138,7 +138,7 @@ export default function Play({ classId, className, kids, initialBest }: {
 
   return (
     <>
-      <GuideHello who={isGirl(kid.avatar) ? 'dievca' : 'chlapec'}
+      <GuideHello who={isGirl(kid.avatar) ? 'dievca' : 'chlapec'} show={kid.name}
         text={isGirl(kid.avatar) ? `Ahoj, ${kid.name}! Ja som Čarozvedka. Poď sa s nami hrať.` : `Ahoj, ${kid.name}! Ja som Čarozvedko. Poď sa s nami hrať.`} />
       <div className="label">Trieda {className} · kto sa hrá?</div>
       <div className="kids">

@@ -152,7 +152,8 @@ export function GuideBar() {
 }
 
 // Privítanie na úvode: Čarozvedko máva a pozdraví nahlas; ťuknutím na postavičku sa predstaví
-export function GuideHello({ text, who = 'chlapec' }: { text: string; who?: 'chlapec' | 'dievca' }) {
+// show: čo je napísané na ploche (napr. len meno dieťaťa); text sa vždy povie nahlas
+export function GuideHello({ text, show, who = 'chlapec' }: { text: string; show?: string; who?: 'chlapec' | 'dievca' }) {
   const [line, setLine] = useState(text)
   useEffect(() => {
     setLine(text)
@@ -167,7 +168,7 @@ export function GuideHello({ text, who = 'chlapec' }: { text: string; who?: 'chl
         <GuideVideo who="chlapec" alt="Čarozvedko máva na pozdrav" />
       </button>
       <div className="g-say">
-        <button type="button" className="g-bubble on" onClick={() => speak(line, line === ABOUT.dievca ? 'dievca' : line === ABOUT.chlapec ? 'chlapec' : who)}>{line}</button>
+        <button type="button" className="g-bubble on" onClick={() => speak(line, line === ABOUT.dievca ? 'dievca' : line === ABOUT.chlapec ? 'chlapec' : who)}>{show ?? line}</button>
         <span className="g-hint">Ťukni na nás a povieme ti, kto sme.</span>
       </div>
       <button type="button" className="g-who" onClick={() => tell('dievca')} aria-label="Kto je Čarozvedka?">
