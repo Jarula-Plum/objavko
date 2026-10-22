@@ -6,12 +6,20 @@ import { createClient } from '@/lib/supabase/client'
 import { AREAS, GAMES, type Game } from '@/lib/games'
 import { MONTHS, THEMES, currentTheme, themeOf } from '@/lib/themes'
 import { Finished, GameView, LEVELS, type Level } from './Games'
-import { Icon, Stars, emo } from './Emo'
+import { Icon, Stars, Ui, emo } from './Emo'
 import { GuideHello } from './Guide'
 import { CVIKY, NAMETY } from '@/lib/namety'
 
 // Poradové číslo týždňa (pondelok až nedeľa) od roku 1970
 const weekNo = () => Math.floor((Date.now() / 864e5 - 4 + new Date().getTimezoneOffset() / -1440) / 7)
+
+const TIPS = [
+  { id: 'ranne', name: 'Ranné aktivity', desc: 'Čo robiť ráno pri príchode detí.', img: '/skriatok/d-ranne-vstavanie.webp', color: 'var(--sun)' },
+  { id: 'hry', name: 'Hry a herné činnosti', desc: 'Námety, čo sa hrať k téme.', img: '/skriatok/d-hra-s-kockami.webp', color: 'var(--grape)' },
+  { id: 'pohyb', name: 'Pohybové hry', desc: 'Hry s vysvetlením pravidiel.', img: '/ikony/pohyb.webp', color: 'var(--sky)' },
+  { id: 'riekanka', name: 'Riekanka s cvikmi', desc: 'Zdravotné cvičenie pre 3 vekové skupiny.', img: '/ikony/zdravotne.webp', color: 'var(--leaf)' },
+] as const
+type TipId = (typeof TIPS)[number]['id']
 
 type Kid = { id: string; name: string; avatar: string }
 
@@ -24,6 +32,7 @@ export default function Play({ classId, className, kids, initialBest }: {
   const [result, setResult] = useState<number | null>(null)
   const [best, setBest] = useState(initialBest)
   const [saveError, setSaveError] = useState(false)
+  const [tip, setTip] = useState<TipId | null>(null)
   const [themeId, setThemeId] = useState(() => currentTheme().id)
   const theme = themeOf(themeId) ?? currentTheme()
 
@@ -83,6 +92,27 @@ export default function Play({ classId, className, kids, initialBest }: {
       </>
     )
   }
+  if (tip && NAMETY[theme.id]) {
+    const n = NAMETY[theme.id], t = TIPS.find((x) => x.id === tip)!
+    return (
+      <section className="namety-view" style={{ ['--c' as string]: t.color }}>
+        <button className="back" onClick={() => setTip(null)}><Ui n="spat" /> Späť</button>
+        <div className="namety-head"><Icon pic="" img={t.img} /><div><h2>{t.name}</h2><span>Téma: {theme.name}</span></div></div>
+        {tip === 'ranne' && <ul className="namety-list">{n.r.map((x) => <li key={x}>{x}</li>)}</ul>}
+        {tip === 'hry' && <ul className="namety-list">{n.h.map(([a, b]) => <li key={a}><b>{a}</b>{b}</li>)}</ul>}
+        {tip === 'pohyb' && <ul className="namety-list">{n.p.map(([a, b]) => <li key={a}><b>{a}</b><span className="rule">Pravidlá:</span> {b}</li>)}</ul>}
+        {tip === 'riekanka' && (
+          <ol className="namety-list">
+            {n.z.map(([v, c], k) => (
+              <li key={k}><b>{v}</b>
+                <ul className="vek">{CVIKY[c].t.map((x, i) => <li key={i}><span>{LEVELS[i].name}:</span> {x}</li>)}</ul>
+              </li>
+            ))}
+          </ol>
+        )}
+      </section>
+    )
+  }
   if (game) return <GameView key={round} game={game} theme={theme} level={level} onDone={done} onBack={back} />
 
   return (
@@ -122,23 +152,18 @@ export default function Play({ classId, className, kids, initialBest }: {
         </div>
       </div>
       {NAMETY[theme.id] && (
-        <details className="namety">
-          <summary>{emo('📋')} Námety k téme pre pani učiteľku</summary>
-          <h3>Zdravotné cvičenie s riekankou</h3>
-          <ol>
-            {NAMETY[theme.id].z.map(([v, c], k) => (
-              <li key={k}><b>{v}</b>
-                <ul className="vek">{CVIKY[c].t.map((t, i) => <li key={i}><span>{LEVELS[i].name}:</span> {t}</li>)}</ul>
-              </li>
+        <section className="area">
+          <h2>Námety k téme pre pani učiteľku</h2>
+          <div className="grid">
+            {TIPS.map((t) => (
+              <button key={t.id} className="tile" style={{ ['--c' as string]: t.color }} onClick={() => { setTip(t.id); window.scrollTo(0, 0) }}>
+                <span className="pic"><Icon pic="" img={t.img} /></span>
+                <h3>{t.name}</h3>
+                <p>{t.desc}</p>
+              </button>
             ))}
-          </ol>
-          <h3>Pohybové hry</h3>
-          <ul>{NAMETY[theme.id].p.map(([n, t]) => <li key={n}><b>{n}.</b> {t}</li>)}</ul>
-          <h3>Herné cvičenia</h3>
-          <ul>{NAMETY[theme.id].h.map(([n, t]) => <li key={n}><b>{n}.</b> {t}</li>)}</ul>
-          <h3>Ranné aktivity</h3>
-          <ul>{NAMETY[theme.id].r.map((t) => <li key={t}>{t}</li>)}</ul>
-        </details>
+          </div>
+        </section>
       )}
       <div className="label">Hry pre {kid.name} · {LEVELS[level - 1].name}</div>
       {AREAS.map((area) => (
