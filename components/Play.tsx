@@ -15,10 +15,10 @@ import { CVIKY, NAMETY } from '@/lib/namety'
 const weekNo = () => Math.floor((Date.now() / 864e5 - 4 + new Date().getTimezoneOffset() / -1440) / 7)
 
 const TIPS = [
+  { id: 'riekanka', name: 'Zdravotné cvičenia', desc: 'Riekanka s cvikmi pre 3 vekové skupiny.', img: '/ikony/zdravotne.webp', color: 'var(--leaf)' },
   { id: 'ranne', name: 'Ranné aktivity', desc: 'Čo robiť ráno pri príchode detí.', img: '/skriatok/d-ranne-vstavanie.webp', color: 'var(--sun)' },
   { id: 'hry', name: 'Hry a herné činnosti', desc: 'Námety, čo sa hrať k téme.', img: '/skriatok/d-hra-s-kockami.webp', color: 'var(--grape)' },
   { id: 'pohyb', name: 'Pohybové hry', desc: 'Hry s vysvetlením pravidiel.', img: '/ikony/pohyb.webp', color: 'var(--sky)' },
-  { id: 'riekanka', name: 'Riekanka s cvikmi', desc: 'Zdravotné cvičenie pre 3 vekové skupiny.', img: '/ikony/zdravotne.webp', color: 'var(--leaf)' },
 ] as const
 type TipId = (typeof TIPS)[number]['id']
 
@@ -102,6 +102,9 @@ export default function Play({ classId, className, kids, initialBest }: {
         {tip === 'ranne' && <ul className="namety-list">{n.r.map((x) => <li key={x}>{x}</li>)}</ul>}
         {tip === 'hry' && <ul className="namety-list">{n.h.map(([a, b]) => <li key={a}><b>{a}</b>{b}</li>)}</ul>}
         {tip === 'pohyb' && <ul className="namety-list">{n.p.map(([a, b]) => <li key={a}><b>{a}</b><span className="rule">Pravidlá:</span> {b}</li>)}</ul>}
+        {tip === 'riekanka' && (
+          <button className="cta" onClick={() => { setTip(null); setGame(GAMES.find((g) => g.id === 'zdravotne')!); setRound((r) => r + 1) }}>{emo('🤸')} Cvičiť so škriatkom</button>
+        )}
         {tip === 'riekanka' && (
           <ol className="namety-list">
             {n.z.map(([v, c], k) => (
