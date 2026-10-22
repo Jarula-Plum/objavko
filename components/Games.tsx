@@ -6,6 +6,7 @@ import { THEMES, firstLetter, rhymeKey, sounds, syllables, type Item, type Theme
 import { Stars, Ui, emo, picUrl } from './Emo'
 import { GuideBar, cheer, moodOf, speak } from './Guide'
 import { Coloring, Dictation, Exercise, Tracing } from './Cvicenia'
+import { ciel } from '@/lib/krokovanie'
 
 export function say(text: string) {
   cheer(moodOf(text), text)
@@ -22,11 +23,14 @@ const shuffle = <T,>(a: T[]) => {
 }
 const pick = <T,>(a: T[], n: number) => shuffle(a).slice(0, n)
 
-type Option = { content: ReactNode; correct: boolean; label: string; word?: boolean; spot?: string }
+// hit: čo sa ukáže na správnom políčku po trafení; leave: obsah zmizne po trafení (obrázok sa presunul)
+type Option = { content: ReactNode; correct: boolean; label: string; word?: boolean; spot?: string; hit?: ReactNode; leave?: boolean }
 type Round = {
   prompt: ReactNode; stage?: ReactNode; speech: string; options: Option[]
   // hide: odpovede sa ukážu až po tomto čase (ms); play: zvuk kola; cross: rozloženie hore/dole/vľavo/vpravo/v strede
   hide?: number; play?: () => void; cross?: boolean; row?: string
+  // yay: vtipná veta po správnej odpovedi (povie ju a ukáže)
+  yay?: string
 }
 
 // Jednoduché zvuky cez Web Audio: údery bubna a tóny
@@ -111,6 +115,7 @@ function Quiz({ game, rounds, onDone, onBack }: { game: Game; rounds: Round[]; o
       setRight(idx)
       const next = [...log, !missed]
       setLog(next)
+      if (r.yay) say(r.yay)
       setTimeout(() => {
         if (i + 1 >= rounds.length) {
           const ok = next.filter(Boolean).length
@@ -118,7 +123,7 @@ function Quiz({ game, rounds, onDone, onBack }: { game: Game; rounds: Round[]; o
         } else {
           setI(i + 1); setMissed(false); setRight(null); setWrong(null)
         }
-      }, 750)
+      }, r.yay ? 2600 : 750)
     } else {
       setMissed(true)
       setWrong({ idx, n: (wrong?.n ?? 0) + 1 })
@@ -139,10 +144,11 @@ function Quiz({ game, rounds, onDone, onBack }: { game: Game; rounds: Round[]; o
             style={o.spot ? { gridArea: o.spot } : undefined}
             onClick={() => choose(idx)}
           >
-            {emo(o.content)}
+            {emo(right === idx && o.hit ? o.hit : right !== null && o.leave ? '' : o.content)}
           </button>
         ))}
       </div>
+      {right !== null && r.yay && <div className="yay">{emo(r.yay)}</div>}
     </Shell>
   )
 }
@@ -736,6 +742,7 @@ function baseRounds(id: Game['id'], theme: Theme, lv: Level): Round[] {
   if (id === 'krokovanie') {
     return range.map(() => {
       const who = pick(theme.items, 1)[0]
+      const goal = ciel(who.w)
       const moves = lv === 1 ? [rand(1, 3)] : lv === 2 ? [rand(2, 3), -rand(1, 2)] : [rand(1, 3), -rand(1, 3), rand(1, 2)]
       let lo = 0, hi = 0, pos = 0
       for (const m of moves) { pos += m; lo = Math.min(lo, pos); hi = Math.max(hi, pos) }
@@ -746,7 +753,11 @@ function baseRounds(id: Game['id'], theme: Theme, lv: Level): Round[] {
         prompt: <>{who.w[0] + who.w.slice(1).toLowerCase()} urobí {say_}. <b>Kam sa dostane?</b></>,
         stage: <span className="seq">{moves.map((m) => (m > 0 ? '➡️' : '⬅️').repeat(Math.abs(m))).join(' ')}</span>,
         speech: `${who.w.toLowerCase()} urobí ${say_}. Kam sa dostane?`, row: 'path',
-        options: Array.from({ length: 7 }, (_, k) => ({ content: k === start ? who.e : '', correct: k === end, label: `políčko ${k + 1}` })),
+        yay: `${who.w[0] + who.w.slice(1).toLowerCase()} – ${goal.t}`,
+        options: Array.from({ length: 7 }, (_, k) => ({
+          content: k === start ? who.e : '', correct: k === end, label: `políčko ${k + 1}`, leave: k === start,
+          hit: k === end ? <span className="krok-hit">{goal.e}<small>{who.e}</small></span> : undefined,
+        })),
       }
     })
   }
