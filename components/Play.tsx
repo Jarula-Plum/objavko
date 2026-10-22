@@ -150,7 +150,7 @@ export default function Play({ classId, className, kids, initialBest }: {
       </section>
     )
   }
-  if (game) return <><GameView key={round} game={game} theme={theme} level={level} onDone={done} onBack={back} /><Metodika game={game} /></>
+  if (game) return <><GameView key={round} game={game} theme={theme} level={level} onDone={done} onBack={back} /><Metodika game={game} tema={theme.name} /></>
 
   return (
     <>
