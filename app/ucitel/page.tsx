@@ -3,6 +3,7 @@ import Logo from '@/components/Logo'
 import { requireUser } from '@/lib/supabase/server'
 import { signOut } from '@/app/prihlasenie/actions'
 import { createClass } from './actions'
+import { Ui } from '@/components/Emo'
 
 export default async function TeacherHome() {
   const { supabase, user } = await requireUser()
@@ -31,8 +32,8 @@ export default async function TeacherHome() {
                   <h3 style={{ fontSize: 22 }}>{c.name}</h3>
                   <p className="note">{count} {count === 1 ? 'dieťa' : count >= 2 && count <= 4 ? 'deti' : 'detí'}</p>
                   <div className="row">
-                    <Link href={`/hraj/${c.id}`} className="cta">Hrať</Link>
-                    <Link href={`/ucitel/trieda/${c.id}`} className="ghost">Žiaci a pokrok</Link>
+                    <Link href={`/hraj/${c.id}`} className="cta"><Ui n="hraj" /> Hrať</Link>
+                    <Link href={`/ucitel/trieda/${c.id}`} className="ghost"><Ui n="zosit" /> Žiaci a pokrok</Link>
                   </div>
                 </div>
               )

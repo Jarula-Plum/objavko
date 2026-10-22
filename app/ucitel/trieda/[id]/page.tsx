@@ -4,7 +4,7 @@ import Logo from '@/components/Logo'
 import { requireUser } from '@/lib/supabase/server'
 import { AREAS, AVATARS, GAMES, bestStars } from '@/lib/games'
 import { addChild, deleteClass, removeChild, renameClass } from '../../actions'
-import { Icon, Stars, emo } from '@/components/Emo'
+import { Icon, Stars, Ui, emo } from '@/components/Emo'
 
 type Props = { params: Promise<{ id: string }> }
 
@@ -26,8 +26,8 @@ export default async function ClassPage({ params }: Props) {
       <header className="top">
         <Logo sub="Pre učiteľku" />
         <div className="row">
-          <Link href="/ucitel" className="ghost">← Moje triedy</Link>
-          <Link href={`/hraj/${id}`} className="cta">Hrať s triedou</Link>
+          <Link href="/ucitel" className="ghost"><Ui n="spat" /> Moje triedy</Link>
+          <Link href={`/hraj/${id}`} className="cta"><Ui n="hraj" /> Hrať s triedou</Link>
         </div>
       </header>
       <div className="cols">

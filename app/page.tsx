@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Logo from '@/components/Logo'
 import { GAMES } from '@/lib/games'
-import { Icon } from '@/components/Emo'
+import { Icon, Ui } from '@/components/Emo'
 import { GuideHello } from '@/components/Guide'
 
 export default function Home() {
@@ -15,7 +15,7 @@ export default function Home() {
         <h2>Hry, ktoré deti bavia a učiteľkám šetria čas</h2>
         <p>Každá hra je naviazaná na Štátny vzdelávací program pre MŠ. Pokyny číta hlas, takže deti nemusia vedieť čítať. Vy vidíte pokrok každého dieťaťa.</p>
         <div className="row">
-          <Link href="/prihlasenie?rezim=registracia" className="cta">Vyskúšať zadarmo</Link>
+          <Link href="/prihlasenie?rezim=registracia" className="cta"><Ui n="hraj" /> Vyskúšať zadarmo</Link>
         </div>
       </section>
       <GuideHello text="Ahoj! Sme škriatok a víla. Poď sa s nami hrať!" />

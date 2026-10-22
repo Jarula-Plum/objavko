@@ -192,3 +192,7 @@ th:first-child, td:first-child { text-align: left; }
 @keyframes g-wiggle { 25% { transform: rotate(-6deg); } 75% { transform: rotate(6deg); } }
 @keyframes g-wave { 50% { transform: rotate(-3deg) translateY(-4px); } }
 @media (prefers-reduced-motion: reduce) { .guide-bar img, .guide-hello img { animation: none !important; } }
+
+/* Drevené ikonky na tlačidlách */
+.ui { width: 1.5em; height: 1.5em; vertical-align: -0.42em; margin: -4px 2px -4px -4px; }
+.back, .speak, .cta, .ghost { display: inline-flex; align-items: center; gap: 4px; }

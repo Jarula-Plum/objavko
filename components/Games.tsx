@@ -3,7 +3,7 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { type Game } from '@/lib/games'
 import { THEMES, firstLetter, rhymeKey, sounds, syllables, type Item, type Theme } from '@/lib/themes'
-import { Stars, emo, picUrl } from './Emo'
+import { Stars, Ui, emo, picUrl } from './Emo'
 import { GuideBar, cheer, moodOf } from './Guide'
 
 export function say(text: string) {
@@ -62,7 +62,7 @@ function Shell({ game, onBack, speech, dots, onRepeat, children }: {
   return (
     <section className="game" style={{ ['--c' as string]: game.color }}>
       <div className="ghead">
-        <button className="back" onClick={() => { try { speechSynthesis.cancel() } catch {} ; onBack() }}>← Späť</button>
+        <button className="back" onClick={() => { try { speechSynthesis.cancel() } catch {} ; onBack() }}><Ui n="spat" /> Späť</button>
         {dots && (
           <div className="dots" aria-label={`Kolo ${Math.min(dots.i + 1, 5)} z 5`}>
             {Array.from({ length: 5 }, (_, i) => (
@@ -70,7 +70,7 @@ function Shell({ game, onBack, speech, dots, onRepeat, children }: {
             ))}
           </div>
         )}
-        <button className="speak" onClick={() => (onRepeat ? onRepeat() : say(speech))}>{emo('🔊')} Zopakuj</button>
+        <button className="speak" onClick={() => (onRepeat ? onRepeat() : say(speech))}><Ui n="zvuk" /> Zopakuj</button>
       </div>
       {children}
       <GuideBar />
@@ -89,8 +89,8 @@ export function Finished({ game, starsN, kidName, onAgain, onBack }: {
         <div className="big-stars"><Stars n={starsN} /></div>
         <h2 style={{ fontSize: 36 }}>{praise} {kidName}</h2>
         <div className="row" style={{ justifyContent: 'center' }}>
-          <button className="cta" onClick={onAgain}>Hrať znova</button>
-          <button className="ghost" onClick={onBack}>Iné hry</button>
+          <button className="cta" onClick={onAgain}><Ui n="znova" /> Hrať znova</button>
+          <button className="ghost" onClick={onBack}><Ui n="mapa" /> Iné hry</button>
         </div>
       </div>
     </Shell>
@@ -298,7 +298,7 @@ const JOBS = [
   { e: '👨‍✈️', w: 'pilot', t: '✈️', tw: 'lietadlo' }, { e: '🧑‍🚒', w: 'šofér', t: '🚌', tw: 'autobus' },
 ]
 const WEATHER = [
-  { e: '❄️', t: 'Vonku sneží a mrzne.', wear: [{ e: '🧤', w: 'rukavice' }, { e: '🧣', w: 'šál' }] },
+  { e: '🌨️', t: 'Vonku sneží a mrzne.', wear: [{ e: '🧤', w: 'rukavice' }, { e: '🧣', w: 'šál' }] },
   { e: '🌧️', t: 'Vonku prší.', wear: [{ e: '☂️', w: 'dáždnik' }, { e: '🥾', w: 'čižmy' }] },
   { e: '🏖️', t: 'Je horúco a ideme k vode.', wear: [{ e: '🩱', w: 'plavky' }, { e: '🕶️', w: 'slnečné okuliare' }, { e: '🧢', w: 'šiltovka' }] },
 ]

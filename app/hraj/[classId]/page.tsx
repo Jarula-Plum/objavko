@@ -4,6 +4,7 @@ import Logo from '@/components/Logo'
 import Play from '@/components/Play'
 import { requireUser } from '@/lib/supabase/server'
 import { bestStars } from '@/lib/games'
+import { Ui } from '@/components/Emo'
 
 type Props = { params: Promise<{ classId: string }> }
 
@@ -23,7 +24,7 @@ export default async function PlayPage({ params }: Props) {
     <div className="wrap">
       <header className="top">
         <Logo sub="Pre deti" />
-        <Link href="/ucitel" className="ghost">Pre učiteľku</Link>
+        <Link href="/ucitel" className="ghost"><Ui n="zosit" /> Pre učiteľku</Link>
       </header>
       <Play classId={cls.id} className={cls.name} kids={kids ?? []} initialBest={bestStars(results ?? [])} />
     </div>

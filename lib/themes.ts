@@ -7,6 +7,7 @@ export type Item = { e: string; w: string; s?: number }
 export type Theme = { id: string; name: string; pic: string; img?: string; month: number; week?: number; items: Item[] }
 export type Month = { n: number; name: string; title: string }
 
+// Znaky \uE101 až \uE108 sú Jarkine obrázky bez emoji (slivka, breza, šiška, žaluď, papraď, muchotrávka, zvonček, srnka), pozri OWN_PIC v Emo.tsx
 const i = (e: string, w: string, s?: number): Item => (s ? { e, w, s } : { e, w })
 
 export const MONTHS: Month[] = [
@@ -42,13 +43,13 @@ export const THEMES: Theme[] = [
   ] },
   // Október
   { id: 'vetricek', name: 'Fúkaj, fúkaj vetríčku', pic: '🍂', month: 10, week: 1, items: [
-    i('🍂', 'LIST'), i('🪁', 'ŠARKAN'), i('💨', 'VIETOR'), i('☂️', 'DÁŽDNIK'), i('🌧️', 'DAŽĎ'), i('☁️', 'OBLAK'), i('🌈', 'DÚHA'), i('🧥', 'KABÁT'),
+    i('🍂', 'LIST'), i('🪁', 'ŠARKAN'), i('💨', 'VIETOR'), i('☂️', 'DÁŽDNIK'), i('🌧️', 'DAŽĎ'), i('☁️', 'OBLAK'), i('🌈', 'DÚHA'), i('🧥', 'KABÁT'), i('🌫️', 'HMLA'), i('⛈️', 'BÚRKA'),
   ] },
   { id: 'starki', name: 'Na návšteve u starkých', pic: '👵', month: 10, week: 2, items: [
     i('👵', 'BABKA'), i('👴', 'DEDKO'), i('🏡', 'CHALUPA'), i('🐓', 'KOHÚT'), i('🐈', 'MAČKA'), i('🍎', 'JABLKO', 2), i('🧶', 'KLBKO'), i('🥧', 'KOLÁČ'),
   ] },
   { id: 'plody', name: 'Plody jesene', pic: '🎃', month: 10, week: 3, items: [
-    i('🎃', 'TEKVICA'), i('🌰', 'GAŠTAN'), i('🍎', 'JABLKO', 2), i('🍐', 'HRUŠKA'), i('🍇', 'HROZNO'), i('🥕', 'MRKVA'), i('🥔', 'ZEMIAK'), i('🌽', 'KUKURICA'),
+    i('🎃', 'TEKVICA'), i('🌰', 'GAŠTAN'), i('🍎', 'JABLKO', 2), i('🍐', 'HRUŠKA'), i('🍇', 'HROZNO'), i('\uE101', 'SLIVKA'), i('\uE104', 'ŽALUĎ'), i('🥕', 'MRKVA'), i('🥔', 'ZEMIAK'), i('🌽', 'KUKURICA'),
   ] },
   { id: 'jesen-zvierata', name: 'Zvieratká na jeseň', pic: '🦆', month: 10, week: 4, items: [
     i('🦔', 'JEŽ'), i('🐿️', 'VEVERIČKA'), i('🐻', 'MEDVEĎ'), i('🦊', 'LÍŠKA'), i('🦆', 'KAČKA'), i('🦢', 'LABUŤ'), i('🐦', 'LASTOVIČKA'), i('🍄', 'HRIB'),
@@ -70,7 +71,7 @@ export const THEMES: Theme[] = [
     i('🥄', 'LYŽICA'), i('🍴', 'VIDLIČKA'), i('🔪', 'NOŽ'), i('✂️', 'NOŽNICE'), i('📚', 'KNIHA'), i('🧼', 'MYDLO'), i('🪑', 'STOLIČKA'), i('🧸', 'MACKO'),
   ] },
   { id: 'zdravy', name: 'Zdravý a nezdravý životný štýl', pic: '🥦', month: 11, items: [
-    i('🥦', 'BROKOLICA'), i('🍎', 'JABLKO', 2), i('🥕', 'MRKVA'), i('🥛', 'MLIEKO'), i('🍬', 'CUKRÍK'), i('🍟', 'HRANOLKY'), i('🍔', 'HAMBURGER'), i('🍭', 'LÍZANKA'),
+    i('🥦', 'BROKOLICA'), i('🍎', 'JABLKO', 2), i('🥕', 'MRKVA'), i('🥛', 'MLIEKO'), i('🍬', 'CUKRÍK'), i('🍟', 'HRANOLKY'), i('🍔', 'HAMBURGER'), i('🍭', 'LÍZANKA'), i('🍅', 'RAJČINA'), i('🫑', 'PAPRIKA'), i('🫐', 'ČUČORIEDKA'),
   ] },
   // December
   { id: 'mikulas', name: 'Vitaj, vitaj Mikuláš', pic: '🎅', month: 12, week: 1, items: [
@@ -87,7 +88,7 @@ export const THEMES: Theme[] = [
     i('🕰️', 'HODINY'), i('⏰', 'BUDÍK'), i('📅', 'KALENDÁR'), i('⏱️', 'STOPKY'), i('⌚', 'HODINKY'), i('⏳', 'PRESÝPAČKY'), i('☀️', 'SLNKO'), i('🌙', 'MESIAC'),
   ] },
   { id: 'zvierata-zima', name: 'Zvieratká v zime', pic: '🦊', month: 1, week: 2, items: [
-    i('🦊', 'LÍŠKA'), i('🐇', 'ZAJAC'), i('🦌', 'SRNKA'), i('🐿️', 'VEVERIČKA'), i('🐻', 'MEDVEĎ'), i('🦔', 'JEŽ'), i('🐦', 'SÝKORKA'), i('🦉', 'SOVA'),
+    i('🦊', 'LÍŠKA'), i('🐇', 'ZAJAC'), i('\uE108', 'SRNKA'), i('🐿️', 'VEVERIČKA'), i('🐻', 'MEDVEĎ'), i('🦔', 'JEŽ'), i('🐦', 'SÝKORKA'), i('🦉', 'SOVA'),
   ] },
   { id: 'zimne-sporty', name: 'Zimné športy', pic: '⛷️', month: 1, week: 3, items: [
     i('⛷️', 'LYŽIAR'), i('🏒', 'HOKEJ'), i('⛸️', 'KORČULE'), i('🛷', 'SÁNKY'), i('🎿', 'LYŽE'), i('🥅', 'BRÁNKA'), i('🥇', 'MEDAILA'), i('🧤', 'RUKAVICE'),
@@ -127,6 +128,7 @@ export const THEMES: Theme[] = [
   // Apríl
   { id: 'les', name: 'Tajomstvo lesa', pic: '🌳', month: 4, week: 1, items: [
     i('🌳', 'STROM'), i('🌲', 'SMREK'), i('🍄', 'HRIB'), i('🦊', 'LÍŠKA'), i('🦌', 'JELEŇ'), i('🦉', 'SOVA'), i('🐗', 'DIVIAK'), i('🐿️', 'VEVERIČKA'),
+    i('\uE102', 'BREZA'), i('\uE103', 'ŠIŠKA'), i('\uE104', 'ŽALUĎ'), i('\uE105', 'PAPRAĎ'), i('\uE106', 'MUCHOTRÁVKA'), i('🦡', 'JAZVEC'), i('🐺', 'VLK'),
   ] },
   { id: 'kvapka', name: 'Kvapka vody', pic: '💧', month: 4, week: 2, items: [
     i('💧', 'KVAPKA'), i('🌧️', 'DAŽĎ'), i('☁️', 'OBLAK'), i('🌈', 'DÚHA'), i('🌊', 'MORE'), i('🧊', 'ĽAD'), i('☂️', 'DÁŽDNIK'), i('⛲', 'FONTÁNA'),
@@ -148,7 +150,7 @@ export const THEMES: Theme[] = [
     i('👩', 'MAMA'), i('👨', 'OTEC'), i('👶', 'BÁBÄTKO'), i('👵', 'BABKA'), i('👴', 'DEDKO'), i('👧', 'SESTRA'), i('👦', 'BRAT'), i('💐', 'KYTICA'),
   ] },
   { id: 'luka', name: 'Tajomstvo rozkvitnutej lúky', pic: '🐞', month: 5, week: 3, items: [
-    i('🐝', 'VČELA'), i('🐞', 'LIENKA'), i('🦋', 'MOTÝĽ'), i('🐜', 'MRAVEC'), i('🐛', 'HÚSENICA'), i('🦗', 'KOBYLKA'), i('🐌', 'SLIMÁK'), i('🌼', 'KVET'),
+    i('🐝', 'VČELA'), i('🐞', 'LIENKA'), i('🦋', 'MOTÝĽ'), i('🐜', 'MRAVEC'), i('🐛', 'HÚSENICA'), i('🦗', 'KOBYLKA'), i('🐌', 'SLIMÁK'), i('🌼', 'KVET'), i('\uE107', 'ZVONČEK'),
   ] },
   { id: 'exoticke', name: 'Zvieratká z ďaleka', pic: '🦁', month: 5, week: 4, items: [
     i('🦁', 'LEV'), i('🐘', 'SLON'), i('🦒', 'ŽIRAFA'), i('🦓', 'ZEBRA'), i('🐒', 'OPICA'), i('🐊', 'KROKODÍL'), i('🐧', 'TUČNIAK'), i('🦛', 'HROCH'),
