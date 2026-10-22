@@ -323,3 +323,22 @@ th:first-child, td:first-child { text-align: left; }
 :root[data-theme="dark"] .guide-hello .g-bubble.on, :root[data-theme="dark"] .guide-hello .g-hint { color: #fff7d6; text-shadow: 0 0 3px #1b1030, 0 0 10px #1b1030, 0 0 20px rgba(20,10,40,.9); }
 .guide-hello .g-girl.g-video { height: 230px; }
 @media (min-width: 900px) { .guide-hello .g-girl.g-video { height: 350px; } }
+
+/* Úvod: oživení sprievodcovia veľkí po bokoch, text medzi nimi (na mobile text navrchu) */
+.guide-hello { display: grid; grid-template-columns: 1fr 1fr; grid-template-areas: "say say" "boy girl"; align-items: end; gap: 0 8px; width: 100%; }
+.guide-hello .g-say { grid-area: say; flex: none; margin-bottom: 6px; }
+.guide-hello .g-who:first-child { grid-area: boy; justify-self: start; }
+.guide-hello .g-who:last-child { grid-area: girl; justify-self: end; }
+.guide-hello .g-video { height: min(300px, 62vw); max-width: 100%; object-fit: contain; }
+.guide-hello .g-girl.g-video { height: min(330px, 68vw); }
+@media (min-width: 900px) {
+  .guide-hello { grid-template-columns: auto 1fr auto; grid-template-areas: "boy say girl"; gap: 0 12px; }
+  .guide-hello .g-say { align-self: center; margin: 0; }
+  .guide-hello .g-video { height: 460px; }
+  .guide-hello .g-girl.g-video { height: 500px; }
+}
+@media (min-width: 900px) {
+  .guide-hello { grid-template-columns: minmax(0, 1fr) minmax(380px, 1.4fr) minmax(0, 1fr); }
+  .guide-hello .g-video { height: 430px; }
+  .guide-hello .g-girl.g-video { height: 470px; }
+}
