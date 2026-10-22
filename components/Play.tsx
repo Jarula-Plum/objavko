@@ -9,6 +9,7 @@ import { Finished, GameView, LEVELS, type Level } from './Games'
 import { Icon, Stars, Ui, emo } from './Emo'
 import { GuideHello } from './Guide'
 import { Metodika } from './Metodika'
+import { VoicePicker } from './VoicePicker'
 import { CVIKY, NAMETY } from '@/lib/namety'
 
 // Poradové číslo týždňa (pondelok až nedeľa) od roku 1970
@@ -138,6 +139,7 @@ export default function Play({ classId, className, kids, initialBest }: {
           </button>
         ))}
       </div>
+      <VoicePicker />
       <label className="label" htmlFor="tema">Téma týždňa</label>
       <select id="tema" className="theme-pick" value={theme.id} onChange={(e) => chooseTheme(e.target.value)}>
         {MONTHS.map((m) => (

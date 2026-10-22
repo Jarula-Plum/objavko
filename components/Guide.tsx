@@ -26,20 +26,36 @@ export function moodOf(text: string): Mood {
 
 const pic = (who: 'chlapec' | 'dievca', pose: string) => `/sprievodca/${who}-${pose}.webp`
 
-// Hlas: Čarozvedko hovorí mužským slovenským hlasom vo vyššej polohe, Čarozvedka ženským
+// Hlas: Čarozvedko hovorí mužským slovenským hlasom vo vyššej polohe, Čarozvedka ženským.
+// Pani učiteľka si môže na zariadení vybrať iný hlas, výšku a rýchlosť (uložené v prehliadači).
+export type VoiceSet = { voice?: string; pitch: number; rate: number }
+export type VoiceCfg = Record<'chlapec' | 'dievca', VoiceSet>
+const VOICE_KEY = 'objavko-hlas'
+export function voiceCfg(): Partial<VoiceCfg> {
+  try { return JSON.parse(localStorage.getItem(VOICE_KEY) ?? '{}') ?? {} } catch { return {} }
+}
+export function saveVoiceCfg(c: Partial<VoiceCfg>) {
+  try { localStorage.setItem(VOICE_KEY, JSON.stringify(c)) } catch {}
+}
+export const skVoices = () => {
+  try { return speechSynthesis.getVoices().filter((v) => v.lang?.toLowerCase().startsWith('sk')) } catch { return [] }
+}
+
 export function speak(text: string, who: 'chlapec' | 'dievca' = 'chlapec') {
   try {
     if (!('speechSynthesis' in window)) return
     speechSynthesis.cancel()
     const u = new SpeechSynthesisUtterance(text)
     u.lang = 'sk-SK'
-    const sk = speechSynthesis.getVoices().filter((v) => v.lang?.toLowerCase().startsWith('sk'))
+    const sk = skVoices()
     const male = sk.find((v) => /filip|luk[aá]s|male|muž/i.test(v.name))
-    const female = sk.find((v) => /laura|zuzana|female|žena/i.test(v.name))
-    const voice = who === 'chlapec' ? male ?? sk[0] : female ?? sk.find((v) => v !== male) ?? sk[0]
+    const female = sk.find((v) => /laura|zuzana|viktória|viktoria|female|žena/i.test(v.name))
+    const own = voiceCfg()[who]
+    const chosen = own?.voice ? speechSynthesis.getVoices().find((v) => v.voiceURI === own.voice) : undefined
+    const voice = chosen ?? (who === 'chlapec' ? male ?? sk[0] : female ?? sk.find((v) => v !== male) ?? sk[0])
     if (voice) u.voice = voice
-    u.rate = 0.95
-    u.pitch = who === 'chlapec' ? (male ? 1.45 : 1.25) : 1.3
+    u.rate = own?.rate ?? 0.95
+    u.pitch = own?.pitch ?? (who === 'chlapec' ? (male ? 1.45 : 1.25) : 1.3)
     speechSynthesis.speak(u)
   } catch {}
 }
