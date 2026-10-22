@@ -385,3 +385,4 @@ th:first-child, td:first-child { text-align: left; }
 .cls-edit { margin-top: 10px; }
 .cls-edit > summary { cursor: pointer; font-weight: 700; color: var(--muted); font-size: 15px; }
 .cls-edit .del { cursor: pointer; color: var(--bad); font-weight: 700; font-size: 15px; margin-top: 8px; }
+.jupi { font-family: var(--font-fairy), cursive; color: #1f4d2b; font-size: clamp(26px, 6vw, 38px); margin: -6px 0 10px; animation: krok-pop .6s ease-out; }

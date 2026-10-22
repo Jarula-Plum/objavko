@@ -73,17 +73,25 @@ function Shell({ game, onBack, speech, dots, onRepeat, children }: {
   )
 }
 
+let jupi = 0
 export function Finished({ game, starsN, kidName, onAgain, onBack }: {
   game: Game; starsN: number; kidName: string; onAgain: () => void; onBack: () => void
 }) {
   const praise = starsN === 3 ? 'Výborne!' : starsN === 2 ? 'Šikovné!' : 'Dobrý pokus!'
-  useEffect(() => { say(praise); if (starsN === 3) cheer('wow', `${praise} ${kidName}!`) }, [praise, starsN, kidName])
+  useEffect(() => {
+    if (starsN !== 3) { say(praise); return }
+    // Všetko správne: Čarozvedko a Čarozvedka sa striedajú v gratulácii
+    const who = jupi++ % 2 ? 'dievca' : 'chlapec'
+    cheer('wow', `${praise} ${kidName}! Jupíí, to sa ti podarilo!`)
+    speak(`${praise} Jupíí, to sa ti podarilo!`, who)
+  }, [praise, starsN, kidName])
   return (
     <Shell game={game} onBack={onBack} speech={praise}>
       <div className="done-box">
         <div className="big-stars"><Stars n={starsN} /></div>
         <img className="reward" src={['/obrazky/lucerna.webp', '/obrazky/kristal.webp', '/obrazky/truhlica.webp'][Math.max(0, starsN - 1)]} alt="" />
         <h2 style={{ fontSize: 36 }}>{praise} {kidName}</h2>
+        {starsN === 3 && <p className="jupi">Jupíí, to sa ti podarilo!</p>}
         <div className="row" style={{ justifyContent: 'center' }}>
           <button className="cta" onClick={onAgain}><Ui n="znova" /> Hrať znova</button>
           <button className="ghost" onClick={onBack}><Ui n="mapa" /> Iné hry</button>
