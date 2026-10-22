@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import Logo from '@/components/Logo'
 import { requireUser } from '@/lib/supabase/server'
 import { AREAS, AVATARS, GAMES, bestStars } from '@/lib/games'
-import { addChild, deleteClass, removeChild, renameClass } from '../../actions'
+import { addChild, deleteClass, removeChild, renameClass, updateChild } from '../../actions'
 import { Icon, Stars, Ui, emo } from '@/components/Emo'
 
 type Props = { params: Promise<{ id: string }> }
@@ -84,13 +84,35 @@ export default async function ClassPage({ params }: Props) {
           <ul className="roster">
             {kids?.map((k) => (
               <li key={k.id}>
-                <span className="av">{emo(k.avatar)}</span>
-                <span className="nm">{k.name}</span>
-                <form action={removeChild}>
-                  <input type="hidden" name="id" value={k.id} />
-                  <input type="hidden" name="class_id" value={id} />
-                  <button className="x" aria-label={`Odobrať ${k.name}`}>Odobrať</button>
-                </form>
+                <details className="kid-edit">
+                  <summary>
+                    <span className="av">{emo(k.avatar)}</span>
+                    <span className="nm">{k.name}</span>
+                    <span className="ed">Upraviť</span>
+                  </summary>
+                  <form action={updateChild} className="field">
+                    <input type="hidden" name="id" value={k.id} />
+                    <input type="hidden" name="class_id" value={id} />
+                    <div className="avpick" role="radiogroup" aria-label={`Ikonka pre ${k.name}`}>
+                      {AVATARS.map((a, i) => (
+                        <span key={a}>
+                          <input type="radio" name="avatar" id={`av-${k.id}-${i}`} value={a} defaultChecked={a === k.avatar} />
+                          <label htmlFor={`av-${k.id}-${i}`}>{emo(a)}</label>
+                        </span>
+                      ))}
+                    </div>
+                    <div className="row" style={{ flexWrap: 'nowrap' }}>
+                      <input name="name" aria-label="Meno žiaka" defaultValue={k.name} required maxLength={24} autoComplete="off" className="inp" />
+                      <button className="cta" style={{ flex: 'none' }}>Uložiť</button>
+                    </div>
+                  </form>
+                  <form action={removeChild} className="field">
+                    <input type="hidden" name="id" value={k.id} />
+                    <input type="hidden" name="class_id" value={id} />
+                    <p className="note">Odobratím z triedy sa zmažú aj výsledky dieťaťa.</p>
+                    <button className="ghost" style={{ color: 'var(--bad)', alignSelf: 'flex-start' }}aria-label={`Odobrať ${k.name} z triedy`}>Odobrať z triedy</button>
+                  </form>
+                </details>
               </li>
             ))}
           </ul>

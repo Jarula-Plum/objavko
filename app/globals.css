@@ -210,3 +210,10 @@ th:first-child, td:first-child { text-align: left; }
 .avpick label { width: 52px; height: 52px; }
 .avpick label .emo { width: 46px; height: 46px; vertical-align: 0; }
 .tav .emo { width: 1.6em; height: 1.6em; }
+/* Úprava žiaka v zozname triedy */
+.kid-edit { flex: 1; min-width: 0; }
+.kid-edit > summary { display: flex; align-items: center; gap: 10px; cursor: pointer; list-style: none; }
+.kid-edit > summary::-webkit-details-marker { display: none; }
+.kid-edit .ed { color: var(--sky); font-weight: 800; font-size: 13px; padding: 4px 8px; }
+.kid-edit[open] > summary .ed { opacity: .5; }
+.kid-edit .field { margin-top: 8px; }

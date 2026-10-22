@@ -52,3 +52,16 @@ export async function removeChild(formData: FormData) {
   await supabase.from('children').delete().eq('id', text(formData, 'id', 64))
   revalidatePath(`/ucitel/trieda/${classId}`)
 }
+
+export async function updateChild(formData: FormData) {
+  const classId = text(formData, 'class_id', 64)
+  const name = text(formData, 'name', 24)
+  const avatar = String(formData.get('avatar') ?? '')
+  const patch: { name?: string; avatar?: string } = {}
+  if (name) patch.name = name
+  if (AVATARS.includes(avatar)) patch.avatar = avatar
+  if (!Object.keys(patch).length) return
+  const supabase = await createClient()
+  await supabase.from('children').update(patch).eq('id', text(formData, 'id', 64)).eq('class_id', classId)
+  revalidatePath(`/ucitel/trieda/${classId}`)
+}
