@@ -83,7 +83,7 @@ export const JESEN: Record<string, Piesne> = {
   },
   vetricek: {
     s: [
-      ['Fúkaj, fúkaj teplý vetrík', D],
+      ['Fúkaj, fúkaj, vetríček', K, 'Fúkaj, fúkaj, vetríček,\nroztoč šarkan, lístoček.\nLístky letia do kola,\njeseň volá: hop, hola!'],
       ['Prší, prší', L],
       ['Gúľalo sa, gúľalo', L],
       ['Pod horou, pod horou', L],

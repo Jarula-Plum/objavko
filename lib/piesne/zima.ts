@@ -1,11 +1,11 @@
-import { D, K, KOL, L, LH, type Piesne } from './types'
+import { K, KOL, L, LH, type Piesne } from './types'
 
 export const ZIMA: Record<string, Piesne> = {
   mikulas: {
     s: [
       ['Bude zima, bude mráz', L],
-      ['Sniežik sa nám chumelí', D],
-      ['Tu je zima zas', D],
+      ['Padá sniežik biely', K, 'Padá, padá sniežik biely,\nzakryl lúku, dvor aj celý.\nSánky, lopár, šmýkačka,\nzima je to hračka.'],
+      ['Prišla zima', K, 'Prišla zima, mrzne von,\nzvonček zvoní: cin-cin-don.\nČiapku, šálik, rukavice,\nčervené máme líce.'],
       ['Mikuláš, Mikuláš', K, 'Mikuláš, Mikuláš,\nčo nám prinesieš?\nJabĺčko a orech,\nsladký cukríček.'],
       ['Čižmička', K, 'Čižmičku si vyčistím,\ndám ju na okno.\nRáno v nej je darček,\nod Mikuláša.'],
     ],
@@ -19,10 +19,10 @@ export const ZIMA: Record<string, Piesne> = {
   },
   sneh: {
     s: [
-      ['Sniežik sa nám chumelí', D],
-      ['Snehuliak', D],
+      ['Padá sniežik biely', K, 'Padá, padá sniežik biely,\nzakryl lúku, dvor aj celý.\nSánky, lopár, šmýkačka,\nzima je to hračka.'],
+      ['Snehuliačik', K, 'Gúľam guľu zo snehu,\nmalú, väčšiu, ešte jednu.\nMrkvu na nos, hrniec hore,\nsnehuliak stojí na dvore.'],
       ['Bude zima, bude mráz', L],
-      ['Tu je zima zas', D],
+      ['Prišla zima', K, 'Prišla zima, mrzne von,\nzvonček zvoní: cin-cin-don.\nČiapku, šálik, rukavice,\nčervené máme líce.'],
       ['Guľovačka', K, 'Biely sniežik padá,\nguľu urobím.\nHodím ju, hop-hop,\nkamarát sa smeje.'],
     ],
     r: [
@@ -70,7 +70,7 @@ export const ZIMA: Record<string, Piesne> = {
     s: [
       ['Zjedzte ma vĺčky, zjedzte', L],
       ['Bude zima, bude mráz', L],
-      ['Sniežik sa nám chumelí', D],
+      ['Padá sniežik biely', K, 'Padá, padá sniežik biely,\nzakryl lúku, dvor aj celý.\nSánky, lopár, šmýkačka,\nzima je to hračka.'],
       ['Čižiček, čižiček', L],
       ['Kŕmidlo', K, 'Do kŕmidla dáme\nzrnká, slnečnicu.\nVtáčiky sa najedia,\nzaspievajú nám.'],
     ],
@@ -84,9 +84,9 @@ export const ZIMA: Record<string, Piesne> = {
   },
   'zimne-sporty': {
     s: [
-      ['Sniežik sa nám chumelí', D],
-      ['Snehuliak', D],
-      ['Tu je zima zas', D],
+      ['Padá sniežik biely', K, 'Padá, padá sniežik biely,\nzakryl lúku, dvor aj celý.\nSánky, lopár, šmýkačka,\nzima je to hračka.'],
+      ['Snehuliačik', K, 'Gúľam guľu zo snehu,\nmalú, väčšiu, ešte jednu.\nMrkvu na nos, hrniec hore,\nsnehuliak stojí na dvore.'],
+      ['Prišla zima', K, 'Prišla zima, mrzne von,\nzvonček zvoní: cin-cin-don.\nČiapku, šálik, rukavice,\nčervené máme líce.'],
       ['Sánkovačka', K, 'Sánky, sánky moje,\nletíme dolu.\nKopec je biely,\nveselo je nám.'],
       ['Korčule', K, 'Na korčuliach kĺžem,\npo ľade sa krútim.\nRuky mám do strán,\nako lastovička.'],
     ],
@@ -182,7 +182,7 @@ export const ZIMA: Record<string, Piesne> = {
     s: [
       ['Kačička divoká', L],
       ['Naša kačka', L],
-      ['Žabičky', D],
+      ['Žabka skáče', K, 'Skok a skok, kvak a kvak,\nžabka skáče do mláky tak.\nNa lekne si posedí,\nmušku chytí, poobedí.'],
       ['Okolo Súče vodička tečie', L],
       ['Žabka', K, 'Žabka v rybníku,\nkvaká: kvak-kvak-kvak.\nSkáče na lekno,\nchytá mušky, hľa.'],
     ],

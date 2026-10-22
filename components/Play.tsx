@@ -12,6 +12,7 @@ import { Metodika } from './Metodika'
 import { VoicePicker } from './VoicePicker'
 import { CVIKY, NAMETY } from '@/lib/namety'
 import { PIESNE } from '@/lib/piesne'
+import { Piesen } from './Piesen'
 
 // Poradové číslo týždňa (pondelok až nedeľa) od roku 1970
 const weekNo = () => Math.floor((Date.now() / 864e5 - 4 + new Date().getTimezoneOffset() / -1440) / 7)
@@ -105,15 +106,13 @@ export default function Play({ classId, className, kids, initialBest }: {
         {tip === 'piesne' && PIESNE[theme.id] && (
           <>
             <h3>Piesne</h3>
-            <ul className="namety-list">{PIESNE[theme.id].s.map(([n, o, t]) => (
-              <li key={n}><b>{n}</b><span className="rule">{o}</span>{t && <p className="verse-text">{t}</p>}</li>
-            ))}</ul>
+            <ul className="namety-list">{PIESNE[theme.id].s.map(([n, o, t]) => <Piesen key={n} n={n} o={o} t={t} />)}</ul>
             <h3>Riekanky</h3>
             <ul className="namety-list">{PIESNE[theme.id].r.map(([n, t]) => (
               <li key={n}><b>{n}</b><p className="verse-text">{t}</p>
                 <button type="button" className="ghost" onClick={() => speak(t, 'dievca')}>{emo('🔊')} Prečítaj</button></li>
             ))}</ul>
-            <p className="note">Pri ľudových a detských piesňach uvádzame názov, text nájdete v spevníku. Nové pesničky a riekanky sú napísané pre Objavko.</p>
+            <p className="note">Ľudové piesne a koledy majú odkaz na nahrávku a text. Nové pesničky a riekanky sú napísané pre Objavko, melódia je navrhnutá v solmizácii (do, re, mi, sol, la) a dá sa prehrať. Tlačidlom Kopírovať pre Suno si z textu môžete dať urobiť celú pesničku.</p>
           </>
         )}
         {tip === 'ranne' && <ul className="namety-list">{n.r.map((x) => <li key={x}>{x}</li>)}</ul>}

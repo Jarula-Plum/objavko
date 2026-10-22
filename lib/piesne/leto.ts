@@ -166,7 +166,7 @@ export const LETO: Record<string, Piesne> = {
       ['Kolo, kolo mlynské', LH],
       ['Zlatá brána', LH],
       ['Spievanky, spievanky', L],
-      ['Ahoj, letní kamaráti', D],
+      ['Leto, leto, slniečko', K, 'Leto, leto, slniečko,\nkúpeme sa v potôčku.\nPiesok, lopta, zmrzlina,\nveselá je družina.'],
       ['Deti sveta', K, 'Deti celého sveta,\ndržme sa za ruky.\nKaždé je iné,\nale kamaráti sme.'],
     ],
     r: [
@@ -195,7 +195,7 @@ export const LETO: Record<string, Piesne> = {
   },
   'letne-sporty': {
     s: [
-      ['Ahoj, letní kamaráti', D],
+      ['Leto, leto, slniečko', K, 'Leto, leto, slniečko,\nkúpeme sa v potôčku.\nPiesok, lopta, zmrzlina,\nveselá je družina.'],
       ['Tancuj, tancuj, vykrúcaj', L],
       ['Hlavička, ramená, kolienka, palce', `${D} s pohybom`],
       ['Bicykel', K, 'Na bicykli idem,\nšliapem, šliapem, hľa.\nZvonček robí cin-cin,\nprilbu mám aj ja.'],
@@ -214,7 +214,7 @@ export const LETO: Record<string, Piesne> = {
       ['Spievanky, spievanky', L],
       ['Kolo, kolo mlynské', LH],
       ['Zlatá brána', LH],
-      ['Ahoj, letní kamaráti', D],
+      ['Leto, leto, slniečko', K, 'Leto, leto, slniečko,\nkúpeme sa v potôčku.\nPiesok, lopta, zmrzlina,\nveselá je družina.'],
       ['Dovidenia, škôlka', K, 'Dovidenia, škôlka,\nidem do školy.\nNa vás, kamaráti,\nnikdy nezabudnem.'],
     ],
     r: [
@@ -227,7 +227,7 @@ export const LETO: Record<string, Piesne> = {
   },
   leto: {
     s: [
-      ['Ahoj, letní kamaráti', D],
+      ['Leto, leto, slniečko', K, 'Leto, leto, slniečko,\nkúpeme sa v potôčku.\nPiesok, lopta, zmrzlina,\nveselá je družina.'],
       ['Prší, prší', L],
       ['Tancuj, tancuj, vykrúcaj', L],
       ['Leto', K, 'Leto, leto, hurá,\nslniečko svieti.\nKúpeme sa v jazere,\nveselo je nám.'],

@@ -149,7 +149,7 @@ export const CELOROCNE: Record<string, Piesne> = {
     s: [
       ['Kačička divoká', L],
       ['Okolo Súče vodička tečie', L],
-      ['Ahoj, letní kamaráti', D],
+      ['Leto, leto, slniečko', K, 'Leto, leto, slniečko,\nkúpeme sa v potôčku.\nPiesok, lopta, zmrzlina,\nveselá je družina.'],
       ['Rybička', K, 'Rybička pláva,\nšupinky sa lesknú.\nV mori je jej dobre,\npláva s kamarátmi.'],
       ['Delfín', K, 'Delfín skáče z vody,\nusmieva sa, hľa.\nPláva s nami v mori,\nveselý je, hľa.'],
     ],

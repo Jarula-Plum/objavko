@@ -354,3 +354,10 @@ th:first-child, td:first-child { text-align: left; }
 }
 
 .g-video.g-alpha { mix-blend-mode: normal; background: none; }
+.song-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.song-links a.ghost { text-decoration: none; }
+.song-verses { margin: 8px 0 4px; display: flex; flex-direction: column; gap: 6px; }
+.song-verses > div { display: flex; flex-direction: column; padding: 2px 8px; border-radius: 8px; transition: background .2s; }
+.song-verses > div.on { background: color-mix(in srgb, var(--c) 28%, var(--surface)); }
+.song-line { font-size: 17px; line-height: 1.4; }
+.song-notes { font-size: 14px; color: var(--muted); font-style: italic; letter-spacing: .02em; }
