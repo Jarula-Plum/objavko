@@ -45,4 +45,4 @@ export const VETY: Record<string, { file: string; who: 'chlapec' | 'dievca' }> =
 }
 
 // Súbory, ktoré už sú nahrané v public/hlas
-export const NAHRATE = new Set<string>(['01-ahoj.mp3', '02-carozvedko.mp3', '04-vyborne.mp3', '05-sikovne.mp3', '06-dobry-pokus.mp3', '07-skus-este-raz.mp3', '08-skus-ine-miesto.mp3', '09-skus-pomaly.mp3', '10-docvicili.mp3', '11-jupi-carozvedko.mp3', '03-carozvedka.mp3', '12-jupi-carozvedka.mp3'])
+export const NAHRATE = new Set<string>(['01-ahoj.mp3', '02-carozvedko.mp3', '04-vyborne.mp3', '05-sikovne.mp3', '06-dobry-pokus.mp3', '07-skus-este-raz.mp3', '08-skus-ine-miesto.mp3', '09-skus-pomaly.mp3', '10-docvicili.mp3', '11-jupi-carozvedko.mp3', '03-carozvedka.mp3', '12-jupi-carozvedka.mp3', '28-vtip.mp3', '30-vtip.mp3', '32-vtip.mp3', '34-vtip.mp3', '37-vtip.mp3', '38-vtip.mp3'])
