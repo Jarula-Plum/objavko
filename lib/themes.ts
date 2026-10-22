@@ -53,7 +53,7 @@ export const THEMES: Theme[] = [
     i('🎃', 'TEKVICA'), i('🌰', 'GAŠTAN'), i('🍎', 'JABLKO', 2), i('🍐', 'HRUŠKA'), i('🍇', 'HROZNO'), i('\uE101', 'SLIVKA'), i('\uE104', 'ŽALUĎ'), i('🥕', 'MRKVA'), i('🥔', 'ZEMIAK'), i('🌽', 'KUKURICA'),
   ] },
   { id: 'jesen-zvierata', name: 'Zvieratká na jeseň', pic: '🦆', month: 10, week: 4, items: [
-    i('🦔', 'JEŽ'), i('🐿️', 'VEVERIČKA'), i('🐻', 'MEDVEĎ'), i('🦊', 'LÍŠKA'), i('🦆', 'KAČKA'), i('🦢', 'LABUŤ'), i('🐦', 'LASTOVIČKA'), i('🍄', 'HRIB'),
+    i('🦔', 'JEŽ'), i('🐿️', 'VEVERIČKA'), i('🐻', 'MEDVEĎ'), i('🦊', 'LÍŠKA'), i('🦆', 'KAČKA'), i('🦢', 'LABUŤ'), i('\uE1BA', 'LASTOVIČKA'), i('🍄', 'HRIB'),
   ] },
   { id: 'separko', name: 'Ježko Separko', pic: '🦔', month: 10, items: [
     i('🦔', 'JEŽKO'), i('🍾', 'FĽAŠA'), i('📰', 'NOVINY'), i('🥫', 'KONZERVA'), i('🗑️', 'KÔŠ'), i('\uE115', 'POHÁR'), i('📦', 'KRABICA'), i('🔋', 'BATÉRIA', 4),
@@ -89,7 +89,7 @@ export const THEMES: Theme[] = [
     i('🕰️', 'HODINY'), i('⏰', 'BUDÍK'), i('📅', 'KALENDÁR'), i('⏱️', 'STOPKY'), i('⌚', 'HODINKY'), i('⏳', 'PRESÝPAČKY'), i('☀️', 'SLNKO'), i('🌙', 'MESIAC'),
   ] },
   { id: 'zvierata-zima', name: 'Zvieratká v zime', pic: '🦊', month: 1, week: 2, items: [
-    i('🦊', 'LÍŠKA'), i('🐇', 'ZAJAC'), i('\uE108', 'SRNKA'), i('🐿️', 'VEVERIČKA'), i('🐻', 'MEDVEĎ'), i('🦔', 'JEŽ'), i('🐦', 'SÝKORKA'), i('🦉', 'SOVA'),
+    i('🦊', 'LÍŠKA'), i('🐇', 'ZAJAC'), i('\uE108', 'SRNKA'), i('🐿️', 'VEVERIČKA'), i('🐻', 'MEDVEĎ'), i('🦔', 'JEŽ'), i('\uE1B7', 'SÝKORKA'), i('🦉', 'SOVA'),
   ] },
   { id: 'zimne-sporty', name: 'Zimné športy', pic: '⛷️', month: 1, week: 3, items: [
     i('⛷️', 'LYŽIAR'), i('🏒', 'HOKEJ'), i('⛸️', 'KORČULE'), i('🛷', 'SÁNKY'), i('🎿', 'LYŽE'), i('🥅', 'BRÁNKA'), i('🥇', 'MEDAILA'), i('🧤', 'RUKAVICE'),
@@ -230,6 +230,10 @@ export const THEMES: Theme[] = [
     i('🥕', 'MRKVA'), i('🥔', 'ZEMIAK'), i('\uE184', 'CVIKLA'), i('🥦', 'BROKOLICA'), i('\uE185', 'KARFIOL'), i('\uE186', 'KAPUSTA'),
     i('\uE187', 'ŠALÁT'), i('\uE188', 'PÓR'), i('🧄', 'CESNAK'), i('🫛', 'HRÁŠOK'), i('\uE189', 'FAZUĽA'), i('\uE18A', 'CUKETA'),
     i('🍆', 'BAKLAŽÁN'), i('🍅', 'RAJČINA'), i('🥒', 'UHORKA'), i('🎃', 'TEKVICA'),
+  ] },
+  { id: 'vtaky', img: '/obrazky/sykorka.webp', name: 'Vtáčiky: kto odletí a kto ostane', pic: '🐦', month: 0, items: [
+    i('\uE1B6', 'VRABEC'), i('\uE1B7', 'SÝKORKA'), i('\uE1B8', 'DROZD'), i('\uE1B9', 'ČERVIENKA'), i('\uE1BA', 'LASTOVIČKA'), i('\uE1BB', 'BOCIAN'),
+    i('🦢', 'LABUŤ'), i('\uE1BC', 'HOLUB'), i('\uE1BD', 'STRAKA'), i('\uE1BE', 'VRANA'), i('\uE1BF', 'ĎATEĽ'), i('🦉', 'SOVA'),
   ] },
   { id: 'hracky', img: '/obrazky/macko.webp', name: 'Moje hračky', pic: '🧸', month: 0, items: [
     i('⚽', 'LOPTA'), i('🧸', 'MACKO'), i('\uE116', 'BÁBIKA'), i('\uE117', 'AUTÍČKO'), i('\uE118', 'VLÁČIK'), i('\uE119', 'KOCKY'),

@@ -15,6 +15,7 @@ export const OWN_PIC = {
   cmel: '\uE121', vazka: '\uE122', tamburina: '\uE123', triangel: '\uE124', xylofon: '\uE125', flauta: '\uE126', cinely: '\uE127', zahradnik: '\uE128', stolar: '\uE129', postar: '\uE12A', voda: '\uE12B', vajce: '\uE12C', jogurt: '\uE12D', ryza: '\uE12E', cestoviny: '\uE12F', ryba: '\uE130', stehno: '\uE131', stol: '\uE132', skrina: '\uE133', lampa: '\uE134', zrkadlo: '\uE135', hrncek: '\uE136', tanier: '\uE137', lepidlo: '\uE138', plastelina: '\uE139', 'papier-list': '\uE13A', pravitko: '\uE13B', guma: '\uE13C', struhadlo: '\uE13D', farmarka: '\uE13E', kuchar: '\uE13F', marakasy: '\uE140',
   delfin: '\uE141', velryba: '\uE142', zralok: '\uE143', chobotnica: '\uE144', meduza: '\uE145', 'morsky-konik': '\uE146', hviezdica: '\uE147', krab: '\uE148', tulen: '\uE149', kapor: '\uE14A', pilka: '\uE14B', skrutkovac: '\uE14C', klieste: '\uE14D', 'francuzsky-kluc': '\uE14E', valcek: '\uE14F', lopata: '\uE150', hrable: '\uE151', motyka: '\uE152', tacky: '\uE153', krhla: '\uE154', skolka: '\uE155', nemocnica: '\uE156', lekaren: '\uE157', 'hasicska-stanica': '\uE158', 'policia-budova': '\uE159', posta: '\uE15A', kniznica: '\uE15B', pekaren: '\uE15C', stanica: '\uE15D', futbal: '\uE15E', svihadlo: '\uE15F', kuzel: '\uE160', kolky: '\uE161', 'plavecke-okuliare': '\uE162', 'plavacia-doska': '\uE163',
   pomaranc: '\uE180', marhula: '\uE181', cernica: '\uE182', malina: '\uE183', cvikla: '\uE184', karfiol: '\uE185', kapusta: '\uE186', salat: '\uE187', por: '\uE188', fazula: '\uE189', cuketa: '\uE18A', 'slnko-vesmir': '\uE18B', 'mesiac-vesmir': '\uE18C', hviezda: '\uE18D', asteroid: '\uE18E', druzica: '\uE18F', dalekohlad: '\uE190',
+  'velke-jablko': '\uE1A0', 'male-jablko': '\uE1A1', 'dlha-ceruzka': '\uE1A2', 'kratka-ceruzka': '\uE1A3', 'vysoka-veza': '\uE1A4', 'nizka-veza': '\uE1A5', 'siroka-stuha': '\uE1A6', 'uzka-stuha': '\uE1A7', 'plny-pohar': '\uE1A8', 'prazdny-pohar': '\uE1A9', 'otvorena-kniha': '\uE1AA', 'zatvorena-kniha': '\uE1AB', 'cista-cizma': '\uE1AC', 'spinava-cizma': '\uE1AD', 'mokry-uterak': '\uE1AE', 'suchy-uterak': '\uE1AF', 'tvrdy-kamen': '\uE1B0', 'makky-vankus': '\uE1B1', 'horuci-hrncek': '\uE1B2', 'studeny-hrncek': '\uE1B3', den: '\uE1B4', noc: '\uE1B5', vrabec: '\uE1B6', sykorka: '\uE1B7', kos: '\uE1B8', cervienka: '\uE1B9', lastovicka: '\uE1BA', bocian: '\uE1BB', holub: '\uE1BC', straka: '\uE1BD', vrana: '\uE1BE', datel: '\uE1BF', truhlica: '\uE1C0', kristal: '\uE1C1', lucerna: '\uE1C2',
   zvrk: '\uE11B', lopatka: '\uE11C', bager: '\uE11D', vrtulnik: '\uE11E', vlak: '\uE11F', lod: '\uE120',
 } as const
 const OWN: Record<string, string> = {
@@ -42,12 +43,17 @@ const OWN: Record<string, string> = {
   '🍍': 'ananas', '🍌': 'banan', '🥝': 'kiwi', '🍒': 'ceresna', '🍉': 'melon', '🍑': 'broskyna', '🍇': 'hrozno', '🥥': 'kokos',
   '🥔': 'zemiak', '🥦': 'brokolica', '🧄': 'cesnak', '🍆': 'baklazan', '🫛': 'hrach',
   '🌍': 'zem', '🚀': 'raketa-vesmir', '🪐': 'planeta', '🧑‍🚀': 'kozmonaut', '☄️': 'kometa',
+  '🦢': 'labut',
   '🦔': 'jez', '🐿️': 'vevericka', '🦊': 'liska', '🐇': 'zajac', '🦉': 'sova', '🐻': 'medved', '🦡': 'jazvec', '🐺': 'vlk', '🐗': 'diviak',
   ...Object.fromEntries(Object.entries(OWN_PIC).map(([n, c]) => [c, n])),
 }
 // Pocity ukazuje Jarkin škriatok (public/skriatok/e-*.webp), rovnaký v celej aplikácii
 export const FEEL_PIC = {
   spokojnost: '\uE170', hrdost: '\uE171', nuda: '\uE172', hanblivost: '\uE173', rozpaky: '\uE174', pochybnost: '\uE175',
+} as const
+// Škriatok v bežnom dni a protiklady veselý/smutný (public/skriatok)
+export const ELF_PIC = {
+  'vesely-skriatok': '\uE1D0', 'smutny-skriatok': '\uE1D1', 'd-ranne-vstavanie': '\uE1D2', 'd-ranajky': '\uE1D3', 'd-cesta-do-skolky': '\uE1D4', 'd-obed': '\uE1D5', 'd-citanie': '\uE1D6', 'd-spanok': '\uE1D7', 'd-obliekanie': '\uE1D8', 'd-umyvanie-ruk': '\uE1D9', 'd-cistenie-zubov': '\uE1DA', 'd-upratovanie': '\uE1DB', 'd-hra-s-kockami': '\uE1DC', 'd-kreslenie': '\uE1DD',
 } as const
 const FEEL: Record<string, string> = {
   '😀': 'radost', '😢': 'smutok', '😠': 'hnev', '😨': 'strach', '😮': 'prekvapenie', '😴': 'unava',
@@ -57,6 +63,7 @@ const keyOf = (g: string) => [...g].map((c) => c.codePointAt(0)!.toString(16)).f
 const OWN_KEYS = {
   ...Object.fromEntries(Object.entries(OWN).map(([e, n]) => [keyOf(e), `/obrazky/${n}.webp`])),
   ...Object.fromEntries(Object.entries(FEEL).map(([e, n]) => [keyOf(e), `/skriatok/e-${n}.webp`])),
+  ...Object.fromEntries(Object.entries(ELF_PIC).map(([n, c]) => [keyOf(c), `/skriatok/${n}.webp`])),
 }
 const AVAILABLE = new Set<string>([...KEYS, ...Object.keys(OWN_KEYS)])
 const src = (k: string) => OWN_KEYS[k] ?? `/emoji/${k}.webp`

@@ -87,6 +87,7 @@ export function Finished({ game, starsN, kidName, onAgain, onBack }: {
     <Shell game={game} onBack={onBack} speech={praise}>
       <div className="done-box">
         <div className="big-stars"><Stars n={starsN} /></div>
+        <img className="reward" src={['/obrazky/lucerna.webp', '/obrazky/kristal.webp', '/obrazky/truhlica.webp'][Math.max(0, starsN - 1)]} alt="" />
         <h2 style={{ fontSize: 36 }}>{praise} {kidName}</h2>
         <div className="row" style={{ justifyContent: 'center' }}>
           <button className="cta" onClick={onAgain}><Ui n="znova" /> Hrať znova</button>
@@ -285,9 +286,23 @@ const SEASONS = [
   { n: 'zima', i: '❄️', things: [{ e: '⛄', w: 'snehuliak' }, { e: '🛷', w: 'sánky' }, { e: '🎄', w: 'vianočný stromček' }, { e: '🧤', w: 'rukavice' }] },
 ]
 const DAY = [
-  { e: '⏰', t: 'Zvoní budík a vstávame.', when: 0 }, { e: '🥣', t: 'Raňajkujeme.', when: 0 }, { e: '🎒', t: 'Ideme do škôlky.', when: 0 },
-  { e: '🍲', t: 'Obedujeme polievku.', when: 1 }, { e: '😴', t: 'Po obede odpočívame.', when: 1 },
-  { e: '🛁', t: 'Kúpeme sa vo vani.', when: 2 }, { e: '📖', t: 'Čítame rozprávku na dobrú noc.', when: 2 }, { e: '🌙', t: 'Ideme spať.', when: 2 },
+  { e: '\uE1D2', t: 'Ráno vstávame z postieľky.', when: 0 }, { e: '\uE1D3', t: 'Raňajkujeme.', when: 0 }, { e: '\uE1D4', t: 'Ideme do škôlky.', when: 0 },
+  { e: '\uE1D8', t: 'Ráno sa obliekame.', when: 0 }, { e: '\uE1D5', t: 'Obedujeme.', when: 1 }, { e: '😴', t: 'Po obede odpočívame.', when: 1 },
+  { e: '🛁', t: 'Kúpeme sa vo vani.', when: 2 }, { e: '\uE1D6', t: 'Čítame rozprávku na dobrú noc.', when: 2 }, { e: '\uE1D7', t: 'Ideme spať.', when: 2 },
+]
+const OPPOSITES: { e: string; w: string }[][] = [
+  [{ e: '\uE1A0', w: 'veľké jablko' }, { e: '\uE1A1', w: 'malé jablko' }],
+  [{ e: '\uE1A2', w: 'dlhú ceruzku' }, { e: '\uE1A3', w: 'krátku ceruzku' }],
+  [{ e: '\uE1A4', w: 'vysokú vežu' }, { e: '\uE1A5', w: 'nízku vežu' }],
+  [{ e: '\uE1A6', w: 'širokú stuhu' }, { e: '\uE1A7', w: 'úzku stuhu' }],
+  [{ e: '\uE1A8', w: 'plný pohár' }, { e: '\uE1A9', w: 'prázdny pohár' }],
+  [{ e: '\uE1AA', w: 'otvorenú knihu' }, { e: '\uE1AB', w: 'zatvorenú knihu' }],
+  [{ e: '\uE1AC', w: 'čistú čižmu' }, { e: '\uE1AD', w: 'špinavú čižmu' }],
+  [{ e: '\uE1AE', w: 'mokrý uterák' }, { e: '\uE1AF', w: 'suchý uterák' }],
+  [{ e: '\uE1B0', w: 'tvrdý kameň' }, { e: '\uE1B1', w: 'mäkký vankúš' }],
+  [{ e: '\uE1B2', w: 'horúci čaj' }, { e: '\uE1B3', w: 'studený nápoj' }],
+  [{ e: '\uE1D0', w: 'veselého škriatka' }, { e: '\uE1D1', w: 'smutného škriatka' }],
+  [{ e: '\uE1B4', w: 'deň' }, { e: '\uE1B5', w: 'noc' }],
 ]
 const DAYTIME = [{ e: '🌅', n: 'ráno' }, { e: '🍽️', n: 'na obed' }, { e: '🌙', n: 'večer' }]
 const JOBS = [
@@ -359,7 +374,7 @@ const rand = (lo: number, hi: number) => lo + Math.floor(Math.random() * (hi - l
 const nums = (lo: number, hi: number) => Array.from({ length: hi - lo + 1 }, (_, k) => lo + k)
 
 // Hry, ktoré si náročnosť nastavujú samy; ostatným sa podľa úrovne uberie počet možností
-const OWN_LEVELS: Game['id'][] = ['krokovanie', 'robotik', 'rymy', 'pocty', 'slabiky', 'viac', 'velkost', 'poradie', 'poloha', 'pohyb', 'rytmus']
+const OWN_LEVELS: Game['id'][] = ['protiklady', 'krokovanie', 'robotik', 'rymy', 'pocty', 'slabiky', 'viac', 'velkost', 'poradie', 'poloha', 'pohyb', 'rytmus']
 
 function makeRounds(id: Game['id'], theme: Theme, lv: Level): Round[] {
   const rounds = baseRounds(id, theme, lv)
@@ -501,6 +516,19 @@ function baseRounds(id: Game['id'], theme: Theme, lv: Level): Round[] {
           ...(lv > 1 ? [{ content: '=', correct: ans === 'eq', label: 'rovnako' }] : []),
           { content: <span className="grp">{Array(b).fill(x.e).join('')}</span>, correct: ans === 'b', label: `skupina ${NUM_WORDS[b]}`, word: true },
         ],
+      }
+    })
+  }
+  if (id === 'protiklady') {
+    // Dvojice protikladov z Jarkiných obrázkov: [obrázok, čo povie hlas]
+    const pairs = shuffle(OPPOSITES).slice(0, 5)
+    return pairs.map((pr) => {
+      const k = Math.random() < 0.5 ? 0 : 1
+      const others = shuffle(OPPOSITES.filter((q) => q !== pr)).slice(0, lv - 1).map((q) => q[Math.floor(Math.random() * 2)])
+      const opts = shuffle([...pr.map((x, j) => ({ ...x, ok: j === k })), ...others.map((x) => ({ ...x, ok: false }))])
+      return {
+        prompt: <>Ťukni na <b>{pr[k].w}</b></>, speech: `Ťukni na ${pr[k].w}.`,
+        options: opts.map((x) => ({ content: x.e, correct: x.ok, label: x.w })),
       }
     })
   }
@@ -888,6 +916,8 @@ function baseRounds(id: Game['id'], theme: Theme, lv: Level): Round[] {
 type OrderItem = { content: ReactNode; label: string }
 type OrderRound = { prompt: ReactNode; speech: string; items: OrderItem[]; tower?: boolean }
 const STEPS = [
+  [{ e: '\uE1D2', w: 'Vstanem z postieľky.' }, { e: '\uE1D8', w: 'Oblečiem sa.' }, { e: '\uE1D3', w: 'Naraňajkujem sa.' }, { e: '\uE1D4', w: 'Idem do škôlky.' }],
+  [{ e: '\uE1DB', w: 'Upracem hračky.' }, { e: '\uE1DA', w: 'Vyčistím si zuby.' }, { e: '\uE1D6', w: 'Pozrieme si knižku.' }, { e: '\uE1D7', w: 'Zaspím.' }],
   [{ e: '💧', w: 'Pustím vodu.' }, { e: '🧼', w: 'Namydlím si ruky.' }, { e: '💦', w: 'Opláchnem ruky.' }, { e: '\uE110', w: 'Utriem si ruky.' }],
   [{ e: '🕳️', w: 'Vykopem jamku.' }, { e: '🌰', w: 'Vložím semienko.' }, { e: '💧', w: 'Polejem ho.' }, { e: '🌱', w: 'Vyrastie klíček.' }],
   [{ e: '🥚', w: 'Vajíčko.' }, { e: '🐣', w: 'Kuriatko sa liahne.' }, { e: '🐥', w: 'Kuriatko rastie.' }, { e: '🐔', w: 'Sliepka.' }],
