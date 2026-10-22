@@ -118,7 +118,7 @@ export const HUDOBNE: HudHra[] = [
     'Tri dobre rozlíšiteľné nástroje. Neskôr môžu signály predvádzať deti.', '', false),
   H('Keď ja čarujem', 'rozpravky exoticke domace pri-vode',
     'Učiteľka hudbou „premení“ deti na zvieratká. Deti sa pohybujú ako medvede, žabky či bociany. Na dohodnutý signál sa vrátia k obyčajnej chôdzi.',
-    'Ku každému zvieraťu iný hudobný motív alebo vhodná pieseň.', 'Hra je opísaná aj v metodike pre MŠ (nivam.sk).', false),
+    'Ku každému zvieraťu iný hudobný motív alebo vhodná pieseň.', '', false),
 ]
 
 const VSEOBECNE = HUDOBNE.filter((h) => !h.piesen)
@@ -134,4 +134,4 @@ export function hudobneHry(theme: Theme, min = 4): HudHra[] {
   return out
 }
 
-export const NACVIK = 'Pri nácviku najprv deťom pieseň zaspievajte, potom vysvetlite a predveďte pohyb, nakoniec spojte oboje. Pre 5–6-ročné deti pridajte striedanie vedúcich, vlastné pohybové nápady a reakciu na zmenu tempa. Metodika odporúča používať málo krokových variácií a meniť ich na zreteľných miestach piesne (nivam.sk).'
+export const NACVIK = 'Ako hru nacvičiť: deti si najprv pieseň vypočujú, potom im pohyb ukážeme a vysvetlíme, a až nakoniec spievajú a hýbu sa naraz. So staršími deťmi (5 – 6 rokov) môžeme striedať vedúceho hry, nechať ich vymýšľať vlastné pohyby a meniť tempo. Krokov a pohybov nech je málo a nech sa menia vždy na jasnom mieste piesne, napríklad na začiatku slohy alebo refrénu.'
