@@ -102,6 +102,9 @@ export const GAMES: Game[] = ([
 
 // Jarkine čarovné krídlaté deti (public/obrazky/dieta-NN.webp); staršie zvieracie ikonky sa naďalej zobrazujú
 export const AVATARS = Array.from({ length: 20 }, (_, k) => String.fromCharCode(0xE220 + k))
+// Avatary dievčat (dieta-02, 04, 07, 09, 11, 13, 15, 17, 19): dievčatá víta Čarozvedka, chlapcov Čarozvedko
+const GIRLS = new Set([2, 4, 7, 9, 11, 13, 15, 17, 19].map((n) => String.fromCharCode(0xE220 + n - 1)))
+export const isGirl = (avatar: string) => GIRLS.has(avatar)
 
 export const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(3 - n)
 

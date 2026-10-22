@@ -138,13 +138,13 @@ export function GuideBar() {
 }
 
 // Privítanie na úvode: Čarozvedko máva a pozdraví nahlas; ťuknutím na postavičku sa predstaví
-export function GuideHello({ text }: { text: string }) {
+export function GuideHello({ text, who = 'chlapec' }: { text: string; who?: 'chlapec' | 'dievca' }) {
   const [line, setLine] = useState(text)
   useEffect(() => {
     setLine(text)
-    const t = setTimeout(() => speak(text, 'chlapec'), 500)
+    const t = setTimeout(() => speak(text, who), 500)
     return () => { clearTimeout(t); try { speechSynthesis.cancel() } catch {} }
-  }, [text])
+  }, [text, who])
   const tell = (who: 'chlapec' | 'dievca') => { setLine(ABOUT[who]); speak(ABOUT[who], who) }
   return (
     <div className="guide-hello">
@@ -152,7 +152,7 @@ export function GuideHello({ text }: { text: string }) {
         <BoyVideo alt="Čarozvedko máva na pozdrav" />
       </button>
       <div className="g-say">
-        <button type="button" className="g-bubble on" onClick={() => speak(line, line === ABOUT.dievca ? 'dievca' : 'chlapec')}>{line}</button>
+        <button type="button" className="g-bubble on" onClick={() => speak(line, line === ABOUT.dievca ? 'dievca' : line === ABOUT.chlapec ? 'chlapec' : who)}>{line}</button>
         <span className="g-hint">Ťukni na nás a povieme ti, kto sme.</span>
       </div>
       <button type="button" className="g-who" onClick={() => tell('dievca')} aria-label="Kto je Čarozvedka?">

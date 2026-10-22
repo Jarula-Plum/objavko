@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
-import { AREAS, GAMES, type Game } from '@/lib/games'
+import { AREAS, GAMES, isGirl, type Game } from '@/lib/games'
 import { MONTHS, THEMES, currentTheme, themeOf } from '@/lib/themes'
 import { Finished, GameView, LEVELS, type Level } from './Games'
 import { Icon, Stars, Ui, emo } from './Emo'
@@ -138,7 +138,8 @@ export default function Play({ classId, className, kids, initialBest }: {
 
   return (
     <>
-      <GuideHello text={`Ahoj, ${kid.name}! Poď sa s nami hrať.`} />
+      <GuideHello who={isGirl(kid.avatar) ? 'dievca' : 'chlapec'}
+        text={isGirl(kid.avatar) ? `Ahoj, ${kid.name}! Ja som Čarozvedka. Poď sa s nami hrať.` : `Ahoj, ${kid.name}! Ja som Čarozvedko. Poď sa s nami hrať.`} />
       <div className="label">Trieda {className} · kto sa hrá?</div>
       <div className="kids">
         {kids.map((k) => (
