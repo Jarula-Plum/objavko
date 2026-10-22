@@ -14,6 +14,7 @@ export const OWN_PIC = {
   pohar: '\uE115', babika: '\uE116', 'drevene-auto': '\uE117', vlacik: '\uE118', kocky: '\uE119', obruc: '\uE11A',
   cmel: '\uE121', vazka: '\uE122', tamburina: '\uE123', triangel: '\uE124', xylofon: '\uE125', flauta: '\uE126', cinely: '\uE127', zahradnik: '\uE128', stolar: '\uE129', postar: '\uE12A', voda: '\uE12B', vajce: '\uE12C', jogurt: '\uE12D', ryza: '\uE12E', cestoviny: '\uE12F', ryba: '\uE130', stehno: '\uE131', stol: '\uE132', skrina: '\uE133', lampa: '\uE134', zrkadlo: '\uE135', hrncek: '\uE136', tanier: '\uE137', lepidlo: '\uE138', plastelina: '\uE139', 'papier-list': '\uE13A', pravitko: '\uE13B', guma: '\uE13C', struhadlo: '\uE13D', farmarka: '\uE13E', kuchar: '\uE13F', marakasy: '\uE140',
   delfin: '\uE141', velryba: '\uE142', zralok: '\uE143', chobotnica: '\uE144', meduza: '\uE145', 'morsky-konik': '\uE146', hviezdica: '\uE147', krab: '\uE148', tulen: '\uE149', kapor: '\uE14A', pilka: '\uE14B', skrutkovac: '\uE14C', klieste: '\uE14D', 'francuzsky-kluc': '\uE14E', valcek: '\uE14F', lopata: '\uE150', hrable: '\uE151', motyka: '\uE152', tacky: '\uE153', krhla: '\uE154', skolka: '\uE155', nemocnica: '\uE156', lekaren: '\uE157', 'hasicska-stanica': '\uE158', 'policia-budova': '\uE159', posta: '\uE15A', kniznica: '\uE15B', pekaren: '\uE15C', stanica: '\uE15D', futbal: '\uE15E', svihadlo: '\uE15F', kuzel: '\uE160', kolky: '\uE161', 'plavecke-okuliare': '\uE162', 'plavacia-doska': '\uE163',
+  pomaranc: '\uE180', marhula: '\uE181', cernica: '\uE182', malina: '\uE183', cvikla: '\uE184', karfiol: '\uE185', kapusta: '\uE186', salat: '\uE187', por: '\uE188', fazula: '\uE189', cuketa: '\uE18A', 'slnko-vesmir': '\uE18B', 'mesiac-vesmir': '\uE18C', hviezda: '\uE18D', asteroid: '\uE18E', druzica: '\uE18F', dalekohlad: '\uE190',
   zvrk: '\uE11B', lopatka: '\uE11C', bager: '\uE11D', vrtulnik: '\uE11E', vlak: '\uE11F', lod: '\uE120',
 } as const
 const OWN: Record<string, string> = {
@@ -38,6 +39,9 @@ const OWN: Record<string, string> = {
   '📚': 'kniha', '📖': 'kniha', '✏️': 'ceruzka', '🖍️': 'pastelky', '🖌️': 'stetec', '✂️': 'noznice', '🎒': 'ruksak',
   '🐢': 'korytnacka', '🦞': 'rak', '🔨': 'kladivo', '🪴': 'kvetinac', '🏠': 'dom', '🏫': 'skola', '🏪': 'potraviny',
   '🏀': 'basketbal', '🎾': 'raketa', '🎿': 'lyze', '⛸️': 'korcule', '🛷': 'sanky', '⛑️': 'prilba',
+  '🍍': 'ananas', '🍌': 'banan', '🥝': 'kiwi', '🍒': 'ceresna', '🍉': 'melon', '🍑': 'broskyna', '🍇': 'hrozno', '🥥': 'kokos',
+  '🥔': 'zemiak', '🥦': 'brokolica', '🧄': 'cesnak', '🍆': 'baklazan', '🫛': 'hrach',
+  '🌍': 'zem', '🚀': 'raketa-vesmir', '🪐': 'planeta', '🧑‍🚀': 'kozmonaut', '☄️': 'kometa',
   '🦔': 'jez', '🐿️': 'vevericka', '🦊': 'liska', '🐇': 'zajac', '🦉': 'sova', '🐻': 'medved', '🦡': 'jazvec', '🐺': 'vlk', '🐗': 'diviak',
   ...Object.fromEntries(Object.entries(OWN_PIC).map(([n, c]) => [c, n])),
 }

@@ -137,7 +137,7 @@ export const THEMES: Theme[] = [
     i('💧', 'KVAPKA'), i('🌧️', 'DAŽĎ'), i('☁️', 'OBLAK'), i('🌈', 'DÚHA'), i('🌊', 'MORE'), i('🧊', 'ĽAD'), i('☂️', 'DÁŽDNIK'), i('⛲', 'FONTÁNA'),
   ] },
   { id: 'vesmir', name: 'Naša Zem je guľatá, vesmír', pic: '🚀', month: 4, week: 3, items: [
-    i('🌍', 'ZEM'), i('🌙', 'MESIAC'), i('☀️', 'SLNKO'), i('⭐', 'HVIEZDA'), i('🚀', 'RAKETA'), i('🪐', 'PLANÉTA'), i('🧑‍🚀', 'KOZMONAUT', 3), i('☄️', 'KOMÉTA'),
+    i('🌍', 'ZEM'), i('\uE18C', 'MESIAC'), i('\uE18B', 'SLNKO'), i('\uE18D', 'HVIEZDA'), i('🚀', 'RAKETA'), i('🪐', 'PLANÉTA'), i('🧑‍🚀', 'KOZMONAUT', 3), i('☄️', 'KOMÉTA'), i('\uE18F', 'DRUŽICA'), i('\uE190', 'ĎALEKOHĽAD'), i('\uE18E', 'ASTEROID'),
   ] },
   { id: 'semienko', name: 'Od semienka k rastlinke', pic: '🌱', month: 4, week: 4, items: [
     i('🌱', 'KLÍČOK'), i('🪴', 'KVETINÁČ'), i('🌻', 'SLNEČNICA'), i('🌳', 'STROM'), i('🌼', 'KVET'), i('🍃', 'LIST'), i('🌧️', 'DAŽĎ'), i('🌵', 'KAKTUS'),
@@ -220,6 +220,16 @@ export const THEMES: Theme[] = [
   { id: 'dielna', img: '/obrazky/kladivo.webp', name: 'V dielni a v záhrade', pic: '🔨', month: 0, items: [
     i('🔨', 'KLADIVO'), i('\uE14B', 'PÍLKA'), i('\uE14C', 'SKRUTKOVAČ'), i('\uE14D', 'KLIEŠTE'), i('\uE14F', 'VALČEK'), i('\uE150', 'LOPATA'),
     i('\uE151', 'HRABLE'), i('\uE152', 'MOTYKA'), i('\uE153', 'TAČKY'), i('\uE154', 'KRHLA'), i('🪴', 'KVETINÁČ'),
+  ] },
+  { id: 'ovocie', img: '/obrazky/jahoda.webp', name: 'Ovocie zo záhrady aj z ďaleka', pic: '🍓', month: 0, items: [
+    i('🍎', 'JABLKO', 2), i('🍐', 'HRUŠKA'), i('🍓', 'JAHODA'), i('🍌', 'BANÁN'), i('\uE180', 'POMARANČ'), i('🥝', 'KIWI'),
+    i('🍍', 'ANANÁS'), i('🍉', 'MELÓN'), i('🍑', 'BROSKYŇA'), i('\uE181', 'MARHUĽA'), i('🍒', 'ČEREŠŇA'), i('🍇', 'HROZNO'),
+    i('\uE183', 'MALINA'), i('\uE182', 'ČERNICA'), i('🥥', 'KOKOS'), i('🍋', 'CITRÓN'),
+  ] },
+  { id: 'zelenina', img: '/obrazky/mrkva.webp', name: 'Zelenina z našej záhradky', pic: '🥕', month: 0, items: [
+    i('🥕', 'MRKVA'), i('🥔', 'ZEMIAK'), i('\uE184', 'CVIKLA'), i('🥦', 'BROKOLICA'), i('\uE185', 'KARFIOL'), i('\uE186', 'KAPUSTA'),
+    i('\uE187', 'ŠALÁT'), i('\uE188', 'PÓR'), i('🧄', 'CESNAK'), i('🫛', 'HRÁŠOK'), i('\uE189', 'FAZUĽA'), i('\uE18A', 'CUKETA'),
+    i('🍆', 'BAKLAŽÁN'), i('🍅', 'RAJČINA'), i('🥒', 'UHORKA'), i('🎃', 'TEKVICA'),
   ] },
   { id: 'hracky', img: '/obrazky/macko.webp', name: 'Moje hračky', pic: '🧸', month: 0, items: [
     i('⚽', 'LOPTA'), i('🧸', 'MACKO'), i('\uE116', 'BÁBIKA'), i('\uE117', 'AUTÍČKO'), i('\uE118', 'VLÁČIK'), i('\uE119', 'KOCKY'),
