@@ -84,7 +84,7 @@ const talk = (who: 'chlapec' | 'dievca', on: boolean) => {
 export function speak(text: string, who: 'chlapec' | 'dievca' = 'chlapec') {
   try {
     playing?.pause(); playing = null
-    const rec = VETY[text.trim()]
+    const rec = VETY[`${text.trim()}|${who}`] ?? VETY[text.trim()]
     if (rec && NAHRATE.has(rec.file)) {
       try { speechSynthesis.cancel() } catch {}
       const a = new Audio(`/hlas/${rec.file}`)

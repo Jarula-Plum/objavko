@@ -12,6 +12,9 @@ export const VETY: Record<string, { file: string; who: 'chlapec' | 'dievca' }> =
   'Skús iné miesto': { file: '08-skus-ine-miesto.mp3', who: 'chlapec' },
   'Skús ešte raz, pomaly.': { file: '09-skus-pomaly.mp3', who: 'chlapec' },
   'Výborne! Docvičili sme. Teraz sa poriadne nadýchni a vydýchni.': { file: '10-docvicili.mp3', who: 'chlapec' },
+  // Koniec hry bez chyby: povie ju ten sprievodca, ktorý je na rade (kľúč s |kto)
+  'Výborne! Jupíí, to sa ti podarilo!|chlapec': { file: '11-jupi-carozvedko.mp3', who: 'chlapec' },
+  'Výborne! Jupíí, to sa ti podarilo!|dievca': { file: '12-jupi-carozvedka.mp3', who: 'dievca' },
 }
 
 // Súbory, ktoré už sú nahrané v public/hlas
