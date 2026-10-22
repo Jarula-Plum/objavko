@@ -1010,7 +1010,10 @@ const BACKDROP = 'radial-gradient(circle at 50% 40%, #fff7d6 0 30%, transparent 
 function Puzzle({ game, theme, level, onDone, onBack }: { game: Game; theme: Theme; level: Level; onDone: (s: number) => void; onBack: () => void }) {
   const [cols, rows] = [[2, 1], [2, 2], [3, 2]][level - 1]
   const count = cols * rows
-  const size = Math.min(240, 360 / cols * (cols === 3 ? 1.6 : 1.2))
+  // Veľkosť obrázka podľa obrazovky: čo najväčší, ale tak, aby sa zmestil aj s dielikmi
+  const fit = () => (typeof window === 'undefined' ? 260 : Math.round(Math.max(200, Math.min(420, window.innerWidth - 64, window.innerHeight * 0.42))))
+  const [size, setSize] = useState(260)
+  useEffect(() => { const on = () => setSize(fit()); on(); window.addEventListener('resize', on); return () => window.removeEventListener('resize', on) }, [])
   const [rounds] = useState(() => shuffle(theme.items.filter((x) => picUrl(x.e))).slice(0, 5).map((x) => ({ x, order: shuffle(nums(0, count - 1)) })))
   const [i, setI] = useState(0)
   const [placed, setPlaced] = useState<number[]>([])
@@ -1056,7 +1059,7 @@ function Puzzle({ game, theme, level, onDone, onBack }: { game: Game; theme: The
       <div className="opts pieces">
         {r.order.filter((k) => !placed.includes(k)).map((k) => (
           <button key={`${i}-${k}-${shake?.k === k ? shake.n : 0}`} className={`opt ${held === k ? 'held' : ''} ${shake?.k === k ? 'wrong' : ''}`}
-            aria-label={`dielik ${k + 1}`} aria-pressed={held === k} onClick={() => setHeld(k)}>{piece(k, size * 0.7)}</button>
+            aria-label={`dielik ${k + 1}`} aria-pressed={held === k} onClick={() => setHeld(k)}>{piece(k, size * (cols === 3 ? 0.6 : 0.7))}</button>
         ))}
       </div>
     </Shell>
