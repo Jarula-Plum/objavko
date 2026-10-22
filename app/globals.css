@@ -85,6 +85,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .tray { min-height: 96px; align-items: flex-end; }
 .tray.tower { flex-direction: column-reverse; align-items: center; gap: 0; }
 .cube { display: block; background: #f4a6c0; border: 2px solid #c96d8e; border-radius: 4px; }
+.emo { display: inline-block; width: 1.15em; height: 1.15em; vertical-align: -0.2em; object-fit: contain; user-select: none; -webkit-user-drag: none; }
 .stds { margin-top: 14px; }
 .stds summary { cursor: pointer; font-weight: 800; }
 .stds h3 { font-size: 15px; margin: 14px 0 4px; }

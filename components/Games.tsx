@@ -3,6 +3,7 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { stars, type Game } from '@/lib/games'
 import { THEMES, firstLetter, rhymeKey, sounds, syllables, type Item, type Theme } from '@/lib/themes'
+import { emo } from './Emo'
 
 export function say(text: string) {
   try {
@@ -10,9 +11,13 @@ export function say(text: string) {
     speechSynthesis.cancel()
     const u = new SpeechSynthesisUtterance(text)
     u.lang = 'sk-SK'
-    u.rate = 0.9
-    const voice = speechSynthesis.getVoices().find((v) => v.lang?.toLowerCase().startsWith('sk'))
+    // Hlas chlapca: prednostne mužský slovenský hlas (Filip, Lukáš) s vyššou výškou, aby znel detsky
+    const sk = speechSynthesis.getVoices().filter((v) => v.lang?.toLowerCase().startsWith('sk'))
+    const male = sk.find((v) => /filip|luk[aá]s|male|muž/i.test(v.name))
+    const voice = male ?? sk[0]
     if (voice) u.voice = voice
+    u.rate = 0.95
+    u.pitch = male ? 1.45 : 1.25
     speechSynthesis.speak(u)
   } catch {}
 }
@@ -131,8 +136,8 @@ function Quiz({ game, rounds, onDone, onBack }: { game: Game; rounds: Round[]; o
 
   return (
     <Shell game={game} onBack={onBack} speech={r.speech} dots={{ i, log }} onRepeat={() => { say(r.speech); r.play?.() }}>
-      <div className="prompt">{r.prompt}</div>
-      {r.stage && <div className="stage">{r.stage}</div>}
+      <div className="prompt">{emo(r.prompt)}</div>
+      {r.stage && <div className="stage">{emo(r.stage)}</div>}
       <div className={`opts ${r.cross ? 'cross' : ''} ${r.row ?? ''}`} style={{ visibility: shown ? 'visible' : 'hidden' }}>
         {r.options.map((o, idx) => (
           <button
@@ -142,7 +147,7 @@ function Quiz({ game, rounds, onDone, onBack }: { game: Game; rounds: Round[]; o
             style={o.spot ? { gridArea: o.spot } : undefined}
             onClick={() => choose(idx)}
           >
-            {o.content}
+            {emo(o.content)}
           </button>
         ))}
       </div>
@@ -193,7 +198,7 @@ function Memory({ game, theme, level, sound, onDone, onBack }: {
             <button key={idx} className={`card ${open.includes(idx) ? 'open' : ''} ${done.includes(idx) ? 'done' : ''}`}
               aria-label={sound ? (done.includes(idx) ? 'nájdená dvojica' : 'zvuková kartička') : shown ? theme.items.find((t) => t.e === e)?.w.toLowerCase() ?? e : 'Kartička'}
               onClick={() => flip(idx)}>
-              <span>{sound ? (done.includes(idx) ? '🎵' : '🔊') : e}</span>
+              <span>{emo(sound ? (done.includes(idx) ? '🎵' : '🔊') : e)}</span>
             </button>
           )
         })}
@@ -262,7 +267,7 @@ const mixed = <T,>(good: T[], bad: T[]) => {
 function Vanish({ pics, gone, after }: { pics: string[]; gone: number; after: number }) {
   const [hidden, setHidden] = useState(false)
   useEffect(() => { const t = setTimeout(() => setHidden(true), after); return () => clearTimeout(t) }, [after])
-  return <>{pics.map((e, k) => <span key={k} className={hidden && k === gone ? 'gone' : ''}>{hidden && k === gone ? '❔' : e}</span>)}</>
+  return <>{pics.map((e, k) => <span key={k} className={hidden && k === gone ? 'gone' : ''}>{emo(hidden && k === gone ? '❔' : e)}</span>)}</>
 }
 
 const ORDINALS = ['prvý', 'druhý', 'tretí', 'štvrtý']
@@ -935,12 +940,12 @@ function Order({ game, level, onDone, onBack }: { game: Game; level: Level; onDo
 
   return (
     <Shell game={game} onBack={onBack} speech={r.speech} dots={{ i, log }}>
-      <div className="prompt">{r.prompt}</div>
-      <div className={`stage tray ${r.tower ? 'tower' : ''}`}>{r.items.slice(0, got).map((x, k) => <span key={k}>{x.content}</span>)}</div>
+      <div className="prompt">{emo(r.prompt)}</div>
+      <div className={`stage tray ${r.tower ? 'tower' : ''}`}>{r.items.slice(0, got).map((x, k) => <span key={k}>{emo(x.content)}</span>)}</div>
       <div className="opts">
         {r.view.filter((k) => k >= got).map((k) => (
           <button key={`${i}-${k}-${wrong?.k === k ? wrong.n : 0}`} className={`opt ${game.id === 'postup' ? 'word' : ''} ${wrong?.k === k ? 'wrong' : ''}`}
-            aria-label={r.items[k].label} onClick={() => tap(k)}>{r.items[k].content}</button>
+            aria-label={r.items[k].label} onClick={() => tap(k)}>{emo(r.items[k].content)}</button>
         ))}
       </div>
     </Shell>
@@ -988,7 +993,7 @@ function Boxes({ game, theme, level, by, onDone, onBack }: {
   return (
     <Shell game={game} onBack={onBack} speech={speech} dots={{ i, log }}>
       <div className="prompt">Povedz pomaly <b>{r.x.w.toLowerCase()}</b> a za každú {unit} posuň žetón</div>
-      <div className="stage">{r.x.e}</div>
+      <div className="stage">{emo(r.x.e)}</div>
       <div key={shake} className={`boxes ${shake ? 'wrong' : ''}`} aria-label={`Okienka: ${filled} z ${slots}`}>
         {Array.from({ length: slots }, (_, k) => <span key={k} className="box">{k < filled ? '🔴' : ''}</span>)}
       </div>

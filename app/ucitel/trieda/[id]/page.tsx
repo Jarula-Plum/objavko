@@ -4,6 +4,7 @@ import Logo from '@/components/Logo'
 import { requireUser } from '@/lib/supabase/server'
 import { AREAS, AVATARS, GAMES, bestStars, stars } from '@/lib/games'
 import { addChild, deleteClass, removeChild, renameClass } from '../../actions'
+import { emo } from '@/components/Emo'
 
 type Props = { params: Promise<{ id: string }> }
 
@@ -41,7 +42,7 @@ export default async function ClassPage({ params }: Props) {
                 <tbody>
                   {kids.map((k) => (
                     <tr key={k.id}>
-                      <td><strong>{k.avatar} {k.name}</strong></td>
+                      <td><strong>{emo(k.avatar)} {k.name}</strong></td>
                       {GAMES.map((g) => {
                         const v = best[k.id]?.[g.id] ?? 0
                         return <td key={g.id}><span className={`s s${v}`}>{v ? stars(v) : '–'}</span></td>
@@ -62,7 +63,7 @@ export default async function ClassPage({ params }: Props) {
                 <h3>{area}</h3>
                 <ul>
                   {GAMES.filter((g) => g.area === area).map((g) => (
-                    <li key={g.id}><strong>{g.pic} {g.name}</strong> <span>· {g.std}</span></li>
+                    <li key={g.id}><strong>{emo(g.pic)} {g.name}</strong> <span>· {g.std}</span></li>
                   ))}
                 </ul>
               </div>
@@ -83,7 +84,7 @@ export default async function ClassPage({ params }: Props) {
           <ul className="roster">
             {kids?.map((k) => (
               <li key={k.id}>
-                <span className="av">{k.avatar}</span>
+                <span className="av">{emo(k.avatar)}</span>
                 <span className="nm">{k.name}</span>
                 <form action={removeChild}>
                   <input type="hidden" name="id" value={k.id} />
@@ -101,7 +102,7 @@ export default async function ClassPage({ params }: Props) {
               {AVATARS.map((a, i) => (
                 <span key={a}>
                   <input type="radio" name="avatar" id={`av-${i}`} value={a} defaultChecked={i === (kids?.length ?? 0) % AVATARS.length} />
-                  <label htmlFor={`av-${i}`}>{a}</label>
+                  <label htmlFor={`av-${i}`}>{emo(a)}</label>
                 </span>
               ))}
             </div>

@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { AREAS, GAMES, stars, type Game } from '@/lib/games'
 import { MONTHS, THEMES, currentTheme, themeOf } from '@/lib/themes'
 import { Finished, GameView, LEVELS, type Level } from './Games'
+import { emo } from './Emo'
 
 // Poradové číslo týždňa (pondelok až nedeľa) od roku 1970
 const weekNo = () => Math.floor((Date.now() / 864e5 - 4 + new Date().getTimezoneOffset() / -1440) / 7)
@@ -88,7 +89,7 @@ export default function Play({ classId, className, kids, initialBest }: {
       <div className="kids">
         {kids.map((k) => (
           <button key={k.id} className="kid" aria-pressed={k.id === kidId} onClick={() => setKidId(k.id)}>
-            <span className="av">{k.avatar}</span>{k.name}
+            <span className="av">{emo(k.avatar)}</span>{k.name}
           </button>
         ))}
       </div>
@@ -96,7 +97,7 @@ export default function Play({ classId, className, kids, initialBest }: {
       <div className="levels" role="radiogroup" aria-label={`Úroveň pre ${kid.name}`}>
         {LEVELS.map((l) => (
           <button key={l.n} role="radio" aria-checked={l.n === level} className="level" onClick={() => chooseLevel(l.n)}>
-            <span aria-hidden="true">{l.pic}</span>{l.name}
+            <span aria-hidden="true">{emo(l.pic)}</span>{l.name}
           </button>
         ))}
       </div>
@@ -111,10 +112,10 @@ export default function Play({ classId, className, kids, initialBest }: {
         ))}
       </select>
       <div className="theme-now">
-        <span aria-hidden="true">{theme.pic}</span>
+        <span aria-hidden="true">{emo(theme.pic)}</span>
         <div>
           <strong>{theme.name}</strong>
-          <span>{theme.items.map((x) => x.e).join(' ')}</span>
+          <span>{emo(theme.items.map((x) => x.e).join(' '))}</span>
         </div>
       </div>
       <div className="label">Hry pre {kid.name} · {LEVELS[level - 1].name}</div>
@@ -126,7 +127,7 @@ export default function Play({ classId, className, kids, initialBest }: {
               const v = best[kid.id]?.[g.id] ?? 0
               return (
                 <button key={g.id} className="tile" style={{ ['--c' as string]: g.color }} onClick={() => { setGame(g); setRound((r) => r + 1) }}>
-                  <span className="pic">{g.pic}</span>
+                  <span className="pic">{emo(g.pic)}</span>
                   <h3>{g.name}</h3>
                   <p>{g.desc}</p>
                   <span className="stars">{v ? stars(v) : 'Ešte nehrané'}</span>
