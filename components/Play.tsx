@@ -3,10 +3,10 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
-import { AREAS, GAMES, stars, type Game } from '@/lib/games'
+import { AREAS, GAMES, type Game } from '@/lib/games'
 import { MONTHS, THEMES, currentTheme, themeOf } from '@/lib/themes'
 import { Finished, GameView, LEVELS, type Level } from './Games'
-import { emo } from './Emo'
+import { Stars, emo } from './Emo'
 
 // Poradové číslo týždňa (pondelok až nedeľa) od roku 1970
 const weekNo = () => Math.floor((Date.now() / 864e5 - 4 + new Date().getTimezoneOffset() / -1440) / 7)
@@ -130,7 +130,7 @@ export default function Play({ classId, className, kids, initialBest }: {
                   <span className="pic">{emo(g.pic)}</span>
                   <h3>{g.name}</h3>
                   <p>{g.desc}</p>
-                  <span className="stars">{v ? stars(v) : 'Ešte nehrané'}</span>
+                  <span className="stars">{v ? <Stars n={v} /> : 'Ešte nehrané'}</span>
                 </button>
               )
             })}

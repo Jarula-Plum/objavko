@@ -4,7 +4,7 @@ export type GameId =
   | 'zacina' | 'dlhe' | 'kukucka' | 'poradie' | 'poloha' | 'zmizlo' | 'obdobia' | 'rezim' | 'profesie'
   | 'rytmus' | 'tony' | 'oblecenie' | 'hygiena' | 'rymy' | 'okienka' | 'posledna' | 'hlasky'
   | 'krokovanie' | 'schody' | 'autobus' | 'stavby' | 'parkety' | 'veza' | 'odtiene' | 'postup' | 'zvuky'
-  | 'nakup' | 'robotik' | 'clovek' | 'situacie' | 'empatia'
+  | 'nakup' | 'robotik' | 'clovek' | 'situacie' | 'empatia' | 'skladacka'
 
 export type Game = {
   id: GameId
@@ -55,7 +55,8 @@ export const GAMES: Game[] = [
   { id: 'autobus', name: 'Autobus', pic: '🚌', color: 'var(--accent)', desc: 'Kto nastúpil a kto vystúpil?', area: 'Matematika a práca s informáciami', std: 'Čísla a vzťahy: Pomocou určovania počtu rieši kontextové úlohy s jednou operáciou, kde sa pridáva, odoberá (Hejného prostredie Autobus).' },
   { id: 'stavby', name: 'Stavby z kociek', pic: '🧱', color: 'var(--grape)', desc: 'Z koľkých kociek je stavba?', area: 'Matematika a práca s informáciami', std: 'Geometria a meranie: Postaví stavbu z primeraného množstva (do 10) stavebnicových dielcov podľa predlohy (Hejného prostredie Stavby).' },
   { id: 'parkety', name: 'Parkety', pic: '🟨', color: 'var(--berry)', desc: 'Ktorý dielik doplní vzor?', area: 'Matematika a práca s informáciami', std: 'Geometria a meranie: Poskladá z primeraného množstva útvarov obrázok podľa predlohy (Hejného prostredie Parkety).' },
-  { id: 'veza', name: 'Postav vežu', pic: '🗼', color: 'var(--berry)', desc: 'Od najväčšej kocky po najmenšiu (Montessori).', area: 'Matematika a práca s informáciami', std: 'Geometria a meranie: Usporiada podľa veľkosti určeného rozmeru 3 až 4 predmety (Montessori ružová veža).' },
+  { id: 'skladacka', name: 'Skladačka', pic: '🧩', color: 'var(--leaf)', desc: 'Poskladaj obrázok z častí.', area: 'Matematika a práca s informáciami', std: 'Geometria a meranie: Poskladá z primeraného množstva útvarov obrázok podľa predlohy, pokynov a na danú tému.' },
+  { id: 'veza', name: 'Postav vežu', pic: '🗼', color: 'var(--berry)', desc: 'Od najväčšieho obrázka po najmenší (Montessori).', area: 'Matematika a práca s informáciami', std: 'Geometria a meranie: Usporiada podľa veľkosti určeného rozmeru 3 až 4 predmety (Montessori ružová veža).' },
   { id: 'robotik', name: 'Robotík', pic: '🤖', color: 'var(--sky)', desc: 'Šípkami doveď robota k batérii.', area: 'Matematika a práca s informáciami', std: 'Geometria a meranie: Na základe pokynov daných pomocou symbolov ↓, ←, →, ↑ sa dokáže pohybovať v štvorcovej sieti.' },
   { id: 'najdi', name: 'Nájdi obrázok', pic: '🔍', color: 'var(--leaf)', desc: 'Počúvaj a ťukni na správny obrázok.', area: 'Človek a príroda', std: 'Vnímanie prírody: Rozpráva o prírodných reáliách známeho okolia (pomenúva ich).' },
   { id: 'zive', name: 'Živé či neživé?', pic: '🌱', color: 'var(--sky)', desc: 'Žije to, alebo nežije?', area: 'Človek a príroda', std: 'Vnímanie prírody: Odlišuje živé od neživých súčastí prírody.' },

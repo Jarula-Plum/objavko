@@ -1,9 +1,9 @@
 'use client'
 
 import { useEffect, useState, type ReactNode } from 'react'
-import { stars, type Game } from '@/lib/games'
+import { type Game } from '@/lib/games'
 import { THEMES, firstLetter, rhymeKey, sounds, syllables, type Item, type Theme } from '@/lib/themes'
-import { emo } from './Emo'
+import { Stars, emo, picUrl } from './Emo'
 
 export function say(text: string) {
   try {
@@ -68,7 +68,7 @@ function Shell({ game, onBack, speech, dots, onRepeat, children }: {
             ))}
           </div>
         )}
-        <button className="speak" onClick={() => (onRepeat ? onRepeat() : say(speech))}>🔊 Zopakuj</button>
+        <button className="speak" onClick={() => (onRepeat ? onRepeat() : say(speech))}>{emo('🔊')} Zopakuj</button>
       </div>
       {children}
     </section>
@@ -83,7 +83,7 @@ export function Finished({ game, starsN, kidName, onAgain, onBack }: {
   return (
     <Shell game={game} onBack={onBack} speech={praise}>
       <div className="done-box">
-        <div className="big-stars">{stars(starsN)}</div>
+        <div className="big-stars"><Stars n={starsN} /></div>
         <h2 style={{ fontSize: 36 }}>{praise} {kidName}</h2>
         <div className="row" style={{ justifyContent: 'center' }}>
           <button className="cta" onClick={onAgain}>Hrať znova</button>
@@ -887,14 +887,15 @@ const STEPS = [
 ]
 const HUES = [0, 210, 130, 280, 30]
 
-function orderRounds(id: Game['id'], lv: Level): OrderRound[] {
+function orderRounds(id: Game['id'], lv: Level, theme: Theme): OrderRound[] {
   const n = lv + 2
   if (id === 'veza') {
-    return Array.from({ length: 5 }, () => {
-      const sizes = Array.from({ length: n }, (_, k) => 84 - k * Math.round(60 / (n - 1)))
+    // Veža z obrázkov témy: rovnaký obrázok v rôznych veľkostiach, od najväčšieho po najmenší
+    return shuffle(theme.items).slice(0, 5).map((x) => {
+      const sizes = Array.from({ length: n }, (_, k) => 76 - k * Math.round(52 / (n - 1)))
       return {
-        prompt: <>Postav <b>vežu</b>: ťukaj od najväčšej kocky po najmenšiu</>, speech: 'Postav vežu. Ťukaj od najväčšej kocky po najmenšiu.', tower: true,
-        items: sizes.map((px) => ({ content: <span className="cube" style={{ width: px, height: px }} />, label: `kocka ${px}` })),
+        prompt: <>Postav <b>vežu</b>: ťukaj od najväčšieho obrázka po najmenší</>, speech: `Postav vežu z obrázkov ${x.w.toLowerCase()}. Ťukaj od najväčšieho po najmenší.`, tower: true,
+        items: sizes.map((px) => ({ content: <span style={{ fontSize: px, lineHeight: 1 }}>{x.e}</span>, label: `${x.w.toLowerCase()} ${px}` })),
       }
     })
   }
@@ -913,8 +914,8 @@ function orderRounds(id: Game['id'], lv: Level): OrderRound[] {
   })
 }
 
-function Order({ game, level, onDone, onBack }: { game: Game; level: Level; onDone: (s: number) => void; onBack: () => void }) {
-  const [rounds] = useState(() => orderRounds(game.id, level).map((r) => ({ ...r, view: shuffle(r.items.map((_, k) => k)) })))
+function Order({ game, theme, level, onDone, onBack }: { game: Game; theme: Theme; level: Level; onDone: (s: number) => void; onBack: () => void }) {
+  const [rounds] = useState(() => orderRounds(game.id, level, theme).map((r) => ({ ...r, view: shuffle(r.items.map((_, k) => k)) })))
   const [i, setI] = useState(0)
   const [got, setGot] = useState(0)
   const [log, setLog] = useState<boolean[]>([])
@@ -946,6 +947,65 @@ function Order({ game, level, onDone, onBack }: { game: Game; level: Level; onDo
         {r.view.filter((k) => k >= got).map((k) => (
           <button key={`${i}-${k}-${wrong?.k === k ? wrong.n : 0}`} className={`opt ${game.id === 'postup' ? 'word' : ''} ${wrong?.k === k ? 'wrong' : ''}`}
             aria-label={r.items[k].label} onClick={() => tap(k)}>{emo(r.items[k].content)}</button>
+        ))}
+      </div>
+    </Shell>
+  )
+}
+
+// Skladačka: obrázok z témy rozdelený na časti; dieťa ťukne na dielik a potom na miesto, kam patrí.
+// Farebné pozadie pomáha, keď je časť obrázka prázdna.
+const BACKDROP = 'radial-gradient(circle at 50% 40%, #fff7d6 0 30%, transparent 31%), linear-gradient(160deg, #bfe3ff 0%, #d9f2c4 55%, #ffd9c2 100%)'
+function Puzzle({ game, theme, level, onDone, onBack }: { game: Game; theme: Theme; level: Level; onDone: (s: number) => void; onBack: () => void }) {
+  const [cols, rows] = [[2, 1], [2, 2], [3, 2]][level - 1]
+  const count = cols * rows
+  const size = Math.min(240, 360 / cols * (cols === 3 ? 1.6 : 1.2))
+  const [rounds] = useState(() => shuffle(theme.items.filter((x) => picUrl(x.e))).slice(0, 5).map((x) => ({ x, order: shuffle(nums(0, count - 1)) })))
+  const [i, setI] = useState(0)
+  const [placed, setPlaced] = useState<number[]>([])
+  const [held, setHeld] = useState<number | null>(null)
+  const [log, setLog] = useState<boolean[]>([])
+  const [missed, setMissed] = useState(false)
+  const [shake, setShake] = useState<{ k: number; n: number } | null>(null)
+  const r = rounds[i]
+  const url = picUrl(r.x.e)!
+  const speech = `Poskladaj obrázok ${r.x.w.toLowerCase()}. Ťukni na dielik a potom na miesto, kam patrí.`
+  useEffect(() => { say(speech) }, [speech])
+
+  const piece = (k: number, px: number) => (
+    <span className="piece" style={{
+      width: px / cols, height: px / rows, backgroundImage: `url(${url}), ${BACKDROP}`, backgroundSize: `${px}px ${px}px`,
+      backgroundPosition: `${-(k % cols) * px / cols}px ${-Math.floor(k / cols) * px / rows}px`,
+    }} />
+  )
+  const drop = (slot: number) => {
+    if (held === null || placed.includes(slot)) return
+    if (held !== slot) { setMissed(true); setShake({ k: held, n: (shake?.n ?? 0) + 1 }); say('Skús iné miesto'); return }
+    const p = [...placed, slot]
+    setPlaced(p); setHeld(null)
+    if (p.length < count) return
+    const l = [...log, !missed]
+    setLog(l)
+    say(`Výborne! ${r.x.w.toLowerCase()}`)
+    setTimeout(() => {
+      if (i + 1 >= rounds.length) { const ok = l.filter(Boolean).length; onDone(ok === 5 ? 3 : ok >= 3 ? 2 : 1) }
+      else { setI(i + 1); setPlaced([]); setHeld(null); setMissed(false); setShake(null) }
+    }, 1200)
+  }
+
+  return (
+    <Shell game={game} onBack={onBack} speech={speech} dots={{ i, log }}>
+      <div className="prompt">Poskladaj <b>{r.x.w.toLowerCase()}</b></div>
+      <div className="board" style={{ width: size, height: size, gridTemplateColumns: `repeat(${cols}, 1fr)`, gridTemplateRows: `repeat(${rows}, 1fr)` }}>
+        {level < 3 && <span className="hint" style={{ backgroundImage: `url(${url}), ${BACKDROP}` }} />}
+        {nums(0, count - 1).map((k) => (
+          <button key={k} className="slot" aria-label={`miesto ${k + 1}`} onClick={() => drop(k)}>{placed.includes(k) ? piece(k, size) : null}</button>
+        ))}
+      </div>
+      <div className="opts pieces">
+        {r.order.filter((k) => !placed.includes(k)).map((k) => (
+          <button key={`${i}-${k}-${shake?.k === k ? shake.n : 0}`} className={`opt ${held === k ? 'held' : ''} ${shake?.k === k ? 'wrong' : ''}`}
+            aria-label={`dielik ${k + 1}`} aria-pressed={held === k} onClick={() => setHeld(k)}>{piece(k, size * 0.7)}</button>
         ))}
       </div>
     </Shell>
@@ -995,14 +1055,14 @@ function Boxes({ game, theme, level, by, onDone, onBack }: {
       <div className="prompt">Povedz pomaly <b>{r.x.w.toLowerCase()}</b> a za každú {unit} posuň žetón</div>
       <div className="stage">{emo(r.x.e)}</div>
       <div key={shake} className={`boxes ${shake ? 'wrong' : ''}`} aria-label={`Okienka: ${filled} z ${slots}`}>
-        {Array.from({ length: slots }, (_, k) => <span key={k} className="box">{k < filled ? '🔴' : ''}</span>)}
+        {Array.from({ length: slots }, (_, k) => <span key={k} className="box">{k < filled ? emo('🔴') : ''}</span>)}
       </div>
       <div className="opts">
         <button className="opt" aria-label="žetón" disabled={filled >= slots} onClick={() => {
           const f = filled + 1
           setFilled(f)
           if (level < 3 && f === r.n) next(true)
-        }}>🔴</button>
+        }}>{emo('🔴')}</button>
         {level === 3 && <button className="opt word" onClick={check} disabled={!filled}>Hotovo ✓</button>}
         <button className="opt word" onClick={() => setFilled(0)} aria-label="znova">↺</button>
       </div>
@@ -1013,10 +1073,11 @@ function Boxes({ game, theme, level, by, onDone, onBack }: {
 export function GameView({ game, theme, level, onDone, onBack }: {
   game: Game; theme: Theme; level: Level; onDone: (s: number) => void; onBack: () => void
 }) {
-  const [rounds] = useState(() => (['pexeso', 'zvuky', 'veza', 'odtiene', 'postup', 'okienka', 'hlasky'].includes(game.id) ? [] : makeRounds(game.id, theme, level)))
+  const [rounds] = useState(() => (['pexeso', 'skladacka', 'zvuky', 'veza', 'odtiene', 'postup', 'okienka', 'hlasky'].includes(game.id) ? [] : makeRounds(game.id, theme, level)))
   if (game.id === 'pexeso') return <Memory game={game} theme={theme} level={level} onDone={onDone} onBack={onBack} />
+  if (game.id === 'skladacka') return <Puzzle game={game} theme={theme} level={level} onDone={onDone} onBack={onBack} />
   if (game.id === 'zvuky') return <Memory game={game} theme={theme} level={level} sound onDone={onDone} onBack={onBack} />
-  if (['veza', 'odtiene', 'postup'].includes(game.id)) return <Order game={game} level={level} onDone={onDone} onBack={onBack} />
+  if (['veza', 'odtiene', 'postup'].includes(game.id)) return <Order game={game} theme={theme} level={level} onDone={onDone} onBack={onBack} />
   if (game.id === 'okienka' || game.id === 'hlasky') {
     return <Boxes game={game} theme={theme} level={level} by={game.id === 'okienka' ? 'slabiky' : 'hlasky'} onDone={onDone} onBack={onBack} />
   }

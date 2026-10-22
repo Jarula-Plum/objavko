@@ -7,6 +7,9 @@ const AVAILABLE = new Set<string>(KEYS)
 const seg = typeof Intl !== 'undefined' && 'Segmenter' in Intl ? new Intl.Segmenter('sk', { granularity: 'grapheme' }) : null
 const keyOf = (g: string) => [...g].map((c) => c.codePointAt(0)!.toString(16)).filter((h) => h !== 'fe0f').join('-')
 
+// Adresa obrázka pre jeden emoji, ak ho máme
+export const picUrl = (e: string) => (AVAILABLE.has(keyOf(e)) ? `/emoji/${keyOf(e)}.webp` : null)
+
 function splitText(text: string): ReactNode {
   if (!seg) return text
   const out: ReactNode[] = []
@@ -35,3 +38,10 @@ export function emo(node: ReactNode): ReactNode {
 }
 
 export const Emo = ({ children }: { children: ReactNode }) => <>{emo(children)}</>
+
+// Hviezdičky ako obrázky: získané plné, chýbajúce priesvitné
+export const Stars = ({ n }: { n: number }) => (
+  <span className="stars-img" role="img" aria-label={`${n} z 3 hviezdičiek`}>
+    {[0, 1, 2].map((k) => <img key={k} className={`emo ${k < n ? '' : 'off'}`} src={picUrl('⭐') ?? ''} alt="" draggable={false} />)}
+  </span>
+)

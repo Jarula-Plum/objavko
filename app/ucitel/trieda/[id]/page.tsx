@@ -2,9 +2,9 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import Logo from '@/components/Logo'
 import { requireUser } from '@/lib/supabase/server'
-import { AREAS, AVATARS, GAMES, bestStars, stars } from '@/lib/games'
+import { AREAS, AVATARS, GAMES, bestStars } from '@/lib/games'
 import { addChild, deleteClass, removeChild, renameClass } from '../../actions'
-import { emo } from '@/components/Emo'
+import { Stars, emo } from '@/components/Emo'
 
 type Props = { params: Promise<{ id: string }> }
 
@@ -45,7 +45,7 @@ export default async function ClassPage({ params }: Props) {
                       <td><strong>{emo(k.avatar)} {k.name}</strong></td>
                       {GAMES.map((g) => {
                         const v = best[k.id]?.[g.id] ?? 0
-                        return <td key={g.id}><span className={`s s${v}`}>{v ? stars(v) : '–'}</span></td>
+                        return <td key={g.id}><span className={`s s${v}`}>{v ? <Stars n={v} /> : '–'}</span></td>
                       })}
                     </tr>
                   ))}
@@ -55,7 +55,7 @@ export default async function ClassPage({ params }: Props) {
           ) : (
             <p className="note">V triede zatiaľ nie sú deti. Pridaj ich vpravo.</p>
           )}
-          <p className="note">★★★ zvláda samo, ★★☆ potrebuje trochu precvičiť, ★☆☆ treba podporu. Zobrazuje sa najlepší výsledok dieťaťa.</p>
+          <p className="note"><Stars n={3} /> zvláda samo, <Stars n={2} /> potrebuje trochu precvičiť, <Stars n={1} /> treba podporu. Zobrazuje sa najlepší výsledok dieťaťa.</p>
           <details className="stds">
             <summary>Hry a výkonové štandardy ŠVP</summary>
             {AREAS.map((area) => (

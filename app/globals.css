@@ -86,6 +86,15 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .tray.tower { flex-direction: column-reverse; align-items: center; gap: 0; }
 .cube { display: block; background: #f4a6c0; border: 2px solid #c96d8e; border-radius: 4px; }
 .emo { display: inline-block; width: 1.15em; height: 1.15em; vertical-align: -0.2em; object-fit: contain; user-select: none; -webkit-user-drag: none; }
+.board { position: relative; display: grid; margin: 0 auto 16px; border: 3px solid var(--ink); border-radius: 10px; overflow: hidden; background: var(--surface); }
+.board .hint { position: absolute; inset: 0; background-size: 100% 100%; opacity: .2; pointer-events: none; }
+.slot { position: relative; border: 1px dashed var(--line); background: transparent; padding: 0; display: block; }
+.slot .piece { display: block; width: 100% !important; height: 100% !important; }
+.piece { display: block; background-repeat: no-repeat; }
+.opts.pieces .opt { padding: 6px; min-width: 0; min-height: 0; }
+.opt.held { border-color: var(--sky); box-shadow: 0 0 0 4px color-mix(in srgb, var(--sky) 35%, transparent); }
+.stars-img { display: inline-flex; gap: 1px; vertical-align: middle; }
+.emo.off { opacity: .22; filter: grayscale(1); }
 .stds { margin-top: 14px; }
 .stds summary { cursor: pointer; font-weight: 800; }
 .stds h3 { font-size: 15px; margin: 14px 0 4px; }
