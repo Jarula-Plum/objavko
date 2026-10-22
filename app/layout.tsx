@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="sk" className={`${display.variable} ${body.variable}`}>
-      <body>{children}</body>
+      <body>{children}<div id="print-sheet" aria-hidden="true" /></body>
     </html>
   )
 }

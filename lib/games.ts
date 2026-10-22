@@ -1,5 +1,5 @@
 export type GameId =
-  | 'protiklady' | 'predlozky' | 'pismena' | 'slabiky' | 'pocty' | 'viac' | 'velkost' | 'postupnost' | 'nepatri' | 'tiene'
+  | 'protiklady' | 'predlozky' | 'omalovanky' | 'grafomotorika' | 'diktaty' | 'pismena' | 'slabiky' | 'pocty' | 'viac' | 'velkost' | 'postupnost' | 'nepatri' | 'tiene'
   | 'najdi' | 'zive' | 'pexeso' | 'emocie' | 'spravanie' | 'materialy' | 'farby' | 'pohyb' | 'zdrave'
   | 'zacina' | 'dlhe' | 'kukucka' | 'poradie' | 'poloha' | 'zmizlo' | 'obdobia' | 'rezim' | 'profesie'
   | 'rytmus' | 'tony' | 'oblecenie' | 'hygiena' | 'rymy' | 'okienka' | 'posledna' | 'hlasky'
@@ -27,13 +27,14 @@ export const AREAS = [
   'Človek a svet práce',
   'Umenie a kultúra',
   'Zdravie a pohyb',
+  'Cvičenia',
 ] as const
 export type Area = (typeof AREAS)[number]
 
 // Každá hra patrí do jednej oblasti a v každej téme týždňa sa skladá z obrázkov danej témy.
 // Vlastné ilustrované ikonky (Higgsfield, od Jaruly) v public/ikony; ostatné hry majú 3D emoji
 const IKONY: string[] = [
-  'protiklady', 'predlozky', 'materialy', 'postup', 'profesie', 'farby', 'rytmus', 'tony', 'pohyb', 'odtiene', 'zvuky', 'oblecenie', 'zdrave', 'hygiena',
+  'protiklady', 'predlozky', 'omalovanky', 'grafomotorika', 'diktaty', 'materialy', 'postup', 'profesie', 'farby', 'rytmus', 'tony', 'pohyb', 'odtiene', 'zvuky', 'oblecenie', 'zdrave', 'hygiena',
   'najdi', 'zive', 'pexeso', 'zmizlo', 'obdobia', 'emocie', 'empatia', 'spravanie', 'nakup', 'situacie', 'clovek', 'rezim',
   'poloha', 'poradie', 'postupnost', 'tiene', 'nepatri', 'krokovanie', 'schody', 'autobus', 'stavby', 'veza', 'parkety',
   'robotik', 'slabiky', 'rymy', 'okienka', 'pismena', 'dlhe', 'zacina', 'kukucka', 'posledna', 'hlasky', 'viac', 'velkost', 'pocty',
@@ -93,6 +94,9 @@ export const GAMES: Game[] = ([
   { id: 'zdrave', name: 'Zdravé či nezdravé?', pic: '🥦', color: 'var(--leaf)', desc: 'Je to jedlo zdravé?', area: 'Zdravie a pohyb', std: 'Zdravie a zdravý životný štýl: Uvádza príklady zdravej a nezdravej výživy.' },
   { id: 'oblecenie', name: 'Čo si oblečiem?', pic: '🧥', color: 'var(--sky)', desc: 'Čo si vezmeš podľa počasia?', area: 'Zdravie a pohyb', std: 'Hygiena a sebaobslužné činnosti: Ovláda základné sebaobslužné činnosti.' },
   { id: 'hygiena', name: 'Čistotka', pic: '🧼', color: 'var(--berry)', desc: 'Čo potrebuješ na umývanie?', area: 'Zdravie a pohyb', std: 'Hygiena a sebaobslužné činnosti: Má osvojené základné hygienické návyky.' },
+  { id: 'omalovanky', name: 'Omaľovánky', pic: '🖍️', color: 'var(--berry)', desc: 'Vyfarbi obrázky z témy týždňa. Dá sa aj vytlačiť.', area: 'Cvičenia', std: 'Umenie a kultúra, výtvarné činnosti s farbou: vyfarbuje plochu, vyberá farby a rešpektuje obrys (opis činnosti, nie doslovné znenie ŠVP).' },
+  { id: 'grafomotorika', name: 'Grafomotorika', pic: '✏️', color: 'var(--sky)', desc: 'Obťahuj čiary, vlnky, zúbky a slučky.', area: 'Cvičenia', std: 'Jazyk a komunikácia, grafomotorické predpoklady písania: plynulo obťahuje línie, vlnovky, zúbky, oblúky a slučky (opis činnosti, nie doslovné znenie ŠVP).' },
+  { id: 'diktaty', name: 'Kresliaci diktát', pic: '👂', color: 'var(--leaf)', desc: 'Počúvaj a kresli: nad, pod, vedľa, vľavo, vpravo.', area: 'Cvičenia', std: 'Počúvanie s porozumením a orientácia v priestore: podľa slovných pokynov nakreslí obrázky na správne miesto (opis činnosti, nie doslovné znenie ŠVP).' },
 ] as Game[]).map((g) => (IKONY.includes(g.id) ? { ...g, img: `/ikony/${g.id}.webp` } : g))
 
 // Jarkine čarovné krídlaté deti (public/obrazky/dieta-NN.webp); staršie zvieracie ikonky sa naďalej zobrazujú

@@ -5,6 +5,7 @@ import { type Game } from '@/lib/games'
 import { THEMES, firstLetter, rhymeKey, sounds, syllables, type Item, type Theme } from '@/lib/themes'
 import { Stars, Ui, emo, picUrl } from './Emo'
 import { GuideBar, cheer, moodOf, speak } from './Guide'
+import { Coloring, Dictation, Tracing } from './Cvicenia'
 
 export function say(text: string) {
   cheer(moodOf(text), text)
@@ -1123,7 +1124,10 @@ function Boxes({ game, theme, level, by, onDone, onBack }: {
 export function GameView({ game, theme, level, onDone, onBack }: {
   game: Game; theme: Theme; level: Level; onDone: (s: number) => void; onBack: () => void
 }) {
-  const [rounds] = useState(() => (['pexeso', 'skladacka', 'zvuky', 'veza', 'odtiene', 'postup', 'okienka', 'hlasky'].includes(game.id) ? [] : makeRounds(game.id, theme, level)))
+  const [rounds] = useState(() => (['omalovanky', 'grafomotorika', 'diktaty', 'pexeso', 'skladacka', 'zvuky', 'veza', 'odtiene', 'postup', 'okienka', 'hlasky'].includes(game.id) ? [] : makeRounds(game.id, theme, level)))
+  if (game.id === 'omalovanky') return <Coloring game={game} theme={theme} level={level} onDone={onDone} onBack={onBack} />
+  if (game.id === 'grafomotorika') return <Tracing game={game} theme={theme} level={level} onDone={onDone} onBack={onBack} />
+  if (game.id === 'diktaty') return <Dictation game={game} theme={theme} level={level} onDone={onDone} onBack={onBack} />
   if (game.id === 'pexeso') return <Memory game={game} theme={theme} level={level} onDone={onDone} onBack={onBack} />
   if (game.id === 'skladacka') return <Puzzle game={game} theme={theme} level={level} onDone={onDone} onBack={onBack} />
   if (game.id === 'zvuky') return <Memory game={game} theme={theme} level={level} sound onDone={onDone} onBack={onBack} />

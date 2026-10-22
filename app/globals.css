@@ -238,3 +238,28 @@ th:first-child, td:first-child { text-align: left; }
 .tile .pic .ico { filter: drop-shadow(0 3px 4px rgba(0,0,0,.18)); }
 .tile p, .tile .stars { color: color-mix(in srgb, var(--ink) 78%, var(--c)); }
 .tile .pic .ico { width: 96px; height: 96px; }
+/* Cvičenia: omaľovánky, grafomotorika, diktáty */
+.sheet { position: relative; width: min(100%, 76vh); aspect-ratio: 1; margin: 0 auto; border-radius: 18px; overflow: hidden; border: 3px solid var(--line); background: #fff; touch-action: none; }
+.sheet canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.sheet-lines { mix-blend-mode: multiply; cursor: crosshair; }
+.tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center; }
+.tool-modes { display: flex; gap: 6px; }
+.tool-modes button { border: 2px solid var(--line); background: var(--soft); border-radius: 999px; padding: 6px 14px; font-weight: 800; color: var(--ink); }
+.tool-modes button.on { border-color: var(--ink); background: var(--surface); }
+.swatches { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.sw { width: 40px; height: 40px; border-radius: 50%; border: 3px solid var(--surface); box-shadow: 0 0 0 2px var(--line); padding: 0; display: grid; place-items: center; }
+.sw.on { box-shadow: 0 0 0 3px var(--ink); transform: scale(1.1); }
+.sw.eraser { background: var(--soft); font-size: 20px; }
+.sheet-actions { justify-content: center; gap: 10px; flex-wrap: wrap; }
+.dict-wrap { position: relative; }
+.dict-answer { position: absolute; inset: 0; width: min(100%, 76vh); aspect-ratio: 1; margin: 0 auto; display: grid; grid-template: repeat(3, 1fr) / repeat(3, 1fr); place-items: center; pointer-events: none; background: color-mix(in srgb, #fff 55%, transparent); border-radius: 18px; }
+.dict-answer .emo { width: min(22vw, 18vh, 150px); height: min(22vw, 18vh, 150px); }
+.dict-text summary { cursor: pointer; font-weight: 700; color: var(--muted); }
+#print-sheet { display: none; }
+@media print {
+  body > *:not(#print-sheet) { display: none !important; }
+  body::before { display: none !important; }
+  #print-sheet { display: block !important; text-align: center; }
+  #print-sheet h1 { font-family: var(--display); font-size: 22pt; margin: 0 0 8mm; }
+  #print-sheet img { width: 180mm; height: 180mm; }
+}

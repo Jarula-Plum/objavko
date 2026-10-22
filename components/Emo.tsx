@@ -71,7 +71,7 @@ const FEEL: Record<string, string> = {
   '😀': 'radost', '😢': 'smutok', '😠': 'hnev', '😨': 'strach', '😮': 'prekvapenie', '😴': 'unava',
   ...Object.fromEntries(Object.entries(FEEL_PIC).map(([n, c]) => [c, n])),
 }
-const keyOf = (g: string) => [...g].map((c) => c.codePointAt(0)!.toString(16)).filter((h) => h !== 'fe0f').join('-')
+export const keyOf = (g: string) => [...g].map((c) => c.codePointAt(0)!.toString(16)).filter((h) => h !== 'fe0f').join('-')
 const OWN_KEYS = {
   ...Object.fromEntries(Object.entries(OWN).map(([e, n]) => [keyOf(e), `/obrazky/${n}.webp`])),
   ...Object.fromEntries(Object.entries(FEEL).map(([e, n]) => [keyOf(e), `/skriatok/e-${n}.webp`])),
