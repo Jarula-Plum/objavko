@@ -95,7 +95,8 @@ export const GAMES: Game[] = ([
   { id: 'hygiena', name: 'Čistotka', pic: '🧼', color: 'var(--berry)', desc: 'Čo potrebuješ na umývanie?', area: 'Zdravie a pohyb', std: 'Hygiena a sebaobslužné činnosti: Má osvojené základné hygienické návyky.' },
 ] as Game[]).map((g) => (IKONY.includes(g.id) ? { ...g, img: `/ikony/${g.id}.webp` } : g))
 
-export const AVATARS = ['🦊', '🐸', '🦄', '🐯', '🐼', '🐨', '🐰', '🐻', '🐱', '🐶', '🦁', '🐵', '🐧', '🐢', '🐝', '🐞', '🦉', '🐙']
+// Jarkine čarovné krídlaté deti (public/obrazky/dieta-NN.webp); staršie zvieracie ikonky sa naďalej zobrazujú
+export const AVATARS = Array.from({ length: 20 }, (_, k) => String.fromCharCode(0xE220 + k))
 
 export const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(3 - n)
 

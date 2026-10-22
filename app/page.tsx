@@ -18,7 +18,7 @@ export default function Home() {
           <Link href="/prihlasenie?rezim=registracia" className="cta"><Ui n="hraj" /> Vyskúšať zadarmo</Link>
         </div>
       </section>
-      <GuideHello text="Ahoj! Sme škriatok a víla. Poď sa s nami hrať!" />
+      <GuideHello text="Ahoj! Sme Čarozvedko a Čarozvedka. Poď sa s nami hrať!" />
       <div className="grid">
         {GAMES.map((g) => (
           <div key={g.id} className="tile" style={{ ['--c' as string]: g.color }}>

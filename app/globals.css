@@ -174,7 +174,7 @@ th:first-child, td:first-child { text-align: left; }
 .hero p { font-size: 18px; margin: 0; color: var(--muted); }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 
-/* Sprievodcovia: škriatok a víla */
+/* Sprievodcovia: Čarozvedko a Čarozvedka */
 .guide-bar { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; margin-top: auto; min-height: 104px; }
 .guide-bar img { height: 104px; width: auto; animation: g-pop .35s ease-out; }
 .guide-bar.m-joy img, .guide-bar.m-wow img { animation: g-hop .5s ease-out; }
@@ -203,3 +203,10 @@ th:first-child, td:first-child { text-align: left; }
 .opt .emo.num { width: 1.3em; height: 1.3em; vertical-align: middle; }
 .opts.big .opt { padding: 6px; }
 .opts.big .opt .emo { width: clamp(84px, 24vw, 120px); height: clamp(84px, 24vw, 120px); }
+/* Čarovné deti ako ikonky žiakov */
+.kid .av { width: 52px; height: 52px; overflow: hidden; }
+.kid .av .emo { width: 48px; height: 48px; vertical-align: 0; }
+.roster .av .emo { width: 40px; height: 40px; vertical-align: middle; }
+.avpick label { width: 52px; height: 52px; }
+.avpick label .emo { width: 46px; height: 46px; vertical-align: 0; }
+.tav .emo { width: 1.6em; height: 1.6em; }

@@ -42,7 +42,7 @@ export default async function ClassPage({ params }: Props) {
                 <tbody>
                   {kids.map((k) => (
                     <tr key={k.id}>
-                      <td><strong>{emo(k.avatar)} {k.name}</strong></td>
+                      <td><strong><span className="tav">{emo(k.avatar)}</span> {k.name}</strong></td>
                       {GAMES.map((g) => {
                         const v = best[k.id]?.[g.id] ?? 0
                         return <td key={g.id}><span className={`s s${v}`}>{v ? <Stars n={v} /> : '–'}</span></td>

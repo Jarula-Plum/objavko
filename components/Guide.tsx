@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 
-// Sprievodcovia Objavka: lesný škriatok (chlapec) a víla (dievča)
+// Sprievodcovia: Čarozvedko (chlapec) a Čarozvedka (dievča)
 export type Mood = 'idle' | 'think' | 'joy' | 'try' | 'wow'
 
 const POSE: Record<Mood, [string, string]> = {
@@ -57,13 +57,13 @@ export function GuideBar() {
   )
 }
 
-// Privítanie na úvode: škriatok máva, víla sa usmieva
+// Privítanie na úvode: Čarozvedko máva, Čarozvedka sa usmieva
 export function GuideHello({ text }: { text: string }) {
   return (
     <div className="guide-hello">
-      <img src={pic('chlapec', 'ahoj')} alt="Škriatok máva na pozdrav" className="g-boy" />
+      <img src={pic('chlapec', 'ahoj')} alt="Čarozvedko máva na pozdrav" className="g-boy" />
       <div className="g-bubble on">{text}</div>
-      <img src={pic('dievca', 'stoji')} alt="Víla sa usmieva" className="g-girl" />
+      <img src={pic('dievca', 'stoji')} alt="Čarozvedka sa usmieva" className="g-girl" />
     </div>
   )
 }
