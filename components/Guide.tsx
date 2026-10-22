@@ -27,22 +27,22 @@ export function moodOf(text: string): Mood {
 
 const pic = (who: 'chlapec' | 'dievca', pose: string) => `/sprievodca/${who}-${pose}.webp`
 
-// Oživený Čarozvedko: video bez zvuku na bielom pozadí, biela sa stratí cez mix-blend-mode (hovorí hlas aplikácie)
-function BoyVideo({ alt, bust }: { alt?: string; bust?: boolean }) {
-  const f = bust ? 'chlapec-video-polpostava' : 'chlapec-video'
+// Oživení sprievodcovia: video bez zvuku na bielom pozadí, biela sa stratí cez mix-blend-mode (hovorí hlas aplikácie)
+function GuideVideo({ who, alt, bust }: { who: 'chlapec' | 'dievca'; alt?: string; bust?: boolean }) {
+  const f = `${who}-video${bust ? '-polpostava' : ''}`
   const ref = useRef<HTMLVideoElement>(null)
   useEffect(() => {
     const on = (e: Event) => {
       const d = (e as CustomEvent<{ who: string; on: boolean }>).detail
-      const v = ref.current; if (!v || d.who !== 'chlapec') return
+      const v = ref.current; if (!v || d.who !== who) return
       if (d.on) v.play().catch(() => {})
       else { v.pause(); v.currentTime = 0 }
     }
     window.addEventListener('objavko-hovori', on)
     return () => window.removeEventListener('objavko-hovori', on)
-  }, [])
+  }, [who])
   return (
-    <video ref={ref} className="g-boy g-video" src={`/sprievodca/${f}.mp4`} poster={`/sprievodca/${f}.webp`}
+    <video ref={ref} className={`${who === 'chlapec' ? 'g-boy' : 'g-girl'} g-video`} src={`/sprievodca/${f}.mp4`} poster={`/sprievodca/${f}.webp`}
       muted loop playsInline preload="auto" aria-label={alt} role={alt ? 'img' : undefined} aria-hidden={alt ? undefined : true} />
   )
 }
@@ -130,7 +130,7 @@ export function GuideBar() {
   const bubble = mood === 'think' || mood === 'idle' ? '' : text
   return (
     <div className={`guide-bar m-${mood}`} aria-hidden="true">
-      {mood === 'idle' || mood === 'think' ? <BoyVideo bust /> : <img key={`b${boy}`} src={pic('chlapec', boy)} alt="" className="g-boy" />}
+      {mood === 'idle' || mood === 'think' ? <GuideVideo who="chlapec" bust /> : <img key={`b${boy}`} src={pic('chlapec', boy)} alt="" className="g-boy" />}
       <div className={`g-bubble ${bubble ? 'on' : ''}`}>{bubble || '…'}</div>
       <img key={`g${girl}`} src={pic('dievca', girl)} alt="" className="g-girl" />
     </div>
@@ -149,14 +149,14 @@ export function GuideHello({ text, who = 'chlapec' }: { text: string; who?: 'chl
   return (
     <div className="guide-hello">
       <button type="button" className="g-who" onClick={() => tell('chlapec')} aria-label="Kto je Čarozvedko?">
-        <BoyVideo alt="Čarozvedko máva na pozdrav" />
+        <GuideVideo who="chlapec" alt="Čarozvedko máva na pozdrav" />
       </button>
       <div className="g-say">
         <button type="button" className="g-bubble on" onClick={() => speak(line, line === ABOUT.dievca ? 'dievca' : line === ABOUT.chlapec ? 'chlapec' : who)}>{line}</button>
         <span className="g-hint">Ťukni na nás a povieme ti, kto sme.</span>
       </div>
       <button type="button" className="g-who" onClick={() => tell('dievca')} aria-label="Kto je Čarozvedka?">
-        <img src={pic('dievca', 'stoji')} alt="Čarozvedka sa usmieva" className="g-girl" />
+        <GuideVideo who="dievca" alt="Čarozvedka sa usmieva" />
       </button>
     </div>
   )
