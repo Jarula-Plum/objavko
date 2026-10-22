@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Metodika } from '@/components/Metodika'
 import { notFound } from 'next/navigation'
 import Logo from '@/components/Logo'
 import { requireUser } from '@/lib/supabase/server'
@@ -57,13 +58,13 @@ export default async function ClassPage({ params }: Props) {
           )}
           <p className="note"><Stars n={3} /> zvláda samo, <Stars n={2} /> potrebuje trochu precvičiť, <Stars n={1} /> treba podporu. Zobrazuje sa najlepší výsledok dieťaťa.</p>
           <details className="stds">
-            <summary>Hry a výkonové štandardy ŠVP</summary>
+            <summary>Hry, výkonové štandardy ŠVP a metodické usmernenia</summary>
             {AREAS.map((area) => (
               <div key={area}>
                 <h3>{area}</h3>
                 <ul>
                   {GAMES.filter((g) => g.area === area).map((g) => (
-                    <li key={g.id}><strong><Icon pic={g.pic} img={g.img} /> {g.name}</strong> <span>· {g.std}</span></li>
+                    <li key={g.id}><strong><Icon pic={g.pic} img={g.img} /> {g.name}</strong> <span>· {g.std}</span><Metodika game={g} /></li>
                   ))}
                 </ul>
               </div>

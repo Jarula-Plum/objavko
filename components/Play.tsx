@@ -8,6 +8,7 @@ import { MONTHS, THEMES, currentTheme, themeOf } from '@/lib/themes'
 import { Finished, GameView, LEVELS, type Level } from './Games'
 import { Icon, Stars, Ui, emo } from './Emo'
 import { GuideHello } from './Guide'
+import { Metodika } from './Metodika'
 import { CVIKY, NAMETY } from '@/lib/namety'
 
 // Poradové číslo týždňa (pondelok až nedeľa) od roku 1970
@@ -113,7 +114,7 @@ export default function Play({ classId, className, kids, initialBest }: {
       </section>
     )
   }
-  if (game) return <GameView key={round} game={game} theme={theme} level={level} onDone={done} onBack={back} />
+  if (game) return <><GameView key={round} game={game} theme={theme} level={level} onDone={done} onBack={back} /><Metodika game={game} /></>
 
   return (
     <>
