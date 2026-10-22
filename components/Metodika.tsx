@@ -14,7 +14,7 @@ export function zapis(game: Game, tema?: string) {
     .replace(/napr\./g, 'napríklad')
   return [
     tema && `${tema}`,
-    `Vzdelávacia aktivita (${oblast}): Deti hrali v aplikácii Objavko didaktickú hru „${game.name}“. ${co}`,
+    `${game.id === 'zdravotne' ? 'Pohyb a pohybové cvičenia' : 'Vzdelávacia aktivita'} (${oblast}): Deti hrali v aplikácii Objavko didaktickú hru „${game.name}“. ${co}`,
     `Výkonový štandard: ${std}`,
   ].filter(Boolean).join('\n')
 }
