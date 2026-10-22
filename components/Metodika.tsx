@@ -1,17 +1,21 @@
 import type { Game } from '@/lib/games'
 import { METODIKA } from '@/lib/metodika'
+import { ZAPIS } from '@/lib/zapisy'
 import { KopirujZapis } from './Zapis'
 
 // Metodické usmernenie pre učiteľku: oblasť a štandard ŠVP, cieľ, čo hra rozvíja, postup a diferenciácia
 export function zapis(game: Game, tema?: string) {
-  const m = METODIKA[game.id]
-  const oblast = game.area === 'Cvičenia' ? 'Zdravie a pohyb' : game.area
+  const oblast = game.area !== 'Cvičenia' ? game.area
+    : ({ omalovanky: 'Umenie a kultúra', grafomotorika: 'Jazyk a komunikácia', diktaty: 'Jazyk a komunikácia' } as Record<string, string>)[game.id] ?? 'Zdravie a pohyb'
+  const co = ZAPIS[game.id].replace(/^Deti (.)/, (_, c: string) => c.toUpperCase())
+  const std = game.std
+    .replace(/\s*\((Hejn|Montessori|opis činnosti)[^)]*\)/g, '')
+    .replace(/ŠVP/g, 'Štátneho vzdelávacieho programu')
+    .replace(/napr\./g, 'napríklad')
   return [
-    tema && `Téma týždňa: ${tema}`,
-    `Vzdelávacia oblasť: ${oblast}`,
-    `Činnosť: ${game.name} – didaktická hra s využitím digitálnych technológií (aplikácia Objavko), individuálne alebo v malej skupine.`,
-    `Výkonový štandard: ${game.std}`,
-    `Cieľ: ${m.ciel}`,
+    tema && `${tema}`,
+    `Vzdelávacia aktivita (${oblast}): Deti hrali v aplikácii Objavko didaktickú hru „${game.name}“. ${co}`,
+    `Výkonový štandard: ${std}`,
   ].filter(Boolean).join('\n')
 }
 
