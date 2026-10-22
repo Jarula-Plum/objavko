@@ -314,10 +314,10 @@ th:first-child, td:first-child { text-align: left; }
 .guide-hello .g-say { flex: 1 1 340px; }
 .guide-hello .g-bubble.on { background: none; border: 0; box-shadow: none; padding: 4px 6px; border-radius: 0;
   font-family: var(--font-fairy), var(--display), cursive; font-weight: 400; letter-spacing: .3px; line-height: 1.25;
-  font-size: clamp(24px, 6.4vw, 40px); color: #3a1d5c;
+  font-size: clamp(28px, 7.4vw, 48px); color: #1f4d2b;
   text-shadow: 0 0 2px #fff, 0 0 6px #fff, 0 0 14px rgba(255,255,255,.95), 0 0 26px rgba(255,255,255,.8); }
 .guide-hello .g-bubble.on::before, .guide-hello .g-bubble.on::after { display: none; }
-.guide-hello .g-hint { background: none; font-family: var(--font-fairy), cursive; font-weight: 400; font-size: clamp(16px, 4vw, 22px); color: #5b2a86;
+.guide-hello .g-hint { background: none; font-family: var(--font-fairy), cursive; font-weight: 400; font-size: clamp(18px, 4.6vw, 26px); color: #2a5e36;
   text-shadow: 0 0 2px #fff, 0 0 8px #fff, 0 0 16px rgba(255,255,255,.9); }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .guide-hello .g-bubble.on, :root:not([data-theme="light"]) .guide-hello .g-hint { color: #fff7d6; text-shadow: 0 0 3px #1b1030, 0 0 10px #1b1030, 0 0 20px rgba(20,10,40,.9); } }
 :root[data-theme="dark"] .guide-hello .g-bubble.on, :root[data-theme="dark"] .guide-hello .g-hint { color: #fff7d6; text-shadow: 0 0 3px #1b1030, 0 0 10px #1b1030, 0 0 20px rgba(20,10,40,.9); }
