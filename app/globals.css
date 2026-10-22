@@ -377,3 +377,7 @@ th:first-child, td:first-child { text-align: left; }
 .krok-arr.gap { margin-left: 14px; }
 .krok-arr.done { opacity: .35; transform: scale(.85); }
 .opts.path .opt { box-shadow: 0 3px 0 color-mix(in srgb, var(--leaf) 30%, transparent); overflow: visible; }
+.krok-arr.now { animation: krok-now 1s ease-in-out infinite; }
+@keyframes krok-now { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.3); } }
+.krok-mark { opacity: .55; display: inline-flex; animation: krok-pop .3s ease-out; }
+.krok-mark .emo { width: 30px; height: 30px; }

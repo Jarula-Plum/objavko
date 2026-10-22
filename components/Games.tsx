@@ -32,7 +32,8 @@ type Round = {
   // yay: vtipná veta po správnej odpovedi (povie ju a ukáže)
   yay?: string
   // walk: obrázok po správnej odpovedi prejde po políčkach krok za krokom (krokovanie)
-  walk?: { e: string; path: number[]; dirs: number[]; first: boolean[] }
+  // place: dieťa samo kladie šípky na políčka, krok za krokom
+  walk?: { e: string; path: number[]; dirs: number[]; first: boolean[]; place?: boolean }
 }
 
 // Jednoduché zvuky cez Web Audio: údery bubna a tóny
@@ -113,14 +114,39 @@ function Quiz({ game, rounds, onDone, onBack }: { game: Game; rounds: Round[]; o
     return () => clearTimeout(t)
   }, [r])
 
+  const [marks, setMarks] = useState<Record<number, number>>({})
   const choose = (idx: number) => {
     if (right !== null) return
-    if (r.options[idx].correct) {
+    const w = r.walk
+    if (w?.place) {
+      const at = Math.max(0, step)
+      if (idx === w.path[at + 1]) {
+        setMarks((m) => ({ ...m, [w.path[at]]: w.dirs[at] }))
+        setStep(at + 1)
+        tone(w.dirs[at] > 0 ? 440 + at * 60 : 520 - at * 40, 0, 0.18)
+        setWrong(null)
+        if (at + 1 === w.path.length - 1) win(idx, true)
+      } else {
+        setMissed(true)
+        setWrong({ idx, n: (wrong?.n ?? 0) + 1 })
+        say(w.dirs[at] > 0 ? 'Skús ešte raz. Šípka ukazuje dopredu.' : 'Skús ešte raz. Šípka ukazuje dozadu.')
+      }
+      return
+    }
+    if (r.options[idx].correct) win(idx, false)
+    else {
+      setMissed(true)
+      setWrong({ idx, n: (wrong?.n ?? 0) + 1 })
+      say('Skús ešte raz')
+    }
+  }
+  const win = (idx: number, walked: boolean) => {
+    {
       setRight(idx)
       const next = [...log, !missed]
       setLog(next)
-      const hops = r.walk ? r.walk.path.length - 1 : 0
-      if (r.walk) {
+      const hops = r.walk && !walked ? r.walk.path.length - 1 : 0
+      if (r.walk && !walked) {
         const w = r.walk
         setStep(0)
         for (let s = 1; s <= hops; s++) setTimeout(() => { setStep(s); tone(w.dirs[s - 1] > 0 ? 440 + s * 60 : 520 - s * 40, 0, 0.18) }, s * 550)
@@ -131,13 +157,9 @@ function Quiz({ game, rounds, onDone, onBack }: { game: Game; rounds: Round[]; o
           const ok = next.filter(Boolean).length
           onDone(ok === 5 ? 3 : ok >= 3 ? 2 : 1)
         } else {
-          setI(i + 1); setMissed(false); setRight(null); setWrong(null); setStep(-1)
+          setI(i + 1); setMissed(false); setRight(null); setWrong(null); setStep(-1); setMarks({})
         }
       }, hops * 550 + (r.yay ? 2800 : 750))
-    } else {
-      setMissed(true)
-      setWrong({ idx, n: (wrong?.n ?? 0) + 1 })
-      say('Skús ešte raz')
     }
   }
 
@@ -146,7 +168,7 @@ function Quiz({ game, rounds, onDone, onBack }: { game: Game; rounds: Round[]; o
       <div className="prompt">{emo(r.prompt)}</div>
       {r.walk ? (
         <div className="stage"><span className="seq">{r.walk.dirs.map((d, u) => (
-          <span key={u} className={`krok-arr ${r.walk!.first[u] && u ? 'gap' : ''} ${u < step ? 'done' : ''}`}>{emo(d > 0 ? '➡️' : '⬅️')}</span>
+          <span key={u} className={`krok-arr ${r.walk!.first[u] && u ? 'gap' : ''} ${u < step ? 'done' : ''} ${r.walk!.place && right === null && u === Math.max(0, step) ? 'now' : ''}`}>{emo(d > 0 ? '➡️' : '⬅️')}</span>
         ))}</span></div>
       ) : r.stage && <div className="stage">{emo(r.stage)}</div>}
       <div className={`opts ${r.cross ? 'cross' : ''} ${r.row ?? ''}`} style={{ visibility: shown ? 'visible' : 'hidden' }}>
@@ -158,7 +180,10 @@ function Quiz({ game, rounds, onDone, onBack }: { game: Game; rounds: Round[]; o
             style={o.spot ? { gridArea: o.spot } : undefined}
             onClick={() => choose(idx)}
           >
-            {r.walk && right !== null
+            {r.walk?.place && right === null
+              ? idx === r.walk.path[Math.max(0, step)] ? <span key={step} className={step > 0 ? 'krok-hop' : 'krok-idle'}>{emo(r.walk.e)}</span>
+                : marks[idx] ? <span className="krok-mark">{emo(marks[idx] > 0 ? '➡️' : '⬅️')}</span> : ''
+              : r.walk && right !== null
               ? landed && o.correct ? emo(o.hit) : idx === r.walk.path[Math.max(0, step)] && !landed ? <span key={step} className="krok-hop">{emo(r.walk.e)}</span> : ''
               : emo(right === idx && o.hit ? o.hit : right !== null && o.leave ? '' : o.content)}
           </button>
@@ -756,7 +781,8 @@ function baseRounds(id: Game['id'], theme: Theme, lv: Level): Round[] {
     }))
   }
   if (id === 'krokovanie') {
-    return range.map(() => {
+    return range.map((n) => {
+      const place = n % 2 === 0
       const who = pick(theme.items, 1)[0]
       const goal = ciel(who.w)
       const moves = lv === 1 ? [rand(1, 3)] : lv === 2 ? [rand(2, 3), -rand(1, 2)] : [rand(1, 3), -rand(1, 3), rand(1, 2)]
@@ -766,12 +792,14 @@ function baseRounds(id: Game['id'], theme: Theme, lv: Level): Round[] {
       const end = start + moves.reduce((a, b) => a + b, 0)
       const say_ = moves.map((m) => `${Math.abs(m)} ${Math.abs(m) === 1 ? 'krok' : 'kroky'} ${m > 0 ? 'dopredu' : 'dozadu'}`).join(', potom ')
       return {
-        prompt: <>{who.w[0] + who.w.slice(1).toLowerCase()} urobí {say_}. <b>Kam sa dostane?</b></>,
+        prompt: place
+          ? <>{who.w[0] + who.w.slice(1).toLowerCase()} urobí {say_}. <b>Polož šípky:</b> ťukni na políčko, kam skočí.</>
+          : <>{who.w[0] + who.w.slice(1).toLowerCase()} urobí {say_}. <b>Kam sa dostane?</b></>,
         stage: <span className="seq">{moves.map((m) => (m > 0 ? '➡️' : '⬅️').repeat(Math.abs(m))).join(' ')}</span>,
-        speech: `${who.w.toLowerCase()} urobí ${say_}. Kam sa dostane?`, row: 'path',
+        speech: `${who.w.toLowerCase()} urobí ${say_}. ${place ? 'Polož šípky. Ťukni na políčko, kam skočí.' : 'Kam sa dostane?'}`, row: 'path',
         yay: `${who.w[0] + who.w.slice(1).toLowerCase()} – ${goal.t}`,
         walk: {
-          e: who.e,
+          e: who.e, place,
           path: moves.reduce((p, m) => { for (let s = 0; s < Math.abs(m); s++) p.push(p[p.length - 1] + Math.sign(m)); return p }, [start]),
           dirs: moves.flatMap((m) => Array(Math.abs(m)).fill(Math.sign(m))),
           first: moves.flatMap((m) => Array.from({ length: Math.abs(m) }, (_, s) => s === 0)),
