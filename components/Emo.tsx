@@ -12,6 +12,7 @@ export const OWN_PIC = {
   osol: '\uE109', hus: '\uE10A', sukna: '\uE10B', sveter: '\uE10C', plastenka: '\uE10D', ciapka: '\uE10E',
   pasta: '\uE10F', uterak: '\uE110', hreben: '\uE111', kefa: '\uE112', vreckovka: '\uE113', umyvadlo: '\uE114',
   pohar: '\uE115', babika: '\uE116', 'drevene-auto': '\uE117', vlacik: '\uE118', kocky: '\uE119', obruc: '\uE11A',
+  cmel: '\uE121', vazka: '\uE122', tamburina: '\uE123', triangel: '\uE124', xylofon: '\uE125', flauta: '\uE126', cinely: '\uE127', zahradnik: '\uE128', stolar: '\uE129', postar: '\uE12A', voda: '\uE12B', vajce: '\uE12C', jogurt: '\uE12D', ryza: '\uE12E', cestoviny: '\uE12F', ryba: '\uE130', stehno: '\uE131', stol: '\uE132', skrina: '\uE133', lampa: '\uE134', zrkadlo: '\uE135', hrncek: '\uE136', tanier: '\uE137', lepidlo: '\uE138', plastelina: '\uE139', 'papier-list': '\uE13A', pravitko: '\uE13B', guma: '\uE13C', struhadlo: '\uE13D', farmarka: '\uE13E', kuchar: '\uE13F', marakasy: '\uE140',
   zvrk: '\uE11B', lopatka: '\uE11C', bager: '\uE11D', vrtulnik: '\uE11E', vlak: '\uE11F', lod: '\uE120',
 } as const
 const OWN: Record<string, string> = {
@@ -26,6 +27,14 @@ const OWN: Record<string, string> = {
   '👕': 'tricko', '👖': 'nohavice', '🩳': 'kratasy', '👗': 'saty', '🧥': 'bunda', '🧣': 'sal', '🧤': 'rukavice', '🥾': 'cizmy',
   '🪥': 'kefka', '🧼': 'mydlo', '🧻': 'papier', '🚿': 'sprcha',
   '⚽': 'lopta', '🧸': 'macko', '🧩': 'puzzle', '🪁': 'sarkan', '🪣': 'vedierko',
+  '🐝': 'vcela', '🐞': 'lienka', '🦋': 'motyl', '🐜': 'mravec', '🐛': 'husenica', '🦗': 'kobylka', '🐌': 'slimak',
+  '🪰': 'mucha', '🪱': 'dazdovka', '🕷️': 'pavuk',
+  '🥁': 'bubon', '🎸': 'gitara', '🎻': 'husle', '🎹': 'klavir', '🎺': 'trubka', '🪗': 'akordeon',
+  '👩‍⚕️': 'lekarka', '👮': 'policajt', '🧑‍🎨': 'maliar', '💇': 'kadernicka', '👷': 'stavbar', '🧑‍🚒': 'hasic', '👨‍🚒': 'hasic',
+  '🧑‍🍳': 'kuchar', '👩‍🌾': 'farmarka',
+  '🍞': 'chlieb', '🥛': 'mlieko', '🧀': 'syr', '🍲': 'polievka', '🍚': 'ryza', '🍝': 'cestoviny', '🍗': 'stehno',
+  '🪑': 'stolicka', '🛏️': 'postel', '🔑': 'kluc', '☂️': 'dazdnik', '🥄': 'lyzica', '🕰️': 'hodiny', '🪞': 'zrkadlo',
+  '📚': 'kniha', '📖': 'kniha', '✏️': 'ceruzka', '🖍️': 'pastelky', '🖌️': 'stetec', '✂️': 'noznice', '🎒': 'ruksak',
   '🦔': 'jez', '🐿️': 'vevericka', '🦊': 'liska', '🐇': 'zajac', '🦉': 'sova', '🐻': 'medved', '🦡': 'jazvec', '🐺': 'vlk', '🐗': 'diviak',
   ...Object.fromEntries(Object.entries(OWN_PIC).map(([n, c]) => [c, n])),
 }

@@ -252,7 +252,7 @@ const BEHAVIOUR = [
 ]
 const FOOD = [
   { e: '🍎', w: 'jablko', ok: true }, { e: '🥕', w: 'mrkva', ok: true }, { e: '🥦', w: 'brokolica', ok: true }, { e: '🍌', w: 'banán', ok: true },
-  { e: '🥛', w: 'mlieko', ok: true }, { e: '🍇', w: 'hrozno', ok: true }, { e: '💧', w: 'voda', ok: true }, { e: '🥒', w: 'uhorka', ok: true },
+  { e: '🥛', w: 'mlieko', ok: true }, { e: '🍇', w: 'hrozno', ok: true }, { e: '\uE12B', w: 'voda', ok: true }, { e: '🥒', w: 'uhorka', ok: true },
   { e: '🍐', w: 'hruška', ok: true }, { e: '🥗', w: 'šalát', ok: true }, { e: '🐟', w: 'ryba', ok: true }, { e: '🥚', w: 'vajíčko', ok: true },
   { e: '🍭', w: 'lízanka', ok: false }, { e: '🍬', w: 'cukrík', ok: false }, { e: '🍟', w: 'hranolky', ok: false }, { e: '🍔', w: 'hamburger', ok: false },
   { e: '🍩', w: 'šiška', ok: false }, { e: '🥤', w: 'sladká limonáda', ok: false }, { e: '🍫', w: 'čokoláda', ok: false }, { e: '🌭', w: 'párok v rožku', ok: false },
@@ -295,7 +295,8 @@ const JOBS = [
   { e: '👩‍🏫', w: 'učiteľka', t: '📚', tw: 'knihy' }, { e: '👷', w: 'stavbár', t: '🧱', tw: 'tehly' },
   { e: '👮', w: 'policajt', t: '🚓', tw: 'policajné auto' }, { e: '💇', w: 'kaderníčka', t: '✂️', tw: 'nožnice' },
   { e: '🧑‍🎨', w: 'maliar', t: '🎨', tw: 'farby' }, { e: '🧑‍🔧', w: 'automechanik', t: '🔧', tw: 'kľúč' },
-  { e: '👨‍✈️', w: 'pilot', t: '✈️', tw: 'lietadlo' }, { e: '🧑‍🚒', w: 'šofér', t: '🚌', tw: 'autobus' },
+  { e: '👨‍✈️', w: 'pilot', t: '✈️', tw: 'lietadlo' }, { e: '🧑‍🚒', w: 'hasič', t: '🚒', tw: 'hasičské auto' }, { e: '🧑‍🍳', w: 'kuchár', t: '🍲', tw: 'polievka' },
+  { e: '\uE12A', w: 'poštár', t: '✉️', tw: 'list' },
 ]
 const WEATHER = [
   { e: '🌨️', t: 'Vonku sneží a mrzne.', wear: [{ e: '🧤', w: 'rukavice' }, { e: '🧣', w: 'šál' }] },
