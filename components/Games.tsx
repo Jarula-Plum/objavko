@@ -7,6 +7,7 @@ import { Stars, Ui, emo, picUrl } from './Emo'
 import { GuideBar, cheer, moodOf, speak } from './Guide'
 import { Coloring, Dictation, Exercise, Tracing } from './Cvicenia'
 import { ciel } from '@/lib/krokovanie'
+import { vtip } from '@/lib/vtipy'
 
 export function say(text: string) {
   cheer(moodOf(text), text)
@@ -123,6 +124,7 @@ function Quiz({ game, rounds, onDone, onBack }: { game: Game; rounds: Round[]; o
   }, [r])
 
   const [marks, setMarks] = useState<Record<number, number>>({})
+  const [joked, setJoked] = useState(false)
   const choose = (idx: number) => {
     if (right !== null) return
     const w = r.walk
@@ -160,6 +162,13 @@ function Quiz({ game, rounds, onDone, onBack }: { game: Game; rounds: Round[]; o
         for (let s = 1; s <= hops; s++) setTimeout(() => { setStep(s); tone(w.dirs[s - 1] > 0 ? 440 + s * 60 : 520 - s * 40, 0, 0.18) }, s * 550)
       }
       if (r.yay) setTimeout(() => say(r.yay!), hops * 550 + 250)
+      // Občas (najviac raz za hru) sprievodca zavtipkuje
+      const joke = !r.yay && !joked && i > 0 && i + 1 < rounds.length && Math.random() < 0.3
+      if (joke) {
+        setJoked(true)
+        const v = vtip()
+        setTimeout(() => { cheer('joy', v.t); speak(v.t, v.who) }, 500)
+      }
       setTimeout(() => {
         if (i + 1 >= rounds.length) {
           const ok = next.filter(Boolean).length
@@ -167,7 +176,7 @@ function Quiz({ game, rounds, onDone, onBack }: { game: Game; rounds: Round[]; o
         } else {
           setI(i + 1); setMissed(false); setRight(null); setWrong(null); setStep(-1); setMarks({})
         }
-      }, hops * 550 + (r.yay ? 2800 : 750))
+      }, hops * 550 + (r.yay ? 2800 : joke ? 5200 : 750))
     }
   }
 
