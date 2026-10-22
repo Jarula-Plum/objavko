@@ -1,7 +1,7 @@
 'use client'
 
 import { NAHRATE, VETY } from '@/lib/hlas'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 // Sprievodcovia: Čarozvedko (chlapec) a Čarozvedka (dievča)
 export type Mood = 'idle' | 'think' | 'joy' | 'try' | 'wow'
@@ -30,9 +30,20 @@ const pic = (who: 'chlapec' | 'dievca', pose: string) => `/sprievodca/${who}-${p
 // Oživený Čarozvedko: video bez zvuku na bielom pozadí, biela sa stratí cez mix-blend-mode (hovorí hlas aplikácie)
 function BoyVideo({ alt, bust }: { alt?: string; bust?: boolean }) {
   const f = bust ? 'chlapec-video-polpostava' : 'chlapec-video'
+  const ref = useRef<HTMLVideoElement>(null)
+  useEffect(() => {
+    const on = (e: Event) => {
+      const d = (e as CustomEvent<{ who: string; on: boolean }>).detail
+      const v = ref.current; if (!v || d.who !== 'chlapec') return
+      if (d.on) v.play().catch(() => {})
+      else { v.pause(); v.currentTime = 0 }
+    }
+    window.addEventListener('objavko-hovori', on)
+    return () => window.removeEventListener('objavko-hovori', on)
+  }, [])
   return (
-    <video className="g-boy g-video" src={`/sprievodca/${f}.mp4`} poster={`/sprievodca/${f}.webp`}
-      autoPlay muted loop playsInline preload="auto" aria-label={alt} role={alt ? 'img' : undefined} aria-hidden={alt ? undefined : true} />
+    <video ref={ref} className="g-boy g-video" src={`/sprievodca/${f}.mp4`} poster={`/sprievodca/${f}.webp`}
+      muted loop playsInline preload="auto" aria-label={alt} role={alt ? 'img' : undefined} aria-hidden={alt ? undefined : true} />
   )
 }
 
@@ -52,14 +63,21 @@ export const skVoices = () => {
 }
 
 let playing: HTMLAudioElement | null = null
+// Kto práve hovorí: Čarozvedko sa hýbe len počas reči
+const talk = (who: 'chlapec' | 'dievca', on: boolean) => {
+  try { window.dispatchEvent(new CustomEvent('objavko-hovori', { detail: { who, on } })) } catch {}
+}
 export function speak(text: string, who: 'chlapec' | 'dievca' = 'chlapec') {
   try {
     playing?.pause(); playing = null
     const rec = VETY[text.trim()]
     if (rec && NAHRATE.has(rec.file)) {
       try { speechSynthesis.cancel() } catch {}
-      playing = new Audio(`/hlas/${rec.file}`)
-      playing.play().catch(() => {})
+      const a = new Audio(`/hlas/${rec.file}`)
+      playing = a
+      a.onplay = () => talk(rec.who, true)
+      a.onended = a.onpause = () => talk(rec.who, false)
+      a.play().catch(() => talk(rec.who, false))
       return
     }
     if (!('speechSynthesis' in window)) return
@@ -75,6 +93,9 @@ export function speak(text: string, who: 'chlapec' | 'dievca' = 'chlapec') {
     if (voice) u.voice = voice
     u.rate = own?.rate ?? 0.95
     u.pitch = own?.pitch ?? (who === 'chlapec' ? (male ? 1.45 : 1.25) : 1.3)
+    u.onstart = () => talk(who, true)
+    u.onend = u.onerror = () => talk(who, false)
+    talk(who === 'chlapec' ? 'dievca' : 'chlapec', false)
     speechSynthesis.speak(u)
   } catch {}
 }
