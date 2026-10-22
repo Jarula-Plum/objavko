@@ -7,6 +7,7 @@ import { Ui, emo, keyOf, picUrl } from './Emo'
 import { GuideBar, cheer, speak } from './Guide'
 import type { Level } from './Games'
 import { CVIKY, NAMETY, type CvikId } from '@/lib/namety'
+import { OMALOVANKY } from '@/lib/omalovanky'
 
 // Cvičenia: omaľovánky, grafomotorika a kresliace diktáty.
 // Kreslí sa na plátno prstom alebo myšou; obrysy ležia navrchu (násobenie), farba pod nimi.
@@ -23,7 +24,7 @@ const load = (src: string) => new Promise<HTMLImageElement | null>((res) => {
   const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = src
 })
 const lineUrl = (e: string) => `/omalovanky/${keyOf(e)}.webp`
-const hasLines = (x: Item) => !!picUrl(x.e)
+const hasLines = (x: Item) => OMALOVANKY.has(keyOf(x.e))
 const say = (t: string) => { cheer('think', t); speak(t) }
 
 type Layer = (ctx: CanvasRenderingContext2D) => Promise<void> | void
