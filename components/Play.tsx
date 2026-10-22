@@ -13,7 +13,7 @@ import { VoicePicker } from './VoicePicker'
 import { CVIKY, NAMETY } from '@/lib/namety'
 import { PIESNE } from '@/lib/piesne'
 import { Piesen } from './Piesen'
-import { hudobneHry } from '@/lib/hudobne'
+import { NACVIK, hudobneHry } from '@/lib/hudobne'
 
 // Poradové číslo týždňa (pondelok až nedeľa) od roku 1970
 const weekNo = () => Math.floor((Date.now() / 864e5 - 4 + new Date().getTimezoneOffset() / -1440) / 7)
@@ -119,7 +119,21 @@ export default function Play({ classId, className, kids, initialBest }: {
         )}
         {tip === 'ranne' && <ul className="namety-list">{n.r.map((x) => <li key={x}>{x}</li>)}</ul>}
         {tip === 'hry' && <ul className="namety-list">{n.h.map(([a, b]) => <li key={a}><b>{a}</b>{b}</li>)}</ul>}
-        {tip === 'hudobne' && <ul className="namety-list">{hudobneHry(theme).map(([a, b]) => <li key={a}><b>{a}</b>{b}</li>)}</ul>}
+        {tip === 'hudobne' && (
+          <>
+            <ul className="namety-list">{hudobneHry(theme).map((h) => (
+              <li key={h.n}><b>{h.n}</b>
+                <p><span className="rule">Pravidlá:</span> {h.pravidla}</p>
+                <p><span className="rule">{h.piesen ? 'Spev:' : 'Sprievod:'}</span> {h.spev}</p>
+                {h.melodia && <p className="note">{h.melodia}</p>}
+                {h.piesen && <div className="song-links">
+                  <a className="ghost" href={`https://www.youtube.com/results?search_query=${encodeURIComponent(h.n.split(' – ')[0] + ' pieseň pre deti')}`} target="_blank" rel="noreferrer">{emo('🎵')} Vypočuť melódiu</a>
+                </div>}
+              </li>
+            ))}</ul>
+            <p className="note">{NACVIK}</p>
+          </>
+        )}
         {tip === 'pohyb' && <ul className="namety-list">{n.p.map(([a, b]) => <li key={a}><b>{a}</b><span className="rule">Pravidlá:</span> {b}</li>)}</ul>}
         {tip === 'riekanka' && (
           <button className="cta" onClick={() => { setTip(null); setGame(GAMES.find((g) => g.id === 'zdravotne')!); setRound((r) => r + 1) }}>{emo('🤸')} Cvičiť so škriatkom</button>

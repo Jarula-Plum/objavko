@@ -368,3 +368,4 @@ th:first-child, td:first-child { text-align: left; }
 @keyframes krok-pop { 0% { transform: scale(.3) rotate(-20deg); } 70% { transform: scale(1.25) rotate(6deg); } 100% { transform: scale(1); } }
 .yay { text-align: center; font-size: clamp(20px, 5vw, 28px); font-weight: 800; color: #1f4d2b; margin-top: 14px; animation: krok-pop .5s ease-out; }
 .yay .emo { width: 1.4em; height: 1.4em; vertical-align: -0.3em; }
+.namety-list > li > p { margin: 4px 0; }
