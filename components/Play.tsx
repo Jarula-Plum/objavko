@@ -7,6 +7,7 @@ import { AREAS, GAMES, type Game } from '@/lib/games'
 import { MONTHS, THEMES, currentTheme, themeOf } from '@/lib/themes'
 import { Finished, GameView, LEVELS, type Level } from './Games'
 import { Icon, Stars, emo } from './Emo'
+import { GuideHello } from './Guide'
 
 // Poradové číslo týždňa (pondelok až nedeľa) od roku 1970
 const weekNo = () => Math.floor((Date.now() / 864e5 - 4 + new Date().getTimezoneOffset() / -1440) / 7)
@@ -85,6 +86,7 @@ export default function Play({ classId, className, kids, initialBest }: {
 
   return (
     <>
+      <GuideHello text={`Ahoj, ${kid.name}! Poď sa s nami hrať.`} />
       <div className="label">Trieda {className} · kto sa hrá?</div>
       <div className="kids">
         {kids.map((k) => (

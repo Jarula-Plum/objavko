@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Logo from '@/components/Logo'
 import { GAMES } from '@/lib/games'
 import { Icon } from '@/components/Emo'
+import { GuideHello } from '@/components/Guide'
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
           <Link href="/prihlasenie?rezim=registracia" className="cta">Vyskúšať zadarmo</Link>
         </div>
       </section>
+      <GuideHello text="Ahoj! Sme škriatok a víla. Poď sa s nami hrať!" />
       <div className="grid">
         {GAMES.map((g) => (
           <div key={g.id} className="tile" style={{ ['--c' as string]: g.color }}>

@@ -173,3 +173,22 @@ th:first-child, td:first-child { text-align: left; }
 .hero h2 { font-size: clamp(34px, 6vw, 52px); font-weight: 800; }
 .hero p { font-size: 18px; margin: 0; color: var(--muted); }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+/* Sprievodcovia: škriatok a víla */
+.guide-bar { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; margin-top: auto; min-height: 104px; }
+.guide-bar img { height: 104px; width: auto; animation: g-pop .35s ease-out; }
+.guide-bar.m-joy img, .guide-bar.m-wow img { animation: g-hop .5s ease-out; }
+.guide-bar.m-try .g-boy { animation: g-wiggle .5s ease-out; }
+.g-bubble { flex: 1; max-width: 340px; align-self: center; text-align: center; font-family: var(--head); font-weight: 800; font-size: 20px;
+  background: var(--soft); border: 2px solid var(--line); border-radius: 18px; padding: 8px 12px; opacity: 0; transform: scale(.9); transition: opacity .2s, transform .2s; }
+.g-bubble.on { opacity: 1; transform: none; }
+.guide-hello { display: flex; align-items: flex-end; justify-content: center; gap: 10px; margin: 4px 0 14px; }
+.guide-hello img { height: 170px; width: auto; filter: drop-shadow(0 4px 8px rgba(0,0,0,.15)); }
+.guide-hello .g-boy { animation: g-wave 2.4s ease-in-out infinite; transform-origin: 50% 100%; }
+.guide-hello .g-bubble { flex: 0 1 260px; }
+@media (min-width: 900px) { .guide-bar img { height: 130px; } .guide-hello img { height: 220px; } }
+@keyframes g-pop { from { transform: translateY(8px) scale(.94); opacity: .4; } }
+@keyframes g-hop { 40% { transform: translateY(-14px); } }
+@keyframes g-wiggle { 25% { transform: rotate(-6deg); } 75% { transform: rotate(6deg); } }
+@keyframes g-wave { 50% { transform: rotate(-3deg) translateY(-4px); } }
+@media (prefers-reduced-motion: reduce) { .guide-bar img, .guide-hello img { animation: none !important; } }

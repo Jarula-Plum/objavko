@@ -4,8 +4,10 @@ import { useEffect, useState, type ReactNode } from 'react'
 import { type Game } from '@/lib/games'
 import { THEMES, firstLetter, rhymeKey, sounds, syllables, type Item, type Theme } from '@/lib/themes'
 import { Stars, emo, picUrl } from './Emo'
+import { GuideBar, cheer, moodOf } from './Guide'
 
 export function say(text: string) {
+  cheer(moodOf(text), text)
   try {
     if (!('speechSynthesis' in window)) return
     speechSynthesis.cancel()
@@ -71,6 +73,7 @@ function Shell({ game, onBack, speech, dots, onRepeat, children }: {
         <button className="speak" onClick={() => (onRepeat ? onRepeat() : say(speech))}>{emo('🔊')} Zopakuj</button>
       </div>
       {children}
+      <GuideBar />
     </section>
   )
 }
@@ -79,7 +82,7 @@ export function Finished({ game, starsN, kidName, onAgain, onBack }: {
   game: Game; starsN: number; kidName: string; onAgain: () => void; onBack: () => void
 }) {
   const praise = starsN === 3 ? 'Výborne!' : starsN === 2 ? 'Šikovné!' : 'Dobrý pokus!'
-  useEffect(() => { say(praise) }, [praise])
+  useEffect(() => { say(praise); if (starsN === 3) cheer('wow', `${praise} ${kidName}!`) }, [praise, starsN, kidName])
   return (
     <Shell game={game} onBack={onBack} speech={praise}>
       <div className="done-box">
