@@ -6,6 +6,7 @@ import { type Item, type Theme } from '@/lib/themes'
 import { Ui, emo, keyOf, picUrl } from './Emo'
 import { GuideBar, cheer, speak } from './Guide'
 import type { Level } from './Games'
+import { CVIKY, NAMETY, type CvikId } from '@/lib/namety'
 
 // Cvičenia: omaľovánky, grafomotorika a kresliace diktáty.
 // Kreslí sa na plátno prstom alebo myšou; obrysy ležia navrchu (násobenie), farba pod nimi.
@@ -350,6 +351,45 @@ export function Dictation({ game, theme, level, onDone, onBack }: {
       <details className="dict-text">
         <summary>Text diktátu pre pani učiteľku</summary>
         <ol>{dict.steps.map((s, k) => <li key={k}>{s}</li>)}</ol>
+      </details>
+    </Frame>
+  )
+}
+
+// ---------- Zdravotné cvičenie ----------
+// Riekanka po dvojveršiach; ku každému cvik, ktorý škriatok predvedie. Úroveň mení náročnosť cviku.
+export function Exercise({ game, theme, level, onDone, onBack }: {
+  game: Game; theme: Theme; level: Level; onDone: (s: number) => void; onBack: () => void
+}) {
+  const steps = NAMETY[theme.id]?.z ?? NAMETY['zdravy']?.z ?? []
+  const [step, setStep] = useState(0)
+  const done = step >= steps.length
+  const [verse, id] = done ? ['', 'skok' as CvikId] : steps[step]
+  const cvik = CVIKY[id]
+  const task = cvik.t[level - 1]
+  const line = done ? 'Výborne! Docvičili sme. Teraz sa poriadne nadýchni a vydýchni.' : `${verse} ${task}`
+  useEffect(() => { say(step === 0 ? `Poďme cvičiť! ${line}` : line) }, [line, step])
+
+  return (
+    <Frame game={game} speech={line} onBack={onBack}>
+      <div className="prompt">{done ? <b>Výborne! Docvičili sme.</b> : <>Cvik {step + 1} z {steps.length}</>}</div>
+      <div className="cvik">
+        <img src={done ? '/skriatok/vesely-skriatok.webp' : cvik.p ? `/skriatok/p-${cvik.p}.webp` : '/skriatok/vesely-skriatok.webp'} alt="" />
+        {!done && (
+          <div>
+            <p className="verse">{verse}</p>
+            <p className="task">{task}</p>
+          </div>
+        )}
+      </div>
+      <div className="row sheet-actions">
+        {!done && <button className="cta" onClick={() => setStep((s) => s + 1)}><Ui n="dalej" /> Ďalej</button>}
+        {done && <button className="ghost" onClick={() => setStep(0)}><Ui n="znova" /> Ešte raz</button>}
+        {done && <button className="cta" onClick={() => onDone(3)}>{emo('✅')} Hotovo</button>}
+      </div>
+      <details className="dict-text">
+        <summary>Celá riekanka pre pani učiteľku</summary>
+        <ol>{steps.map(([v, c], k) => <li key={k}>{v} <i>({CVIKY[c].t[level - 1]})</i></li>)}</ol>
       </details>
     </Frame>
   )

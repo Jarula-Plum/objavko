@@ -8,6 +8,7 @@ import { MONTHS, THEMES, currentTheme, themeOf } from '@/lib/themes'
 import { Finished, GameView, LEVELS, type Level } from './Games'
 import { Icon, Stars, emo } from './Emo'
 import { GuideHello } from './Guide'
+import { CVIKY, NAMETY } from '@/lib/namety'
 
 // Poradové číslo týždňa (pondelok až nedeľa) od roku 1970
 const weekNo = () => Math.floor((Date.now() / 864e5 - 4 + new Date().getTimezoneOffset() / -1440) / 7)
@@ -120,6 +121,25 @@ export default function Play({ classId, className, kids, initialBest }: {
           <span>{emo(theme.items.map((x) => x.e).join(' '))}</span>
         </div>
       </div>
+      {NAMETY[theme.id] && (
+        <details className="namety">
+          <summary>{emo('📋')} Námety k téme pre pani učiteľku</summary>
+          <h3>Zdravotné cvičenie s riekankou</h3>
+          <ol>
+            {NAMETY[theme.id].z.map(([v, c], k) => (
+              <li key={k}><b>{v}</b>
+                <ul className="vek">{CVIKY[c].t.map((t, i) => <li key={i}><span>{LEVELS[i].name}:</span> {t}</li>)}</ul>
+              </li>
+            ))}
+          </ol>
+          <h3>Pohybové hry</h3>
+          <ul>{NAMETY[theme.id].p.map(([n, t]) => <li key={n}><b>{n}.</b> {t}</li>)}</ul>
+          <h3>Herné cvičenia</h3>
+          <ul>{NAMETY[theme.id].h.map(([n, t]) => <li key={n}><b>{n}.</b> {t}</li>)}</ul>
+          <h3>Ranné aktivity</h3>
+          <ul>{NAMETY[theme.id].r.map((t) => <li key={t}>{t}</li>)}</ul>
+        </details>
+      )}
       <div className="label">Hry pre {kid.name} · {LEVELS[level - 1].name}</div>
       {AREAS.map((area) => (
         <section key={area} className="area">
