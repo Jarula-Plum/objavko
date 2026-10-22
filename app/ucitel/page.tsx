@@ -2,7 +2,7 @@ import Link from 'next/link'
 import Logo from '@/components/Logo'
 import { requireUser } from '@/lib/supabase/server'
 import { signOut } from '@/app/prihlasenie/actions'
-import { createClass } from './actions'
+import { createClass, deleteClass, renameClass } from './actions'
 import { Ui } from '@/components/Emo'
 
 export default async function TeacherHome() {
@@ -35,6 +35,25 @@ export default async function TeacherHome() {
                     <Link href={`/hraj/${c.id}`} className="cta"><Ui n="hraj" /> Hrať</Link>
                     <Link href={`/ucitel/trieda/${c.id}`} className="ghost"><Ui n="zosit" /> Žiaci a pokrok</Link>
                   </div>
+                  <details className="cls-edit">
+                    <summary>Premenovať alebo vymazať triedu</summary>
+                    <form action={renameClass} className="field">
+                      <input type="hidden" name="id" value={c.id} />
+                      <label htmlFor={`nm-${c.id}`} className="label">Nový názov</label>
+                      <div className="row" style={{ flexWrap: 'nowrap' }}>
+                        <input id={`nm-${c.id}`} name="name" defaultValue={c.name} required maxLength={40} className="inp" />
+                        <button className="cta" style={{ flex: 'none' }}>Uložiť</button>
+                      </div>
+                    </form>
+                    <details>
+                      <summary className="del">Vymazať triedu</summary>
+                      <form action={deleteClass} className="field" style={{ marginTop: 8 }}>
+                        <input type="hidden" name="id" value={c.id} />
+                        <p className="note">Naozaj? Zmažú sa aj všetci žiaci triedy {c.name} a ich výsledky. Nedá sa to vrátiť.</p>
+                        <button className="ghost" style={{ color: 'var(--bad)', alignSelf: 'flex-start' }}>Áno, vymazať triedu {c.name}</button>
+                      </form>
+                    </details>
+                  </details>
                 </div>
               )
             })}

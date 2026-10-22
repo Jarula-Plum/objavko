@@ -23,12 +23,14 @@ export async function renameClass(formData: FormData) {
   const supabase = await createClient()
   await supabase.from('classes').update({ name }).eq('id', id)
   revalidatePath(`/ucitel/trieda/${id}`)
+  revalidatePath('/ucitel')
 }
 
 export async function deleteClass(formData: FormData) {
   const id = text(formData, 'id', 64)
   const supabase = await createClient()
   await supabase.from('classes').delete().eq('id', id)
+  revalidatePath('/ucitel')
   redirect('/ucitel')
 }
 
