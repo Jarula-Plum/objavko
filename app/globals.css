@@ -342,3 +342,15 @@ th:first-child, td:first-child { text-align: left; }
   .guide-hello .g-video { height: 430px; }
   .guide-hello .g-girl.g-video { height: 470px; }
 }
+
+/* Široké obrazovky: sprievodcovia stoja úplne po bokoch stránky, na voľnom lesnom pozadí mimo ikoniek */
+@media (min-width: 1500px) {
+  .guide-hello.alpha { grid-template-columns: 1fr; grid-template-areas: "say"; }
+  .guide-hello.alpha .g-who { --m: calc((100vw - 1040px) / 2); --h: min(640px, 80vh, calc(var(--m) * 1.25));
+    position: fixed; bottom: 0; padding: 0; background: none; border: 0; }
+  .guide-hello.alpha .g-who:first-child { left: calc(var(--m) - var(--h) * 0.8); }
+  .guide-hello.alpha .g-who:last-child { right: calc(var(--m) - var(--h) * 0.78); }
+  .guide-hello.alpha .g-who .g-video, .guide-hello.alpha .g-who .g-girl.g-video { height: var(--h); max-width: none; }
+}
+
+.g-video.g-alpha { mix-blend-mode: normal; background: none; }

@@ -28,8 +28,21 @@ export function moodOf(text: string): Mood {
 const pic = (who: 'chlapec' | 'dievca', pose: string) => `/sprievodca/${who}-${pose}.webp`
 
 // Oživení sprievodcovia: video bez zvuku na bielom pozadí, biela sa stratí cez mix-blend-mode (hovorí hlas aplikácie)
+// Priehľadné video (WebM s alfa kanálom) vie Chrome, Edge a Firefox; Safari dostane MP4 na bielom pozadí
+function useAlpha() {
+  const [ok, setOk] = useState(false)
+  useEffect(() => {
+    try {
+      const safari = /^((?!chrome|android|crios|fxios).)*safari/i.test(navigator.userAgent)
+      setOk(!safari && !!document.createElement('video').canPlayType('video/webm; codecs="vp9"'))
+    } catch {}
+  }, [])
+  return ok
+}
+
 function GuideVideo({ who, alt, bust }: { who: 'chlapec' | 'dievca'; alt?: string; bust?: boolean }) {
   const f = `${who}-video${bust ? '-polpostava' : ''}`
+  const alpha = useAlpha()
   const ref = useRef<HTMLVideoElement>(null)
   useEffect(() => {
     const on = (e: Event) => {
@@ -42,7 +55,8 @@ function GuideVideo({ who, alt, bust }: { who: 'chlapec' | 'dievca'; alt?: strin
     return () => window.removeEventListener('objavko-hovori', on)
   }, [who])
   return (
-    <video ref={ref} className={`${who === 'chlapec' ? 'g-boy' : 'g-girl'} g-video`} src={`/sprievodca/${f}.mp4`} poster={`/sprievodca/${f}.webp`}
+    <video ref={ref} key={alpha ? 'a' : 'b'} className={`${who === 'chlapec' ? 'g-boy' : 'g-girl'} g-video ${alpha ? 'g-alpha' : ''}`}
+      src={`/sprievodca/${f}.${alpha ? 'webm' : 'mp4'}`} poster={`/sprievodca/${f}${alpha ? '-alfa' : ''}.webp`}
       muted loop playsInline preload="auto" aria-label={alt} role={alt ? 'img' : undefined} aria-hidden={alt ? undefined : true} />
   )
 }
@@ -146,8 +160,9 @@ export function GuideHello({ text, who = 'chlapec' }: { text: string; who?: 'chl
     return () => { clearTimeout(t); try { speechSynthesis.cancel() } catch {} }
   }, [text, who])
   const tell = (who: 'chlapec' | 'dievca') => { setLine(ABOUT[who]); speak(ABOUT[who], who) }
+  const alpha = useAlpha()
   return (
-    <div className="guide-hello">
+    <div className={`guide-hello ${alpha ? 'alpha' : ''}`}>
       <button type="button" className="g-who" onClick={() => tell('chlapec')} aria-label="Kto je Čarozvedko?">
         <GuideVideo who="chlapec" alt="Čarozvedko máva na pozdrav" />
       </button>
