@@ -230,3 +230,11 @@ th:first-child, td:first-child { text-align: left; }
 /* Text na úvode čitateľný aj nad výraznejším lesom */
 .hero { background: color-mix(in srgb, var(--surface) 78%, transparent); border-radius: var(--r); padding: 14px 18px; backdrop-filter: blur(3px); }
 .hero p { color: var(--ink); }
+/* Farebné dlaždice hier: tón farby hry a svetlý kruh, z ktorého obrázok vystúpi */
+.tile { background: linear-gradient(155deg, color-mix(in srgb, var(--c) 34%, var(--surface)) 0%, color-mix(in srgb, var(--c) 16%, var(--surface)) 100%); box-shadow: 0 2px 0 color-mix(in srgb, var(--c) 35%, transparent); }
+.tile::after { opacity: .28; }
+.tile .pic { align-self: flex-start; display: grid; place-items: center; width: 116px; height: 116px; border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--surface) 96%, transparent) 60%, color-mix(in srgb, var(--surface) 0%, transparent) 71%); }
+.tile .pic .ico { filter: drop-shadow(0 3px 4px rgba(0,0,0,.18)); }
+.tile p, .tile .stars { color: color-mix(in srgb, var(--ink) 78%, var(--c)); }
+.tile .pic .ico { width: 96px; height: 96px; }
