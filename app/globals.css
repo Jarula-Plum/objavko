@@ -369,3 +369,11 @@ th:first-child, td:first-child { text-align: left; }
 .yay { text-align: center; font-size: clamp(20px, 5vw, 28px); font-weight: 800; color: #1f4d2b; margin-top: 14px; animation: krok-pop .5s ease-out; }
 .yay .emo { width: 1.4em; height: 1.4em; vertical-align: -0.3em; }
 .namety-list > li > p { margin: 4px 0; }
+.krok-idle { display: inline-block; animation: krok-idle 1.4s ease-in-out infinite; }
+@keyframes krok-idle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px) rotate(-4deg); } }
+.krok-hop { display: inline-block; animation: krok-hop .5s ease-out; }
+@keyframes krok-hop { 0% { transform: translateY(0) scale(1); } 40% { transform: translateY(-22px) scale(1.15); } 80% { transform: translateY(2px) scale(.95, 1.05); } 100% { transform: translateY(0); } }
+.krok-arr { display: inline-block; transition: opacity .2s, transform .2s; }
+.krok-arr.gap { margin-left: 14px; }
+.krok-arr.done { opacity: .35; transform: scale(.85); }
+.opts.path .opt { box-shadow: 0 3px 0 color-mix(in srgb, var(--leaf) 30%, transparent); overflow: visible; }
