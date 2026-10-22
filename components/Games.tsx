@@ -219,7 +219,8 @@ const COLORS = [
 const LETTERS = 'ABCČDEFGHIJKLĽMNOPRSŠTUVZŽ'.split('')
 const FACES = [
   { e: '😀', n: 'veselú' }, { e: '😢', n: 'smutnú' }, { e: '😠', n: 'nahnevanú' },
-  { e: '😮', n: 'prekvapenú' }, { e: '😨', n: 'vystrašenú' }, { e: '😴', n: 'ospalú' },
+  { e: '😮', n: 'prekvapenú' }, { e: '😨', n: 'ustarostenú' }, { e: '😴', n: 'ospalú' },
+  { e: '\uE170', n: 'spokojnú' }, { e: '\uE171', n: 'hrdú' }, { e: '\uE172', n: 'znudenú' }, { e: '\uE173', n: 'hanblivú' },
 ]
 const MATERIALS = ['DREVO', 'KOV', 'SKLO', 'PAPIER', 'PLAST', 'LÁTKA']
 const THINGS = [
@@ -341,7 +342,13 @@ const SHOP = [{ e: '🍎', w: 'jablko' }, { e: '🥛', w: 'mlieko' }, { e: '🍞
 const coins = (list: number[]) => <span className="coins">{list.map((c, k) => <span key={k} className={`coin c${c}`}>{c}€</span>)}</span>
 const stack = (h: number, k?: number) => <span key={k} className="stack">{Array.from({ length: h }, (_, j) => <i key={j} />)}</span>
 
-const MOVES = ['vyskoč', 'tlieskni', 'urob drep', 'dupni nohou', 'zamávaj rukami ako vtáčik', 'skoč ako žabka', 'otoč sa dokola', 'natiahni sa k slniečku']
+// Pohyby so škriatkom, ktorý ich predvádza (public/skriatok/p-*.webp)
+const MOVES: { t: string; p?: string }[] = [
+  { t: 'vyskoč', p: 'skok' }, { t: 'tlieskni', p: 'tlieskaj' }, { t: 'urob drep', p: 'drep' }, { t: 'natiahni sa k slniečku', p: 'natiahni' },
+  { t: 'urob predklon', p: 'predklon' }, { t: 'kľakni si a postav sa', p: 'klak' }, { t: 'sadni si do tureckého sedu a postav sa', p: 'sed' },
+  { t: 'urob krok', p: 'chodza' }, { t: 'zabehni si na mieste', p: 'beh' }, { t: 'roztiahni ruky ako lietadlo a pripaž', p: 'lietadlo' },
+  { t: 'dupni nohou' }, { t: 'otoč sa dokola' },
+]
 
 // Úroveň podľa veku: 1 = 3–4 roky, 2 = 4–5 rokov, 3 = 5–6 rokov
 export type Level = 1 | 2 | 3
@@ -466,9 +473,9 @@ function baseRounds(id: Game['id'], theme: Theme, lv: Level): Round[] {
     return range.map((i) => {
       const n = [rand(1, 3), rand(2, 5), rand(3, 6)][lv - 1]
       const item = theme.items[Math.floor(Math.random() * theme.items.length)]
-      const m = moves[i]
+      const { t: m, p } = moves[i]
       return {
-        prompt: <><b>{m[0].toUpperCase() + m.slice(1)}</b> toľkokrát, koľko vidíš obrázkov</>, stage: Array(n).fill(item.e).join(''),
+        prompt: <>{p && <img className="pose" src={`/skriatok/p-${p}.webp`} alt="" />}<b>{m[0].toUpperCase() + m.slice(1)}</b> toľkokrát, koľko vidíš obrázkov</>, stage: Array(n).fill(item.e).join(''),
         speech: `Spočítaj obrázky a ${m} toľkokrát.`,
         options: [{ content: 'Hotovo ✓', correct: true, label: 'hotovo', word: true }],
       }

@@ -196,3 +196,4 @@ th:first-child, td:first-child { text-align: left; }
 /* Drevené ikonky na tlačidlách */
 .ui { width: 1.5em; height: 1.5em; vertical-align: -0.42em; margin: -4px 2px -4px -4px; }
 .back, .speak, .cta, .ghost { display: inline-flex; align-items: center; gap: 4px; }
+.prompt .pose { display: block; height: 120px; width: auto; margin: 0 auto 6px; }

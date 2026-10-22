@@ -13,6 +13,7 @@ export const OWN_PIC = {
   pasta: '\uE10F', uterak: '\uE110', hreben: '\uE111', kefa: '\uE112', vreckovka: '\uE113', umyvadlo: '\uE114',
   pohar: '\uE115', babika: '\uE116', 'drevene-auto': '\uE117', vlacik: '\uE118', kocky: '\uE119', obruc: '\uE11A',
   cmel: '\uE121', vazka: '\uE122', tamburina: '\uE123', triangel: '\uE124', xylofon: '\uE125', flauta: '\uE126', cinely: '\uE127', zahradnik: '\uE128', stolar: '\uE129', postar: '\uE12A', voda: '\uE12B', vajce: '\uE12C', jogurt: '\uE12D', ryza: '\uE12E', cestoviny: '\uE12F', ryba: '\uE130', stehno: '\uE131', stol: '\uE132', skrina: '\uE133', lampa: '\uE134', zrkadlo: '\uE135', hrncek: '\uE136', tanier: '\uE137', lepidlo: '\uE138', plastelina: '\uE139', 'papier-list': '\uE13A', pravitko: '\uE13B', guma: '\uE13C', struhadlo: '\uE13D', farmarka: '\uE13E', kuchar: '\uE13F', marakasy: '\uE140',
+  delfin: '\uE141', velryba: '\uE142', zralok: '\uE143', chobotnica: '\uE144', meduza: '\uE145', 'morsky-konik': '\uE146', hviezdica: '\uE147', krab: '\uE148', tulen: '\uE149', kapor: '\uE14A', pilka: '\uE14B', skrutkovac: '\uE14C', klieste: '\uE14D', 'francuzsky-kluc': '\uE14E', valcek: '\uE14F', lopata: '\uE150', hrable: '\uE151', motyka: '\uE152', tacky: '\uE153', krhla: '\uE154', skolka: '\uE155', nemocnica: '\uE156', lekaren: '\uE157', 'hasicska-stanica': '\uE158', 'policia-budova': '\uE159', posta: '\uE15A', kniznica: '\uE15B', pekaren: '\uE15C', stanica: '\uE15D', futbal: '\uE15E', svihadlo: '\uE15F', kuzel: '\uE160', kolky: '\uE161', 'plavecke-okuliare': '\uE162', 'plavacia-doska': '\uE163',
   zvrk: '\uE11B', lopatka: '\uE11C', bager: '\uE11D', vrtulnik: '\uE11E', vlak: '\uE11F', lod: '\uE120',
 } as const
 const OWN: Record<string, string> = {
@@ -35,11 +36,24 @@ const OWN: Record<string, string> = {
   '🍞': 'chlieb', '🥛': 'mlieko', '🧀': 'syr', '🍲': 'polievka', '🍚': 'ryza', '🍝': 'cestoviny', '🍗': 'stehno',
   '🪑': 'stolicka', '🛏️': 'postel', '🔑': 'kluc', '☂️': 'dazdnik', '🥄': 'lyzica', '🕰️': 'hodiny', '🪞': 'zrkadlo',
   '📚': 'kniha', '📖': 'kniha', '✏️': 'ceruzka', '🖍️': 'pastelky', '🖌️': 'stetec', '✂️': 'noznice', '🎒': 'ruksak',
+  '🐢': 'korytnacka', '🦞': 'rak', '🔨': 'kladivo', '🪴': 'kvetinac', '🏠': 'dom', '🏫': 'skola', '🏪': 'potraviny',
+  '🏀': 'basketbal', '🎾': 'raketa', '🎿': 'lyze', '⛸️': 'korcule', '🛷': 'sanky', '⛑️': 'prilba',
   '🦔': 'jez', '🐿️': 'vevericka', '🦊': 'liska', '🐇': 'zajac', '🦉': 'sova', '🐻': 'medved', '🦡': 'jazvec', '🐺': 'vlk', '🐗': 'diviak',
   ...Object.fromEntries(Object.entries(OWN_PIC).map(([n, c]) => [c, n])),
 }
+// Pocity ukazuje Jarkin škriatok (public/skriatok/e-*.webp), rovnaký v celej aplikácii
+export const FEEL_PIC = {
+  spokojnost: '\uE170', hrdost: '\uE171', nuda: '\uE172', hanblivost: '\uE173', rozpaky: '\uE174', pochybnost: '\uE175',
+} as const
+const FEEL: Record<string, string> = {
+  '😀': 'radost', '😢': 'smutok', '😠': 'hnev', '😨': 'strach', '😮': 'prekvapenie', '😴': 'unava',
+  ...Object.fromEntries(Object.entries(FEEL_PIC).map(([n, c]) => [c, n])),
+}
 const keyOf = (g: string) => [...g].map((c) => c.codePointAt(0)!.toString(16)).filter((h) => h !== 'fe0f').join('-')
-const OWN_KEYS = Object.fromEntries(Object.entries(OWN).map(([e, n]) => [keyOf(e), `/obrazky/${n}.webp`]))
+const OWN_KEYS = {
+  ...Object.fromEntries(Object.entries(OWN).map(([e, n]) => [keyOf(e), `/obrazky/${n}.webp`])),
+  ...Object.fromEntries(Object.entries(FEEL).map(([e, n]) => [keyOf(e), `/skriatok/e-${n}.webp`])),
+}
 const AVAILABLE = new Set<string>([...KEYS, ...Object.keys(OWN_KEYS)])
 const src = (k: string) => OWN_KEYS[k] ?? `/emoji/${k}.webp`
 const seg = typeof Intl !== 'undefined' && 'Segmenter' in Intl ? new Intl.Segmenter('sk', { granularity: 'grapheme' }) : null
