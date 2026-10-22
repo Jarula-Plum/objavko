@@ -26,6 +26,15 @@ export function moodOf(text: string): Mood {
 
 const pic = (who: 'chlapec' | 'dievca', pose: string) => `/sprievodca/${who}-${pose}.webp`
 
+// Oživený Čarozvedko: video bez zvuku na bielom pozadí, biela sa stratí cez mix-blend-mode (hovorí hlas aplikácie)
+function BoyVideo({ alt, bust }: { alt?: string; bust?: boolean }) {
+  const f = bust ? 'chlapec-video-polpostava' : 'chlapec-video'
+  return (
+    <video className="g-boy g-video" src={`/sprievodca/${f}.mp4`} poster={`/sprievodca/${f}.webp`}
+      autoPlay muted loop playsInline preload="auto" aria-label={alt} role={alt ? 'img' : undefined} aria-hidden={alt ? undefined : true} />
+  )
+}
+
 // Hlas: Čarozvedko hovorí mužským slovenským hlasom vo vyššej polohe, Čarozvedka ženským.
 // Pani učiteľka si môže na zariadení vybrať iný hlas, výšku a rýchlosť (uložené v prehliadači).
 export type VoiceSet = { voice?: string; pitch: number; rate: number }
@@ -90,7 +99,7 @@ export function GuideBar() {
   const bubble = mood === 'think' || mood === 'idle' ? '' : text
   return (
     <div className={`guide-bar m-${mood}`} aria-hidden="true">
-      <img key={`b${boy}`} src={pic('chlapec', boy)} alt="" className="g-boy" />
+      {mood === 'idle' || mood === 'think' ? <BoyVideo bust /> : <img key={`b${boy}`} src={pic('chlapec', boy)} alt="" className="g-boy" />}
       <div className={`g-bubble ${bubble ? 'on' : ''}`}>{bubble || '…'}</div>
       <img key={`g${girl}`} src={pic('dievca', girl)} alt="" className="g-girl" />
     </div>
@@ -109,7 +118,7 @@ export function GuideHello({ text }: { text: string }) {
   return (
     <div className="guide-hello">
       <button type="button" className="g-who" onClick={() => tell('chlapec')} aria-label="Kto je Čarozvedko?">
-        <img src={pic('chlapec', 'ahoj')} alt="Čarozvedko máva na pozdrav" className="g-boy" />
+        <BoyVideo alt="Čarozvedko máva na pozdrav" />
       </button>
       <div className="g-say">
         <button type="button" className="g-bubble on" onClick={() => speak(line, line === ABOUT.dievca ? 'dievca' : 'chlapec')}>{line}</button>

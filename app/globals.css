@@ -301,3 +301,8 @@ th:first-child, td:first-child { text-align: left; }
 .voice-pick label { display: flex; flex-direction: column; gap: 4px; font-weight: 700; font-size: 14px; }
 .voice-pick label.row { flex-direction: row; align-items: center; gap: 8px; margin-bottom: 8px; }
 .voice-pick select { max-width: 280px; padding: 6px; border-radius: 8px; }
+
+/* Oživený Čarozvedko (video na bielom pozadí) */
+.g-video { mix-blend-mode: multiply; background: #fff; height: 140px; width: auto; animation: none !important; filter: none !important; }
+.guide-hello .g-video { height: 200px; }
+@media (min-width: 900px) { .guide-bar .g-video { height: 180px; } .guide-hello .g-video { height: 310px; } }
