@@ -26,13 +26,13 @@ export const MONTHS: Month[] = [
 
 export const THEMES: Theme[] = [
   // September
-  { id: 'kto-prisiel', name: 'Kto to prišiel do škôlky', pic: '🧒', month: 9, week: 1, items: [
+  { id: 'kto-prisiel', img: '/obrazky/s-pozdrav.webp', name: 'Kto to prišiel do škôlky', pic: '🧒', month: 9, week: 1, items: [
     i('🧒', 'DIEŤA'), i('🧸', 'MACKO'), i('⚽', 'LOPTA'), i('🖍️', 'PASTELKA'), i('🧩', 'SKLADAČKA'), i('🎒', 'RUKSAK'), i('📚', 'KNIHA'), i('🥁', 'BUBON'),
   ] },
   { id: 'domcek', name: 'Domček, domček, kto v tebe býva', pic: '🏠', month: 9, week: 2, items: [
     i('🏠', 'DOM'), i('🚪', 'DVERE'), i('🛋️', 'KRESLO'), i('🛏️', 'POSTEĽ'), i('🐕', 'PES'), i('🐈', 'MAČKA'), i('🐹', 'KRČEK'), i('🐠', 'RYBKA'),
   ] },
-  { id: 'moj-den', name: 'Môj deň', pic: '⏰', month: 9, week: 3, items: [
+  { id: 'moj-den', img: '/skriatok/d-ranne-vstavanie.webp', name: 'Môj deň', pic: '⏰', month: 9, week: 3, items: [
     i('⏰', 'BUDÍK'), i('🪥', 'KEFKA'), i('🍞', 'CHLIEB'), i('🥛', 'MLIEKO'), i('🛁', 'VAŇA'), i('🛏️', 'POSTEĽ'), i('🌙', 'MESIAC'), i('☀️', 'SLNKO'),
   ] },
   { id: 'obec', name: 'Hviezdičky spoznávajú svoju obec', pic: '🏘️', month: 9, week: 4, items: [
@@ -63,7 +63,7 @@ export const THEMES: Theme[] = [
     i('\uE1E0', 'HLAVA'), i('👁️', 'OKO'), i('👂', 'UCHO'), i('👃', 'NOS'), i('👄', 'ÚSTA'), i('🦷', 'ZUBY'), i('👅', 'JAZYK'), i('✋', 'DLAŇ'),
     i('\uE1E2', 'LAKEŤ'), i('🦵', 'NOHA'), i('\uE1E1', 'CHODIDLO'), i('🧠', 'MOZOG'),
   ] },
-  { id: 'bacil', name: 'Premôžem bacila', pic: '🦠', month: 11, week: 2, items: [
+  { id: 'bacil', img: '/skriatok/d-umyvanie-ruk.webp', name: 'Premôžem bacila', pic: '🦠', month: 11, week: 2, items: [
     i('🦠', 'BACIL'), i('🧼', 'MYDLO'), i('🌡️', 'TEPLOMER'), i('💊', 'TABLETKA'), i('👩‍⚕️', 'LEKÁRKA'), i('🍋', 'CITRÓN'), i('🍯', 'MED'), i('🧣', 'ŠÁL'),
   ] },
   { id: 'vnimam', name: 'Vnímame svet', pic: '👂', month: 11, week: 3, items: [
@@ -76,10 +76,10 @@ export const THEMES: Theme[] = [
     i('🥦', 'BROKOLICA'), i('🍎', 'JABLKO', 2), i('🥕', 'MRKVA'), i('🥛', 'MLIEKO'), i('🍬', 'CUKRÍK'), i('🍟', 'HRANOLKY'), i('🍔', 'HAMBURGER'), i('🍭', 'LÍZANKA'), i('🍅', 'RAJČINA'), i('🫑', 'PAPRIKA'), i('🫐', 'ČUČORIEDKA'),
   ] },
   // December
-  { id: 'mikulas', name: 'Vitaj, vitaj Mikuláš', pic: '🎅', month: 12, week: 1, items: [
+  { id: 'mikulas', img: '/obrazky/mikulasska-cizma.webp', name: 'Vitaj, vitaj Mikuláš', pic: '🎅', month: 12, week: 1, items: [
     i('🎅', 'MIKULÁŠ'), i('😈', 'ČERT'), i('👼', 'ANJEL'), i('👢', 'ČIŽMA'), i('🎁', 'DARČEK'), i('🍬', 'CUKRÍK'), i('🍊', 'MANDARÍNKA'), i('🍫', 'ČOKOLÁDA'),
   ] },
-  { id: 'sneh', name: 'V krajine snehu a ľadu', pic: '❄️', month: 12, week: 2, items: [
+  { id: 'sneh', img: '/obrazky/snezenie.webp', name: 'V krajine snehu a ľadu', pic: '❄️', month: 12, week: 2, items: [
     i('⛄', 'SNEHULIAK'), i('❄️', 'VLOČKA'), i('🧊', 'ĽAD'), i('🛷', 'SÁNKY'), i('🧤', 'RUKAVICE'), i('🧣', 'ŠÁL'), i('🐧', 'TUČNIAK'), i('⛸️', 'KORČULE'),
   ] },
   { id: 'vianoce', name: 'Čas vianočný, od Lucie do Vianoc', pic: '🎄', month: 12, week: 3, items: [
@@ -92,13 +92,13 @@ export const THEMES: Theme[] = [
   { id: 'zvierata-zima', name: 'Zvieratká v zime', pic: '🦊', month: 1, week: 2, items: [
     i('🦊', 'LÍŠKA'), i('🐇', 'ZAJAC'), i('\uE108', 'SRNKA'), i('🐿️', 'VEVERIČKA'), i('🐻', 'MEDVEĎ'), i('🦔', 'JEŽ'), i('\uE1B7', 'SÝKORKA'), i('🦉', 'SOVA'),
   ] },
-  { id: 'zimne-sporty', name: 'Zimné športy', pic: '⛷️', month: 1, week: 3, items: [
+  { id: 'zimne-sporty', img: '/obrazky/sanky.webp', name: 'Zimné športy', pic: '⛷️', month: 1, week: 3, items: [
     i('⛷️', 'LYŽIAR'), i('🏒', 'HOKEJ'), i('⛸️', 'KORČULE'), i('🛷', 'SÁNKY'), i('🎿', 'LYŽE'), i('🥅', 'BRÁNKA'), i('🥇', 'MEDAILA'), i('🧤', 'RUKAVICE'),
   ] },
   { id: 'badam', name: 'Tvorím, bádam, objavujem', pic: '🔬', month: 1, week: 4, items: [
     i('🔬', 'MIKROSKOP'), i('🧲', 'MAGNET'), i('💡', 'ŽIAROVKA'), i('🔍', 'LUPA'), i('📷', 'FOTOAPARÁT'), i('🤖', 'ROBOT'), i('💻', 'POČÍTAČ'), i('⚖️', 'VÁHA'),
   ] },
-  { id: 'farby-tvary', name: 'Farby a tvary', pic: '🔷', month: 1, items: [
+  { id: 'farby-tvary', img: '/obrazky/kruh.webp', name: 'Farby a tvary', pic: '🔷', month: 1, items: [
     i('\uE1E3', 'KRUH'), i('\uE1E4', 'ŠTVOREC'), i('\uE1E5', 'TROJUHOLNÍK'), i('\uE1E6', 'OBDĹŽNIK'), i('\uE1E7', 'OVÁL'), i('\uE1E8', 'KOSOŠTVOREC'),
     i('\uE1E9', 'PÄŤUHOLNÍK'), i('\uE1EA', 'ŠESŤUHOLNÍK'), i('\uE1EB', 'GUĽA'), i('\uE1EC', 'KOCKA'), i('\uE1ED', 'VALEC'), i('\uE1EE', 'KUŽEĽ'),
     i('⭐', 'HVIEZDA'), i('❤️', 'SRDCE'), i('🌈', 'DÚHA'), i('🖍️', 'PASTELKA'),
@@ -111,11 +111,11 @@ export const THEMES: Theme[] = [
     i('👩‍⚕️', 'LEKÁRKA'), i('👨‍🚒', 'HASIČ'), i('👮', 'POLICAJT'), i('🧑‍🍳', 'KUCHÁR'), i('👩‍🌾', 'FARMÁRKA'), i('👩‍🏫', 'UČITEĽKA'), i('👷', 'STAVBÁR'), i('🧑‍🚀', 'KOZMONAUT', 3),
     i('🧑‍🎨', 'MALIAR'), i('💇', 'KADERNÍČKA'), i('\uE12A', 'POŠTÁR'), i('\uE128', 'ZÁHRADNÍK'), i('\uE129', 'STOLÁR'),
   ] },
-  { id: 'muzikanti', name: 'My sme malí muzikanti', pic: '🎵', month: 2, week: 3, items: [
+  { id: 'muzikanti', img: '/obrazky/gitara.webp', name: 'My sme malí muzikanti', pic: '🎵', month: 2, week: 3, items: [
     i('🥁', 'BUBON'), i('🎸', 'GITARA'), i('🎻', 'HUSLE'), i('🎹', 'KLAVÍR'), i('🎺', 'TRÚBKA'), i('🎷', 'SAXOFÓN'), i('🎤', 'MIKROFÓN'), i('🎵', 'NOTA'),
     i('\uE123', 'TAMBURÍNA'), i('\uE124', 'TRIANGEL'), i('\uE125', 'XYLOFÓN'), i('\uE126', 'FLAUTA'), i('🪗', 'AKORDEÓN'), i('\uE127', 'ČINELY'),
   ] },
-  { id: 'pri-vode', name: 'Zvieratká pri vode', pic: '🐸', month: 2, week: 4, items: [
+  { id: 'pri-vode', img: '/obrazky/kapor.webp', name: 'Zvieratká pri vode', pic: '🐸', month: 2, week: 4, items: [
     i('🐸', 'ŽABA'), i('🦆', 'KAČKA'), i('🐟', 'RYBA'), i('🦢', 'LABUŤ'), i('🦫', 'BOBOR'), i('🦦', 'VYDRA'), i('🐢', 'KORYTNAČKA'), i('🦞', 'RAK'), i('\uE14A', 'KAPOR'),
   ] },
   // Marec
@@ -125,10 +125,10 @@ export const THEMES: Theme[] = [
   { id: 'domace', name: 'Domáce zvieratká', pic: '🐄', month: 3, week: 2, items: [
     i('🐄', 'KRAVA'), i('🐖', 'PRASA'), i('🐑', 'OVCA'), i('🐐', 'KOZA'), i('🐓', 'KOHÚT'), i('🐎', 'KÔŇ'), i('🐈', 'MAČKA'), i('🐕', 'PES'), i('🐔', 'SLIEPKA'), i('\uE109', 'OSOL'), i('\uE10A', 'HUS'),
   ] },
-  { id: 'jar', name: 'Jarné prebúdzanie', pic: '🌷', month: 3, week: 3, items: [
+  { id: 'jar', img: '/obrazky/strom-jar.webp', name: 'Jarné prebúdzanie', pic: '🌷', month: 3, week: 3, items: [
     i('🌷', 'TULIPÁN'), i('🌱', 'KLÍČOK'), i('🐝', 'VČELA'), i('🦋', 'MOTÝĽ'), i('🐞', 'LIENKA'), i('🌼', 'KVET'), i('🐦', 'VTÁČIK'), i('🐣', 'KURIATKO'),
   ] },
-  { id: 'velka-noc', name: 'Veľká noc', pic: '🥚', month: 3, week: 4, items: [
+  { id: 'velka-noc', img: '/obrazky/velkonocny-kosik.webp', name: 'Veľká noc', pic: '🥚', month: 3, week: 4, items: [
     i('🥚', 'VAJÍČKO'), i('🐰', 'ZAJAČIK'), i('🐣', 'KURIATKO'), i('\uE214', 'KOŠÍK'), i('🌷', 'TULIPÁN'), i('🐑', 'BARANČEK'), i('💧', 'VODA'), i('🎀', 'STUŽKA'),
   ] },
   // Apríl
@@ -136,20 +136,20 @@ export const THEMES: Theme[] = [
     i('🌳', 'STROM'), i('🌲', 'SMREK'), i('🍄', 'HRIB'), i('🦊', 'LÍŠKA'), i('🦌', 'JELEŇ'), i('🦉', 'SOVA'), i('🐗', 'DIVIAK'), i('🐿️', 'VEVERIČKA'),
     i('\uE102', 'BREZA'), i('\uE103', 'ŠIŠKA'), i('\uE104', 'ŽALUĎ'), i('\uE105', 'PAPRAĎ'), i('\uE106', 'MUCHOTRÁVKA'), i('🦡', 'JAZVEC'), i('🐺', 'VLK'),
   ] },
-  { id: 'kvapka', name: 'Kvapka vody', pic: '💧', month: 4, week: 2, items: [
+  { id: 'kvapka', img: '/obrazky/dazd.webp', name: 'Kvapka vody', pic: '💧', month: 4, week: 2, items: [
     i('💧', 'KVAPKA'), i('🌧️', 'DAŽĎ'), i('☁️', 'OBLAK'), i('🌈', 'DÚHA'), i('🌊', 'MORE'), i('🧊', 'ĽAD'), i('☂️', 'DÁŽDNIK'), i('⛲', 'FONTÁNA'),
   ] },
   { id: 'vesmir', name: 'Naša Zem je guľatá, vesmír', pic: '🚀', month: 4, week: 3, items: [
     i('🌍', 'ZEM'), i('\uE18C', 'MESIAC'), i('\uE18B', 'SLNKO'), i('\uE18D', 'HVIEZDA'), i('🚀', 'RAKETA'), i('🪐', 'PLANÉTA'), i('🧑‍🚀', 'KOZMONAUT', 3), i('☄️', 'KOMÉTA'), i('\uE18F', 'DRUŽICA'), i('\uE190', 'ĎALEKOHĽAD'), i('\uE18E', 'ASTEROID'),
   ] },
-  { id: 'semienko', name: 'Od semienka k rastlinke', pic: '🌱', month: 4, week: 4, items: [
+  { id: 'semienko', img: '/obrazky/kvetinac.webp', name: 'Od semienka k rastlinke', pic: '🌱', month: 4, week: 4, items: [
     i('🌱', 'KLÍČOK'), i('🪴', 'KVETINÁČ'), i('🌻', 'SLNEČNICA'), i('🌳', 'STROM'), i('🌼', 'KVET'), i('🍃', 'LIST'), i('🌧️', 'DAŽĎ'), i('🌵', 'KAKTUS'),
   ] },
   { id: 'dejiny', name: 'Dejiny sveta', pic: '🦕', month: 4, items: [
     i('🦕', 'DINOSAURUS'), i('🦣', 'MAMUT'), i('🦴', 'KOSŤ'), i('🏰', 'HRAD'), i('🛡️', 'ŠTÍT'), i('👑', 'KORUNA'), i('🏛️', 'CHRÁM'), i('🌋', 'SOPKA'),
   ] },
   // Máj
-  { id: 'farby-sveta', name: 'Všetky farby sveta', pic: '🎨', month: 5, week: 1, items: [
+  { id: 'farby-sveta', img: '/obrazky/pastelky.webp', name: 'Všetky farby sveta', pic: '🎨', month: 5, week: 1, items: [
     i('🌈', 'DÚHA'), i('🎨', 'PALETA'), i('🖌️', 'ŠTETEC'), i('🖍️', 'PASTELKA'), i('🍓', 'JAHODA'), i('🍋', 'CITRÓN'), i('🥒', 'UHORKA'), i('🍆', 'BAKLAŽÁN'),
   ] },
   { id: 'rodina', name: 'Dnes má sviatok moja mama', pic: '👨‍👩‍👧', month: 5, week: 2, items: [
@@ -172,7 +172,7 @@ export const THEMES: Theme[] = [
   { id: 'vlast', name: 'Moja vlasť', pic: '🏔️', month: 6, week: 2, items: [
     i('🏔️', 'TATRY'), i('🏰', 'HRAD'), i('🏞️', 'RIEKA'), i('⛪', 'KOSTOL'), i('🎻', 'HUSLE'), i('💃', 'TANEČNICA'), i('🐻', 'MEDVEĎ'), i('🌲', 'SMREK'),
   ] },
-  { id: 'letne-sporty', name: 'Letné športy', pic: '🏊', month: 6, week: 3, items: [
+  { id: 'letne-sporty', img: '/obrazky/futbal.webp', name: 'Letné športy', pic: '🏊', month: 6, week: 3, items: [
     i('\uE15E', 'FUTBAL'), i('🚲', 'BICYKEL'), i('🏊', 'PLÁVANIE'), i('🎾', 'TENIS'), i('🏀', 'BASKETBAL'), i('🛴', 'KOLOBEŽKA'), i('🥇', 'MEDAILA'), i('🏐', 'VOLEJBAL'), i('\uE15F', 'ŠVIHADLO'), i('\uE161', 'KOLKY'),
   ] },
   { id: 'lucime', name: 'Lúčime sa so škôlkou', pic: '🎒', month: 6, week: 4, items: [
@@ -212,7 +212,7 @@ export const THEMES: Theme[] = [
     i('🪑', 'STOLIČKA'), i('\uE132', 'STÔL'), i('🛏️', 'POSTEĽ'), i('\uE133', 'SKRIŇA'), i('\uE134', 'LAMPA'), i('🕰️', 'HODINY'),
     i('🪞', 'ZRKADLO'), i('🔑', 'KĽÚČ'), i('☂️', 'DÁŽDNIK'), i('\uE136', 'HRNČEK'), i('🥄', 'LYŽICA'), i('\uE137', 'TANIER'),
   ] },
-  { id: 'potreby', img: '/obrazky/ruksak.webp', name: 'Kreslím, strihám, lepím', pic: '✂️', month: 0, items: [
+  { id: 'potreby', img: '/obrazky/lepidlo.webp', name: 'Kreslím, strihám, lepím', pic: '✂️', month: 0, items: [
     i('📖', 'KNIHA'), i('✏️', 'CERUZKA'), i('🖍️', 'PASTELKY'), i('🖌️', 'ŠTETEC'), i('✂️', 'NOŽNICE'), i('\uE138', 'LEPIDLO'),
     i('\uE139', 'PLASTELÍNA'), i('\uE13A', 'PAPIER'), i('\uE13B', 'PRAVÍTKO'), i('\uE13C', 'GUMA'), i('\uE13D', 'STRÚHADLO'), i('🎒', 'RUKSAK'),
   ] },
