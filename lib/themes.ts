@@ -56,11 +56,12 @@ export const THEMES: Theme[] = [
     i('🦔', 'JEŽ'), i('🐿️', 'VEVERIČKA'), i('🐻', 'MEDVEĎ'), i('🦊', 'LÍŠKA'), i('🦆', 'KAČKA'), i('🦢', 'LABUŤ'), i('\uE1BA', 'LASTOVIČKA'), i('🍄', 'HRIB'),
   ] },
   { id: 'separko', name: 'Ježko Separko', pic: '🦔', month: 10, items: [
-    i('🦔', 'JEŽKO'), i('🍾', 'FĽAŠA'), i('📰', 'NOVINY'), i('🥫', 'KONZERVA'), i('🗑️', 'KÔŠ'), i('\uE115', 'POHÁR'), i('📦', 'KRABICA'), i('🔋', 'BATÉRIA', 4),
+    i('🦔', 'JEŽKO'), i('🍾', 'FĽAŠA'), i('📰', 'NOVINY'), i('🥫', 'KONZERVA'), i('🗑️', 'KÔŠ'), i('\uE115', 'POHÁR'), i('📦', 'KRABICA'), i('🔋', 'BATÉRIA', 4), i('\uE216', 'ZEM'),
   ] },
   // November
-  { id: 'telo', name: 'Moje telo', pic: '🧍', month: 11, week: 1, items: [
-    i('👁️', 'OKO'), i('👂', 'UCHO'), i('👃', 'NOS'), i('👄', 'ÚSTA'), i('✋', 'RUKA'), i('🦵', 'NOHA'), i('🦷', 'ZUB'), i('🧠', 'MOZOG'),
+  { id: 'telo', img: '/obrazky/skriatok-telo.webp', name: 'Moje telo', pic: '🧍', month: 11, week: 1, items: [
+    i('\uE1E0', 'HLAVA'), i('👁️', 'OKO'), i('👂', 'UCHO'), i('👃', 'NOS'), i('👄', 'ÚSTA'), i('🦷', 'ZUBY'), i('👅', 'JAZYK'), i('✋', 'DLAŇ'),
+    i('\uE1E2', 'LAKEŤ'), i('🦵', 'NOHA'), i('\uE1E1', 'CHODIDLO'), i('🧠', 'MOZOG'),
   ] },
   { id: 'bacil', name: 'Premôžem bacila', pic: '🦠', month: 11, week: 2, items: [
     i('🦠', 'BACIL'), i('🧼', 'MYDLO'), i('🌡️', 'TEPLOMER'), i('💊', 'TABLETKA'), i('👩‍⚕️', 'LEKÁRKA'), i('🍋', 'CITRÓN'), i('🍯', 'MED'), i('🧣', 'ŠÁL'),
@@ -98,7 +99,9 @@ export const THEMES: Theme[] = [
     i('🔬', 'MIKROSKOP'), i('🧲', 'MAGNET'), i('💡', 'ŽIAROVKA'), i('🔍', 'LUPA'), i('📷', 'FOTOAPARÁT'), i('🤖', 'ROBOT'), i('💻', 'POČÍTAČ'), i('⚖️', 'VÁHA'),
   ] },
   { id: 'farby-tvary', name: 'Farby a tvary', pic: '🔷', month: 1, items: [
-    i('🔴', 'KRUH'), i('🟥', 'ŠTVOREC'), i('🔺', 'TROJUHOLNÍK'), i('⭐', 'HVIEZDA'), i('❤️', 'SRDCE'), i('🔷', 'KOSOŠTVOREC'), i('🌈', 'DÚHA'), i('🖍️', 'PASTELKA'),
+    i('\uE1E3', 'KRUH'), i('\uE1E4', 'ŠTVOREC'), i('\uE1E5', 'TROJUHOLNÍK'), i('\uE1E6', 'OBDĹŽNIK'), i('\uE1E7', 'OVÁL'), i('\uE1E8', 'KOSOŠTVOREC'),
+    i('\uE1E9', 'PÄŤUHOLNÍK'), i('\uE1EA', 'ŠESŤUHOLNÍK'), i('\uE1EB', 'GUĽA'), i('\uE1EC', 'KOCKA'), i('\uE1ED', 'VALEC'), i('\uE1EE', 'KUŽEĽ'),
+    i('⭐', 'HVIEZDA'), i('❤️', 'SRDCE'), i('🌈', 'DÚHA'), i('🖍️', 'PASTELKA'),
   ] },
   // Február
   { id: 'fasiangy', name: 'Fašiangy, Turíce', pic: '🎭', month: 2, week: 1, items: [
@@ -126,7 +129,7 @@ export const THEMES: Theme[] = [
     i('🌷', 'TULIPÁN'), i('🌱', 'KLÍČOK'), i('🐝', 'VČELA'), i('🦋', 'MOTÝĽ'), i('🐞', 'LIENKA'), i('🌼', 'KVET'), i('🐦', 'VTÁČIK'), i('🐣', 'KURIATKO'),
   ] },
   { id: 'velka-noc', name: 'Veľká noc', pic: '🥚', month: 3, week: 4, items: [
-    i('🥚', 'VAJÍČKO'), i('🐰', 'ZAJAČIK'), i('🐣', 'KURIATKO'), i('🧺', 'KOŠÍK'), i('🌷', 'TULIPÁN'), i('🐑', 'BARANČEK'), i('💧', 'VODA'), i('🎀', 'STUŽKA'),
+    i('🥚', 'VAJÍČKO'), i('🐰', 'ZAJAČIK'), i('🐣', 'KURIATKO'), i('\uE214', 'KOŠÍK'), i('🌷', 'TULIPÁN'), i('🐑', 'BARANČEK'), i('💧', 'VODA'), i('🎀', 'STUŽKA'),
   ] },
   // Apríl
   { id: 'les', name: 'Tajomstvo lesa', pic: '🌳', month: 4, week: 1, items: [
@@ -150,7 +153,7 @@ export const THEMES: Theme[] = [
     i('🌈', 'DÚHA'), i('🎨', 'PALETA'), i('🖌️', 'ŠTETEC'), i('🖍️', 'PASTELKA'), i('🍓', 'JAHODA'), i('🍋', 'CITRÓN'), i('🥒', 'UHORKA'), i('🍆', 'BAKLAŽÁN'),
   ] },
   { id: 'rodina', name: 'Dnes má sviatok moja mama', pic: '👨‍👩‍👧', month: 5, week: 2, items: [
-    i('👩', 'MAMA'), i('👨', 'OTEC'), i('👶', 'BÁBÄTKO'), i('👵', 'BABKA'), i('👴', 'DEDKO'), i('👧', 'SESTRA'), i('👦', 'BRAT'), i('💐', 'KYTICA'),
+    i('👩', 'MAMA'), i('👨', 'OTEC'), i('👶', 'BÁBÄTKO'), i('👵', 'BABKA'), i('👴', 'DEDKO'), i('👧', 'SESTRA'), i('👦', 'BRAT'), i('💐', 'KYTICA'), i('👨‍👩‍👧', 'RODINA'),
   ] },
   { id: 'luka', name: 'Tajomstvo rozkvitnutej lúky', pic: '🐞', month: 5, week: 3, items: [
     i('🐝', 'VČELA'), i('🐞', 'LIENKA'), i('🦋', 'MOTÝĽ'), i('🐜', 'MRAVEC'), i('🐛', 'HÚSENICA'), i('🦗', 'KOBYLKA'), i('🐌', 'SLIMÁK'), i('🌼', 'KVET'), i('\uE107', 'ZVONČEK'),
@@ -164,7 +167,7 @@ export const THEMES: Theme[] = [
   ] },
   // Jún
   { id: 'deti-sveta', name: 'MDD, všetky deti sveta', pic: '🌍', month: 6, week: 1, items: [
-    i('🌍', 'ZEMEGUĽA'), i('🧒', 'DIEŤA'), i('✈️', 'LIETADLO'), i('⚽', 'LOPTA'), i('🎈', 'BALÓN'), i('❤️', 'SRDCE'), i('🎂', 'TORTA'), i('🧳', 'KUFOR'),
+    i('🌍', 'ZEMEGUĽA'), i('🧒', 'DIEŤA'), i('✈️', 'LIETADLO'), i('⚽', 'LOPTA'), i('🎈', 'BALÓN'), i('❤️', 'SRDCE'), i('🎂', 'TORTA'), i('🧳', 'KUFOR'), i('\uE215', 'MACKO'),
   ] },
   { id: 'vlast', name: 'Moja vlasť', pic: '🏔️', month: 6, week: 2, items: [
     i('🏔️', 'TATRY'), i('🏰', 'HRAD'), i('🏞️', 'RIEKA'), i('⛪', 'KOSTOL'), i('🎻', 'HUSLE'), i('💃', 'TANEČNICA'), i('🐻', 'MEDVEĎ'), i('🌲', 'SMREK'),

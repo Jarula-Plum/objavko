@@ -1,5 +1,5 @@
 export type GameId =
-  | 'protiklady' | 'pismena' | 'slabiky' | 'pocty' | 'viac' | 'velkost' | 'postupnost' | 'nepatri' | 'tiene'
+  | 'protiklady' | 'predlozky' | 'pismena' | 'slabiky' | 'pocty' | 'viac' | 'velkost' | 'postupnost' | 'nepatri' | 'tiene'
   | 'najdi' | 'zive' | 'pexeso' | 'emocie' | 'spravanie' | 'materialy' | 'farby' | 'pohyb' | 'zdrave'
   | 'zacina' | 'dlhe' | 'kukucka' | 'poradie' | 'poloha' | 'zmizlo' | 'obdobia' | 'rezim' | 'profesie'
   | 'rytmus' | 'tony' | 'oblecenie' | 'hygiena' | 'rymy' | 'okienka' | 'posledna' | 'hlasky'
@@ -33,7 +33,7 @@ export type Area = (typeof AREAS)[number]
 // Každá hra patrí do jednej oblasti a v každej téme týždňa sa skladá z obrázkov danej témy.
 // Vlastné ilustrované ikonky (Higgsfield, od Jaruly) v public/ikony; ostatné hry majú 3D emoji
 const IKONY: string[] = [
-  'protiklady', 'materialy', 'postup', 'profesie', 'farby', 'rytmus', 'tony', 'pohyb', 'odtiene', 'zvuky', 'oblecenie', 'zdrave', 'hygiena',
+  'protiklady', 'predlozky', 'materialy', 'postup', 'profesie', 'farby', 'rytmus', 'tony', 'pohyb', 'odtiene', 'zvuky', 'oblecenie', 'zdrave', 'hygiena',
   'najdi', 'zive', 'pexeso', 'zmizlo', 'obdobia', 'emocie', 'empatia', 'spravanie', 'nakup', 'situacie', 'clovek', 'rezim',
   'poloha', 'poradie', 'postupnost', 'tiene', 'nepatri', 'krokovanie', 'schody', 'autobus', 'stavby', 'veza', 'parkety',
   'robotik', 'slabiky', 'rymy', 'okienka', 'pismena', 'dlhe', 'zacina', 'kukucka', 'posledna', 'hlasky', 'viac', 'velkost', 'pocty',
@@ -54,6 +54,7 @@ export const GAMES: Game[] = ([
   { id: 'viac', name: 'Kde je viac?', pic: '⚖️', color: 'var(--sun)', desc: 'Porovnaj dve skupiny obrázkov.', area: 'Matematika a práca s informáciami', std: 'Čísla a vzťahy: Pre dve skupiny určí, kde je viac, kde je menej alebo rovnako veľa predmetov podľa zisteného počtu v skupinách (do 10 prvkov v skupine).' },
   { id: 'protiklady', name: 'Protiklady', pic: '⚖️', color: 'var(--grape)', desc: 'Veľký či malý, plný či prázdny, deň či noc?', area: 'Jazyk a komunikácia', std: 'Lexikálna rovina: Pomenuje protiklady (veľký – malý, plný – prázdny, deň – noc).' },
   { id: 'velkost', name: 'Veľký a malý', pic: '🐘', color: 'var(--grape)', desc: 'Nájdi najväčší alebo najmenší obrázok.', area: 'Matematika a práca s informáciami', std: 'Geometria a meranie: Odhadom aj meraním porovná dva predmety podľa veľkosti určeného rozmeru.' },
+  { id: 'predlozky', name: 'Kde je lopta?', pic: '📦', color: 'var(--leaf)', desc: 'Nad, pod, v, pred, za alebo medzi?', area: 'Matematika a práca s informáciami', std: 'Geometria a meranie: Určí polohu predmetu voči inému predmetu (nad, pod, v, pred, za, vedľa, medzi).' },
   { id: 'poradie', name: 'Prvý, druhý, tretí', pic: '🥇', color: 'var(--sky)', desc: 'Ťukni na obrázok podľa poradia.', area: 'Matematika a práca s informáciami', std: 'Geometria a meranie: V usporiadanom rade určí objekt na základe slov prvý, druhý, tretí, štvrtý, posledný.' },
   { id: 'poloha', name: 'Hore, dole, vľavo, vpravo', pic: '🧭', color: 'var(--berry)', desc: 'Kde je obrázok?', area: 'Matematika a práca s informáciami', std: 'Geometria a meranie: Určí (označí) objekt na základe popisu polohy pomocou slov hore, dole, vpravo, vľavo, v strede.' },
   { id: 'postupnost', name: 'Čo bude ďalej?', pic: '🔁', color: 'var(--leaf)', desc: 'Pokračuj v rade obrázkov.', area: 'Matematika a práca s informáciami', std: 'Logika: Pokračuje vo vytvorenej postupnosti predmetov alebo nakreslenej postupnosti obrázkov.' },

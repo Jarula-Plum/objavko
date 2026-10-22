@@ -198,3 +198,8 @@ th:first-child, td:first-child { text-align: left; }
 .back, .speak, .cta, .ghost { display: inline-flex; align-items: center; gap: 4px; }
 .prompt .pose { display: block; height: 120px; width: auto; margin: 0 auto 6px; }
 .done-box .reward { width: 120px; height: 120px; animation: g-hop .8s ease-out; }
+/* Jarkine obrázky: väčší samostatný obrázok v úlohe, drevené číslice a scénky s krabicou a loptou */
+.stage > .emo:only-child { width: clamp(110px, 34vw, 170px); height: clamp(110px, 34vw, 170px); }
+.opt .emo.num { width: 1.3em; height: 1.3em; vertical-align: middle; }
+.opts.big .opt { padding: 6px; }
+.opts.big .opt .emo { width: clamp(84px, 24vw, 120px); height: clamp(84px, 24vw, 120px); }

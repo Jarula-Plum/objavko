@@ -212,6 +212,8 @@ function Memory({ game, theme, level, sound, onDone, onBack }: {
   )
 }
 
+// Jarkine drevené číslice 0–10 (public/obrazky/cislo-N.webp), väčšie čísla ostávajú textom
+const num = (n: number) => (n >= 0 && n <= 10 ? <img className="emo num" src={`/obrazky/cislo-${n}.webp`} alt={String(n)} draggable={false} /> : n)
 const NUM_WORDS = ['', 'jedna', 'dva', 'tri', 'štyri', 'päť', 'šesť', 'sedem', 'osem']
 const COLORS = [
   { n: 'červenú', v: '#E53935' }, { n: 'modrú', v: '#1E63D6' }, { n: 'zelenú', v: '#2E9D4F' },
@@ -241,11 +243,14 @@ const LIVE = new Set(('DIEŤA MAČKA PES KRČEK RYBKA BABKA DEDKO KOHÚT JEŽ JE
 const UNSURE = new Set(('JABLKO HRUŠKA HROZNO MRKVA ZEMIAK KUKURICA TEKVICA GAŠTAN CHLIEB MLIEKO KOLÁČ CITRÓN MED BROKOLICA ' +
   'CUKRÍK HRANOLKY HAMBURGER LÍZANKA MANDARÍNKA ČOKOLÁDA KOLÁČIK ŠIŠKA VAJÍČKO JAHODA UHORKA BAKLAŽÁN ČAJ CESNAK TORTA MELÓN ' +
   'ZMRZLINA KYTICA HRIB LIST KOSŤ BACIL DRAK VÍLA ČARODEJNÍK PRINCEZNÁ JEDNOROŽEC ANJEL ČERT MIKULÁŠ MAMUT DINOSAURUS OKO UCHO ' +
-  'NOS ÚSTA RUKA NOHA ZUB MOZOG JAZYK RODINA SNEHULIAK ROBOT VODA KVAPKA').split(' '))
+  'NOS ÚSTA RUKA NOHA ZUB ZUBY HLAVA DLAŇ LAKEŤ CHODIDLO ZEM MOZOG JAZYK RODINA SNEHULIAK ROBOT VODA KVAPKA').split(' '))
 const BEHAVIOUR = [
-  { e: '🤝', t: 'Podelím sa s kamarátom o hračky.', ok: true }, { e: '🧹', t: 'Pomôžem upratať hračky.', ok: true },
-  { e: '👋', t: 'Ráno pozdravím: Dobré ráno!', ok: true }, { e: '🙏', t: 'Poviem prosím a ďakujem.', ok: true },
-  { e: '🧼', t: 'Pred jedlom si umyjem ruky.', ok: true }, { e: '🤗', t: 'Utíšim smutného kamaráta.', ok: true },
+  { e: '\uE203', t: 'Podelím sa s kamarátom o pastelky.', ok: true }, { e: '\uE20A', t: 'Pomôžem upratať hračky.', ok: true },
+  { e: '\uE200', t: 'Ráno pozdravím: Dobré ráno!', ok: true }, { e: '🙏', t: 'Poviem prosím a ďakujem.', ok: true },
+  { e: '🧼', t: 'Pred jedlom si umyjem ruky.', ok: true }, { e: '\uE206', t: 'Utíšim smutného kamaráta.', ok: true },
+  { e: '\uE205', t: 'Keď kamarát spadne, pomôžem mu vstať.', ok: true }, { e: '\uE201', t: 'Požičiam kamarátovi knižku.', ok: true },
+  { e: '\uE204', t: 'S kamarátom staviame spolu z kociek.', ok: true }, { e: '\uE207', t: 'Pomôžem kamarátovi odniesť ťažkú krabicu.', ok: true },
+  { e: '\uE209', t: 'Hodím kamarátovi loptu, aby sa hral s nami.', ok: true }, { e: '\uE20B', t: 'Ukážem pani učiteľke, čo som nakreslila.', ok: true },
   { e: '🚦', t: 'Cez cestu idem len na zelenú.', ok: true }, { e: '👂', t: 'Počúvam, keď niekto rozpráva.', ok: true },
   { e: '👊', t: 'Udriem kamaráta.', ok: false }, { e: '🍬', t: 'Vezmem kamarátovi cukrík bez opýtania.', ok: false },
   { e: '😡', t: 'Kričím a búcham dverami.', ok: false }, { e: '⚽', t: 'Vybehnem za loptou na cestu.', ok: false },
@@ -279,11 +284,15 @@ const ORDINALS = ['prvý', 'druhý', 'tretí', 'štvrtý']
 const SPOTS = [
   { a: 'h', n: 'hore' }, { a: 'd', n: 'dole' }, { a: 'l', n: 'vľavo' }, { a: 'p', n: 'vpravo' }, { a: 's', n: 'v strede' },
 ]
+const PLACES = [
+  { e: '\uE1F0', w: 'nad krabicou' }, { e: '\uE1F1', w: 'pod stolíkom' }, { e: '\uE1F2', w: 'v krabici' }, { e: '\uE1F3', w: 'pred krabicou' },
+  { e: '\uE1F4', w: 'za krabicou' }, { e: '\uE1F5', w: 'vľavo od krabice' }, { e: '\uE1F6', w: 'vpravo od krabice' }, { e: '\uE1F7', w: 'medzi krabicami' },
+]
 const SEASONS = [
-  { n: 'jar', i: '🌷', things: [{ e: '🌷', w: 'tulipán' }, { e: '🐣', w: 'kuriatko' }, { e: '🌱', w: 'klíček' }, { e: '🥚', w: 'veľkonočné vajíčko' }] },
-  { n: 'leto', i: '☀️', things: [{ e: '🏖️', w: 'pláž' }, { e: '🍉', w: 'melón' }, { e: '🩱', w: 'plavky' }, { e: '🍦', w: 'zmrzlina' }] },
-  { n: 'jeseň', i: '🍂', things: [{ e: '🍂', w: 'padajúce lístie' }, { e: '🎃', w: 'tekvica' }, { e: '🌰', w: 'gaštan' }, { e: '🪁', w: 'šarkan' }] },
-  { n: 'zima', i: '❄️', things: [{ e: '⛄', w: 'snehuliak' }, { e: '🛷', w: 'sánky' }, { e: '🎄', w: 'vianočný stromček' }, { e: '🧤', w: 'rukavice' }] },
+  { n: 'jar', i: '\uE210', things: [{ e: '🌷', w: 'tulipán' }, { e: '🐣', w: 'kuriatko' }, { e: '🌱', w: 'klíček' }, { e: '\uE214', w: 'veľkonočný košík' }] },
+  { n: 'leto', i: '\uE211', things: [{ e: '🏖️', w: 'pláž' }, { e: '🍉', w: 'melón' }, { e: '🩱', w: 'plavky' }, { e: '🍦', w: 'zmrzlina' }] },
+  { n: 'jeseň', i: '\uE212', things: [{ e: '🍂', w: 'padajúce lístie' }, { e: '🎃', w: 'tekvica' }, { e: '🌰', w: 'gaštan' }, { e: '🪁', w: 'šarkan' }] },
+  { n: 'zima', i: '\uE213', things: [{ e: '⛄', w: 'snehuliak' }, { e: '🛷', w: 'sánky' }, { e: '🎄', w: 'vianočný stromček' }, { e: '🧤', w: 'rukavice' }] },
 ]
 const DAY = [
   { e: '\uE1D2', t: 'Ráno vstávame z postieľky.', when: 0 }, { e: '\uE1D3', t: 'Raňajkujeme.', when: 0 }, { e: '\uE1D4', t: 'Ideme do škôlky.', when: 0 },
@@ -374,7 +383,7 @@ const rand = (lo: number, hi: number) => lo + Math.floor(Math.random() * (hi - l
 const nums = (lo: number, hi: number) => Array.from({ length: hi - lo + 1 }, (_, k) => lo + k)
 
 // Hry, ktoré si náročnosť nastavujú samy; ostatným sa podľa úrovne uberie počet možností
-const OWN_LEVELS: Game['id'][] = ['protiklady', 'krokovanie', 'robotik', 'rymy', 'pocty', 'slabiky', 'viac', 'velkost', 'poradie', 'poloha', 'pohyb', 'rytmus']
+const OWN_LEVELS: Game['id'][] = ['protiklady', 'predlozky', 'krokovanie', 'robotik', 'rymy', 'pocty', 'slabiky', 'viac', 'velkost', 'poradie', 'poloha', 'pohyb', 'rytmus']
 
 function makeRounds(id: Game['id'], theme: Theme, lv: Level): Round[] {
   const rounds = baseRounds(id, theme, lv)
@@ -396,7 +405,7 @@ function baseRounds(id: Game['id'], theme: Theme, lv: Level): Round[] {
       const choice = shuffle([n, ...pick(nums(1, top).filter((x) => x !== n), lv)])
       return {
         prompt: <>Koľko ich je? <b>Spočítaj</b></>, stage: Array(n).fill(item.e).join(''), speech: 'Spočítaj, koľko ich je.',
-        options: choice.map((x) => ({ content: x, correct: x === n, label: NUM_WORDS[x] })),
+        options: choice.map((x) => ({ content: num(x), correct: x === n, label: NUM_WORDS[x] })),
       }
     })
   }
@@ -646,6 +655,14 @@ function baseRounds(id: Game['id'], theme: Theme, lv: Level): Round[] {
       }
     })
   }
+  if (id === 'predlozky') {
+    // Jarkina krabica a lopta: kde je lopta? Mladší len nad, pod, v; starší aj pred, za, vľavo, vpravo, medzi
+    const pool = PLACES.slice(0, [3, 5, 8][lv - 1])
+    return shuffle([...pool, ...pool]).slice(0, 5).map((t) => ({
+      prompt: <>Ťukni, kde je lopta <b>{t.w}</b></>, speech: `Ťukni na obrázok, kde je lopta ${t.w}.`,
+      options: shuffle([t, ...pick(pool.filter((x) => x !== t), lv === 1 ? 1 : 2)]).map((x) => ({ content: x.e, correct: x === t, label: `lopta ${x.w}` })), row: 'big',
+    }))
+  }
   if (id === 'zmizlo') {
     return range.map((i) => {
       const pics = pick(theme.items, lv + 2)
@@ -662,9 +679,14 @@ function baseRounds(id: Game['id'], theme: Theme, lv: Level): Round[] {
     })
   }
   if (id === 'obdobia') {
-    return range.map(() => {
+    return range.map((k) => {
       const se = pick(SEASONS, 1)[0]
       const th = pick(se.things, 1)[0]
+      // Dve kolá ukážu Jarkin strom v danom ročnom období, ostatné vec, ktorá k nemu patrí
+      if (k === 0 || k === 3) return {
+        prompt: <>Aké <b>ročné obdobie</b> je na strome?</>, stage: se.i, speech: 'Pozri sa na strom. Aké ročné obdobie je na obrázku?',
+        options: SEASONS.map((x) => ({ content: x.n, correct: x === se, label: x.n, word: true })),
+      }
       return {
         prompt: <>Kedy to býva? <b>{th.w}</b></>, stage: th.e, speech: `${th.w}. V ktorom ročnom období to býva?`,
         options: SEASONS.map((x) => ({ content: `${x.i} ${x.n}`, correct: x === se, label: x.n, word: true })),
@@ -769,7 +791,7 @@ function baseRounds(id: Game['id'], theme: Theme, lv: Level): Round[] {
         prompt: <>V autobuse {start === 1 ? 'je' : 'sú'} {start}. {tell[0].toUpperCase() + tell.slice(1)}. <b>Koľko ich je teraz v autobuse?</b></>,
         stage: <span className="bus"><span>🚌 {who.e.repeat(start) || '–'}</span>{lines.map((x, k) => <span key={k}>{x > 0 ? '⬆️' : '⬇️'} {verb(x)} {who.e.repeat(Math.abs(x))}</span>)}</span>,
         speech: `V autobuse ${start === 1 ? 'je' : 'sú'} ${start}. Na zastávke ${tell}. Koľko ich je teraz v autobuse?`,
-        options: choice.map((x) => ({ content: x, correct: x === total, label: String(x) })),
+        options: choice.map((x) => ({ content: num(x), correct: x === total, label: String(x) })),
       }
     })
   }

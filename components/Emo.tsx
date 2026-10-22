@@ -16,6 +16,15 @@ export const OWN_PIC = {
   delfin: '\uE141', velryba: '\uE142', zralok: '\uE143', chobotnica: '\uE144', meduza: '\uE145', 'morsky-konik': '\uE146', hviezdica: '\uE147', krab: '\uE148', tulen: '\uE149', kapor: '\uE14A', pilka: '\uE14B', skrutkovac: '\uE14C', klieste: '\uE14D', 'francuzsky-kluc': '\uE14E', valcek: '\uE14F', lopata: '\uE150', hrable: '\uE151', motyka: '\uE152', tacky: '\uE153', krhla: '\uE154', skolka: '\uE155', nemocnica: '\uE156', lekaren: '\uE157', 'hasicska-stanica': '\uE158', 'policia-budova': '\uE159', posta: '\uE15A', kniznica: '\uE15B', pekaren: '\uE15C', stanica: '\uE15D', futbal: '\uE15E', svihadlo: '\uE15F', kuzel: '\uE160', kolky: '\uE161', 'plavecke-okuliare': '\uE162', 'plavacia-doska': '\uE163',
   pomaranc: '\uE180', marhula: '\uE181', cernica: '\uE182', malina: '\uE183', cvikla: '\uE184', karfiol: '\uE185', kapusta: '\uE186', salat: '\uE187', por: '\uE188', fazula: '\uE189', cuketa: '\uE18A', 'slnko-vesmir': '\uE18B', 'mesiac-vesmir': '\uE18C', hviezda: '\uE18D', asteroid: '\uE18E', druzica: '\uE18F', dalekohlad: '\uE190',
   'velke-jablko': '\uE1A0', 'male-jablko': '\uE1A1', 'dlha-ceruzka': '\uE1A2', 'kratka-ceruzka': '\uE1A3', 'vysoka-veza': '\uE1A4', 'nizka-veza': '\uE1A5', 'siroka-stuha': '\uE1A6', 'uzka-stuha': '\uE1A7', 'plny-pohar': '\uE1A8', 'prazdny-pohar': '\uE1A9', 'otvorena-kniha': '\uE1AA', 'zatvorena-kniha': '\uE1AB', 'cista-cizma': '\uE1AC', 'spinava-cizma': '\uE1AD', 'mokry-uterak': '\uE1AE', 'suchy-uterak': '\uE1AF', 'tvrdy-kamen': '\uE1B0', 'makky-vankus': '\uE1B1', 'horuci-hrncek': '\uE1B2', 'studeny-hrncek': '\uE1B3', den: '\uE1B4', noc: '\uE1B5', vrabec: '\uE1B6', sykorka: '\uE1B7', kos: '\uE1B8', cervienka: '\uE1B9', lastovicka: '\uE1BA', bocian: '\uE1BB', holub: '\uE1BC', straka: '\uE1BD', vrana: '\uE1BE', datel: '\uE1BF', truhlica: '\uE1C0', kristal: '\uE1C1', lucerna: '\uE1C2',
+  hlava: '\uE1E0', chodidlo: '\uE1E1', lakat: '\uE1E2',
+  kruh: '\uE1E3', stvorec: '\uE1E4', trojuholnik: '\uE1E5', obdlznik: '\uE1E6', oval: '\uE1E7', kosostvorec: '\uE1E8',
+  patuholnik: '\uE1E9', sestuholnik: '\uE1EA', gula: '\uE1EB', 'kocka-teleso': '\uE1EC', valec: '\uE1ED', 'kuzel-teleso': '\uE1EE',
+  'poloha-nad': '\uE1F0', 'poloha-pod': '\uE1F1', 'poloha-v': '\uE1F2', 'poloha-pred': '\uE1F3', 'poloha-za': '\uE1F4',
+  'poloha-vlavo': '\uE1F5', 'poloha-vpravo': '\uE1F6', 'poloha-medzi': '\uE1F7',
+  's-pozdrav': '\uE200', 's-kniha': '\uE201', 's-pastelka': '\uE202', 's-delenie': '\uE203', 's-stavanie': '\uE204', 's-pomoc': '\uE205',
+  's-utecha': '\uE206', 's-nesieme': '\uE207', 's-rozhovor': '\uE208', 's-lopta': '\uE209', 's-upratovanie': '\uE20A', 's-ucitelka': '\uE20B',
+  'strom-jar': '\uE210', 'strom-leto': '\uE211', 'strom-jesen': '\uE212', 'strom-zima': '\uE213', 'velkonocny-kosik': '\uE214',
+  'macko-balon': '\uE215', 'den-zeme': '\uE216',
   zvrk: '\uE11B', lopatka: '\uE11C', bager: '\uE11D', vrtulnik: '\uE11E', vlak: '\uE11F', lod: '\uE120',
 } as const
 const OWN: Record<string, string> = {
@@ -44,6 +53,8 @@ const OWN: Record<string, string> = {
   '🥔': 'zemiak', '🥦': 'brokolica', '🧄': 'cesnak', '🍆': 'baklazan', '🫛': 'hrach',
   '🌍': 'zem', '🚀': 'raketa-vesmir', '🪐': 'planeta', '🧑‍🚀': 'kozmonaut', '☄️': 'kometa',
   '🦢': 'labut',
+  '👁️': 'oko', '👂': 'ucho', '👃': 'nos', '👄': 'usta', '👅': 'jazyk', '🦷': 'zuby', '✋': 'dlan', '🦵': 'noha', '🧍': 'skriatok-telo',
+  '❓': 'otaznik', '🎂': 'torta', '🎭': 'maska', '🎄': 'stromcek', '👢': 'mikulasska-cizma', '👨‍👩‍👧': 'rodina',
   '🦔': 'jez', '🐿️': 'vevericka', '🦊': 'liska', '🐇': 'zajac', '🦉': 'sova', '🐻': 'medved', '🦡': 'jazvec', '🐺': 'vlk', '🐗': 'diviak',
   ...Object.fromEntries(Object.entries(OWN_PIC).map(([n, c]) => [c, n])),
 }
