@@ -154,6 +154,27 @@ const printSheet = (c: HTMLCanvasElement | null, title: string) => {
   im.onload = () => window.print()
 }
 
+// Tlač omaľovánky na celú stranu A4 (na výšku): obrysy kreslíme priamo z predlôh vo vysokom rozlíšení
+const printColoring = async (pics: string[], level: Level, title: string) => {
+  const PW = 1600, PH = 2200 // pomer strany A4 bez okrajov a nadpisu
+  const c = document.createElement('canvas'); c.width = PW; c.height = PH
+  const ctx = c.getContext('2d')!
+  ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, PW, PH)
+  const ims = await Promise.all(pics.map((e) => load(lineUrl(e))))
+  const n = ims.length
+  const slots = n === 1 ? [[0, (PH - PW) / 2, PW]]
+    : n === 2 ? [[(PW - 1080) / 2, 0, 1080], [(PW - 1080) / 2, 1100, 1080]]
+    : [[0, 300, 790], [810, 300, 790], [0, 1110, 790], [810, 1110, 790]]
+  const thick = [3, 2, 1][level - 1]
+  ctx.globalCompositeOperation = 'multiply'
+  ims.forEach((im, k) => {
+    if (!im || !slots[k]) return
+    const [x, y, sz] = slots[k]
+    for (let dx = -thick; dx <= thick; dx++) for (let dy = -thick; dy <= thick; dy++) ctx.drawImage(im, x + dx, y + dy, sz, sz)
+  })
+  printSheet(c, title)
+}
+
 // ---------- Omaľovánky ----------
 export function Coloring({ game, theme, level, onDone, onBack }: {
   game: Game; theme: Theme; level: Level; onDone: (s: number) => void; onBack: () => void
@@ -193,7 +214,7 @@ export function Coloring({ game, theme, level, onDone, onBack }: {
       <Sheet draw={draw} tool={tool} color={color} size={[34, 24, 16][level - 1]} sheetKey={`c${page}-${level}`} onReady={(c) => { linesRef.current = c }} />
       <div className="row sheet-actions">
         <button className="ghost" onClick={() => setPage((p) => p + 1)}><Ui n="dalej" /> Iný obrázok</button>
-        <button className="ghost" onClick={() => printSheet(linesRef.current, `Omaľovánka: ${names.join(', ')}`)}>{emo('🖨️')} Vytlačiť</button>
+        <button className="ghost" onClick={() => printColoring(items.map((x) => x.e), level, `Omaľovánka: ${names.join(', ')}`)}>{emo('🖨️')} Vytlačiť</button>
         <button className="cta" onClick={() => onDone(3)}>{emo('✅')} Hotovo</button>
       </div>
     </Frame>

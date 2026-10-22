@@ -260,8 +260,9 @@ th:first-child, td:first-child { text-align: left; }
   body > *:not(#print-sheet) { display: none !important; }
   body::before { display: none !important; }
   #print-sheet { display: block !important; text-align: center; }
-  #print-sheet h1 { font-family: var(--display); font-size: 22pt; margin: 0 0 8mm; }
-  #print-sheet img { width: 180mm; height: 180mm; }
+  @page { size: A4 portrait; margin: 8mm; }
+  #print-sheet h1 { font-family: var(--display); font-size: 14pt; margin: 0 0 3mm; }
+  #print-sheet img { display: block; margin: 0 auto; max-width: 194mm; max-height: 268mm; width: auto; height: auto; }
 }
 
 /* Zdravotné cvičenie a námety pre pani učiteľku */
