@@ -9,6 +9,10 @@ import KEYS from '@/lib/emoji-keys.json'
 export const OWN_PIC = {
   slivka: '\uE101', breza: '\uE102', siska: '\uE103', zalud: '\uE104', paprad: '\uE105',
   muchotravka: '\uE106', zvoncek: '\uE107', srnka: '\uE108',
+  osol: '\uE109', hus: '\uE10A', sukna: '\uE10B', sveter: '\uE10C', plastenka: '\uE10D', ciapka: '\uE10E',
+  pasta: '\uE10F', uterak: '\uE110', hreben: '\uE111', kefa: '\uE112', vreckovka: '\uE113', umyvadlo: '\uE114',
+  pohar: '\uE115', babika: '\uE116', 'drevene-auto': '\uE117', vlacik: '\uE118', kocky: '\uE119', obruc: '\uE11A',
+  zvrk: '\uE11B', lopatka: '\uE11C', bager: '\uE11D', vrtulnik: '\uE11E', vlak: '\uE11F', lod: '\uE120',
 } as const
 const OWN: Record<string, string> = {
   '🍎': 'jablko', '🍐': 'hruska', '🍓': 'jahoda', '🫐': 'cucoriedka', '🍋': 'citron', '🥕': 'mrkva', '🫑': 'paprika',
@@ -16,6 +20,12 @@ const OWN: Record<string, string> = {
   '🌳': 'dub', '🌲': 'smrek', '🍂': 'javor', '🌰': 'gastan', '🍄': 'hrib',
   '☀️': 'slnko', '⛅': 'polojasno', '🌤️': 'polojasno', '☁️': 'oblaky', '🌧️': 'dazd', '🌦️': 'prehanka', '⛈️': 'burka',
   '🌨️': 'snezenie', '💨': 'vietor', '🌫️': 'hmla', '🌈': 'duha', '🌙': 'mesiac', '🌡️': 'teplomer',
+  '🐄': 'krava', '🐎': 'kon', '🐑': 'ovca', '🐐': 'koza', '🐖': 'prasa', '🐔': 'sliepka', '🐓': 'kohut', '🦆': 'kacica',
+  '🐕': 'pes', '🐈': 'macka', '🚗': 'auto', '🚌': 'autobus', '🚑': 'sanitka', '✈️': 'lietadlo', '⛵': 'plachetnica', '🚲': 'bicykel',
+  '🚒': 'hasici', '🚓': 'policia',
+  '👕': 'tricko', '👖': 'nohavice', '🩳': 'kratasy', '👗': 'saty', '🧥': 'bunda', '🧣': 'sal', '🧤': 'rukavice', '🥾': 'cizmy',
+  '🪥': 'kefka', '🧼': 'mydlo', '🧻': 'papier', '🚿': 'sprcha',
+  '⚽': 'lopta', '🧸': 'macko', '🧩': 'puzzle', '🪁': 'sarkan', '🪣': 'vedierko',
   '🦔': 'jez', '🐿️': 'vevericka', '🦊': 'liska', '🐇': 'zajac', '🦉': 'sova', '🐻': 'medved', '🦡': 'jazvec', '🐺': 'vlk', '🐗': 'diviak',
   ...Object.fromEntries(Object.entries(OWN_PIC).map(([n, c]) => [c, n])),
 }

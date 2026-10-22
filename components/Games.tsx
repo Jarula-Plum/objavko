@@ -227,7 +227,7 @@ const THINGS = [
   { e: '🥄', w: 'lyžica', m: 'KOV' }, { e: '🔑', w: 'kľúč', m: 'KOV' }, { e: '🔨', w: 'kladivo', m: 'KOV' }, { e: '🪙', w: 'minca', m: 'KOV' },
   { e: '🍾', w: 'fľaša', m: 'SKLO' }, { e: '🪟', w: 'okno', m: 'SKLO' }, { e: '👓', w: 'okuliare', m: 'SKLO' }, { e: '🥛', w: 'pohár', m: 'SKLO' },
   { e: '📰', w: 'noviny', m: 'PAPIER' }, { e: '📖', w: 'kniha', m: 'PAPIER' }, { e: '✉️', w: 'obálka', m: 'PAPIER' }, { e: '📦', w: 'krabica', m: 'PAPIER' },
-  { e: '🥤', w: 'pohárik', m: 'PLAST' }, { e: '🪣', w: 'vedierko', m: 'PLAST' }, { e: '🧸', w: 'hračka', m: 'PLAST' }, { e: '🪥', w: 'kefka na zuby', m: 'PLAST' },
+  { e: '\uE115', w: 'pohárik', m: 'PLAST' }, { e: '🪣', w: 'vedierko', m: 'PLAST' }, { e: '🧸', w: 'hračka', m: 'PLAST' }, { e: '🪥', w: 'kefka na zuby', m: 'PLAST' },
   { e: '🧦', w: 'ponožka', m: 'LÁTKA' }, { e: '👕', w: 'tričko', m: 'LÁTKA' }, { e: '🧣', w: 'šál', m: 'LÁTKA' }, { e: '🧤', w: 'rukavice', m: 'LÁTKA' },
 ]
 // Človek a príroda: živé bytosti; jedlo, časti tela a rozprávkové bytosti sa v hre Živé či neživé nepýtame
@@ -305,7 +305,7 @@ const WEATHER = [
 const HYGIENE = [
   { e: '🚽', t: 'Po použití toalety si umyjem ruky. Čo potrebujem?', ok: { e: '🧼', w: 'mydlo' } },
   { e: '🦷', t: 'Ráno a večer si čistím zuby. Čo potrebujem?', ok: { e: '🪥', w: 'zubná kefka' } },
-  { e: '🤧', t: 'Mám nádchu a musím sa vysmrkať. Čo potrebujem?', ok: { e: '🧻', w: 'vreckovka' } },
+  { e: '🤧', t: 'Mám nádchu a musím sa vysmrkať. Čo potrebujem?', ok: { e: '\uE113', w: 'vreckovka' } },
   { e: '🛁', t: 'Vo vani si umývam vlasy. Čo potrebujem?', ok: { e: '🧴', w: 'šampón' } },
   { e: '💅', t: 'Mám dlhé nechty. Čo potrebujem?', ok: { e: '✂️', w: 'nožničky' } },
 ]
@@ -880,7 +880,7 @@ function baseRounds(id: Game['id'], theme: Theme, lv: Level): Round[] {
 type OrderItem = { content: ReactNode; label: string }
 type OrderRound = { prompt: ReactNode; speech: string; items: OrderItem[]; tower?: boolean }
 const STEPS = [
-  [{ e: '💧', w: 'Pustím vodu.' }, { e: '🧼', w: 'Namydlím si ruky.' }, { e: '💦', w: 'Opláchnem ruky.' }, { e: '🧻', w: 'Utriem si ruky.' }],
+  [{ e: '💧', w: 'Pustím vodu.' }, { e: '🧼', w: 'Namydlím si ruky.' }, { e: '💦', w: 'Opláchnem ruky.' }, { e: '\uE110', w: 'Utriem si ruky.' }],
   [{ e: '🕳️', w: 'Vykopem jamku.' }, { e: '🌰', w: 'Vložím semienko.' }, { e: '💧', w: 'Polejem ho.' }, { e: '🌱', w: 'Vyrastie klíček.' }],
   [{ e: '🥚', w: 'Vajíčko.' }, { e: '🐣', w: 'Kuriatko sa liahne.' }, { e: '🐥', w: 'Kuriatko rastie.' }, { e: '🐔', w: 'Sliepka.' }],
   [{ e: '🍞', w: 'Vezmem chlieb.' }, { e: '🧈', w: 'Natriem maslo.' }, { e: '🧀', w: 'Dám naň syr.' }, { e: '😋', w: 'Zjem ho.' }],

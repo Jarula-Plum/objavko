@@ -7,7 +7,7 @@ export type Item = { e: string; w: string; s?: number }
 export type Theme = { id: string; name: string; pic: string; img?: string; month: number; week?: number; items: Item[] }
 export type Month = { n: number; name: string; title: string }
 
-// Znaky \uE101 až \uE108 sú Jarkine obrázky bez emoji (slivka, breza, šiška, žaluď, papraď, muchotrávka, zvonček, srnka), pozri OWN_PIC v Emo.tsx
+// Znaky \uE101 až \uE120 sú Jarkine obrázky bez vlastného emoji (slivka, breza, srnka, sukňa, hrebeň...), pozri OWN_PIC v Emo.tsx
 const i = (e: string, w: string, s?: number): Item => (s ? { e, w, s } : { e, w })
 
 export const MONTHS: Month[] = [
@@ -43,7 +43,7 @@ export const THEMES: Theme[] = [
   ] },
   // Október
   { id: 'vetricek', name: 'Fúkaj, fúkaj vetríčku', pic: '🍂', month: 10, week: 1, items: [
-    i('🍂', 'LIST'), i('🪁', 'ŠARKAN'), i('💨', 'VIETOR'), i('☂️', 'DÁŽDNIK'), i('🌧️', 'DAŽĎ'), i('☁️', 'OBLAK'), i('🌈', 'DÚHA'), i('🧥', 'KABÁT'), i('🌫️', 'HMLA'), i('⛈️', 'BÚRKA'),
+    i('🍂', 'LIST'), i('🪁', 'ŠARKAN'), i('💨', 'VIETOR'), i('☂️', 'DÁŽDNIK'), i('🌧️', 'DAŽĎ'), i('☁️', 'OBLAK'), i('🌈', 'DÚHA'), i('🧥', 'BUNDA'), i('🌫️', 'HMLA'), i('⛈️', 'BÚRKA'),
   ] },
   { id: 'starki', name: 'Na návšteve u starkých', pic: '👵', month: 10, week: 2, items: [
     i('👵', 'BABKA'), i('👴', 'DEDKO'), i('🏡', 'CHALUPA'), i('🐓', 'KOHÚT'), i('🐈', 'MAČKA'), i('🍎', 'JABLKO', 2), i('🧶', 'KLBKO'), i('🥧', 'KOLÁČ'),
@@ -55,7 +55,7 @@ export const THEMES: Theme[] = [
     i('🦔', 'JEŽ'), i('🐿️', 'VEVERIČKA'), i('🐻', 'MEDVEĎ'), i('🦊', 'LÍŠKA'), i('🦆', 'KAČKA'), i('🦢', 'LABUŤ'), i('🐦', 'LASTOVIČKA'), i('🍄', 'HRIB'),
   ] },
   { id: 'separko', name: 'Ježko Separko', pic: '🦔', month: 10, items: [
-    i('🦔', 'JEŽKO'), i('🍾', 'FĽAŠA'), i('📰', 'NOVINY'), i('🥫', 'KONZERVA'), i('🗑️', 'KÔŠ'), i('🥤', 'POHÁR'), i('📦', 'KRABICA'), i('🔋', 'BATÉRIA', 4),
+    i('🦔', 'JEŽKO'), i('🍾', 'FĽAŠA'), i('📰', 'NOVINY'), i('🥫', 'KONZERVA'), i('🗑️', 'KÔŠ'), i('\uE115', 'POHÁR'), i('📦', 'KRABICA'), i('🔋', 'BATÉRIA', 4),
   ] },
   // November
   { id: 'telo', name: 'Moje telo', pic: '🧍', month: 11, week: 1, items: [
@@ -117,7 +117,7 @@ export const THEMES: Theme[] = [
     i('📚', 'KNIHA'), i('👑', 'KORUNA'), i('🐉', 'DRAK'), i('🏰', 'HRAD'), i('🧚', 'VÍLA'), i('🧙', 'ČARODEJNÍK'), i('👸', 'PRINCEZNÁ'), i('🦄', 'JEDNOROŽEC'),
   ] },
   { id: 'domace', name: 'Domáce zvieratká', pic: '🐄', month: 3, week: 2, items: [
-    i('🐄', 'KRAVA'), i('🐖', 'PRASA'), i('🐑', 'OVCA'), i('🐐', 'KOZA'), i('🐓', 'KOHÚT'), i('🐎', 'KÔŇ'), i('🐈', 'MAČKA'), i('🐕', 'PES'),
+    i('🐄', 'KRAVA'), i('🐖', 'PRASA'), i('🐑', 'OVCA'), i('🐐', 'KOZA'), i('🐓', 'KOHÚT'), i('🐎', 'KÔŇ'), i('🐈', 'MAČKA'), i('🐕', 'PES'), i('🐔', 'SLIEPKA'), i('\uE109', 'OSOL'), i('\uE10A', 'HUS'),
   ] },
   { id: 'jar', name: 'Jarné prebúdzanie', pic: '🌷', month: 3, week: 3, items: [
     i('🌷', 'TULIPÁN'), i('🌱', 'KLÍČOK'), i('🐝', 'VČELA'), i('🦋', 'MOTÝĽ'), i('🐞', 'LIENKA'), i('🌼', 'KVET'), i('🐦', 'VTÁČIK'), i('🐣', 'KURIATKO'),
@@ -183,6 +183,22 @@ export const THEMES: Theme[] = [
   ] },
   { id: 'srdiecko', img: '/ikony/tema-srdiecko.webp', name: 'Čo cíti moje srdiečko a čo to tvoje?', pic: '💛', month: 0, items: [
     i('💛', 'SRDIEČKO'), i('😀', 'RADOSŤ'), i('😢', 'SMÚTOK'), i('😠', 'HNEV'), i('😨', 'STRACH'), i('😮', 'PREKVAPENIE'), i('🤗', 'OBJATIE'), i('😴', 'ÚNAVA'),
+  ] },
+  { id: 'doprava', img: '/obrazky/vlak.webp', name: 'Doprava okolo nás', pic: '🚆', month: 0, items: [
+    i('🚗', 'AUTO', 2), i('🚌', 'AUTOBUS', 3), i('\uE11F', 'VLAK'), i('✈️', 'LIETADLO'), i('\uE11E', 'VRTUĽNÍK'), i('\uE120', 'LOĎ'),
+    i('⛵', 'PLACHETNICA'), i('🚲', 'BICYKEL'), i('🚑', 'SANITKA'), i('\uE11D', 'BAGER'),
+  ] },
+  { id: 'oblecenie', img: '/obrazky/sveter.webp', name: 'Moje oblečenie', pic: '👕', month: 0, items: [
+    i('👕', 'TRIČKO'), i('👖', 'NOHAVICE'), i('🩳', 'KRAŤASY'), i('\uE10B', 'SUKŇA'), i('👗', 'ŠATY'), i('\uE10C', 'SVETER'),
+    i('🧥', 'BUNDA'), i('\uE10D', 'PLÁŠTENKA'), i('\uE10E', 'ČIAPKA'), i('🧣', 'ŠÁL'), i('🧤', 'RUKAVICE'), i('🥾', 'ČIŽMY'),
+  ] },
+  { id: 'cistotka', img: '/obrazky/kefka.webp', name: 'Čistotka: umývam sa sám', pic: '🧼', month: 0, items: [
+    i('🪥', 'KEFKA'), i('\uE10F', 'PASTA'), i('🧼', 'MYDLO'), i('\uE110', 'UTERÁK'), i('\uE111', 'HREBEŇ'), i('\uE112', 'KEFA'),
+    i('\uE113', 'VRECKOVKA'), i('🚿', 'SPRCHA'), i('\uE114', 'UMÝVADLO'), i('\uE115', 'POHÁR'),
+  ] },
+  { id: 'hracky', img: '/obrazky/macko.webp', name: 'Moje hračky', pic: '🧸', month: 0, items: [
+    i('⚽', 'LOPTA'), i('🧸', 'MACKO'), i('\uE116', 'BÁBIKA'), i('\uE117', 'AUTÍČKO'), i('\uE118', 'VLÁČIK'), i('\uE119', 'KOCKY'),
+    i('🧩', 'SKLADAČKA'), i('🪁', 'ŠARKAN'), i('\uE11A', 'OBRUČ'), i('\uE11B', 'ZVRK'), i('🪣', 'VEDIERKO'), i('\uE11C', 'LOPATKA'),
   ] },
 ]
 
