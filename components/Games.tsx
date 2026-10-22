@@ -4,24 +4,11 @@ import { useEffect, useState, type ReactNode } from 'react'
 import { type Game } from '@/lib/games'
 import { THEMES, firstLetter, rhymeKey, sounds, syllables, type Item, type Theme } from '@/lib/themes'
 import { Stars, Ui, emo, picUrl } from './Emo'
-import { GuideBar, cheer, moodOf } from './Guide'
+import { GuideBar, cheer, moodOf, speak } from './Guide'
 
 export function say(text: string) {
   cheer(moodOf(text), text)
-  try {
-    if (!('speechSynthesis' in window)) return
-    speechSynthesis.cancel()
-    const u = new SpeechSynthesisUtterance(text)
-    u.lang = 'sk-SK'
-    // Hlas chlapca: prednostne mužský slovenský hlas (Filip, Lukáš) s vyššou výškou, aby znel detsky
-    const sk = speechSynthesis.getVoices().filter((v) => v.lang?.toLowerCase().startsWith('sk'))
-    const male = sk.find((v) => /filip|luk[aá]s|male|muž/i.test(v.name))
-    const voice = male ?? sk[0]
-    if (voice) u.voice = voice
-    u.rate = 0.95
-    u.pitch = male ? 1.45 : 1.25
-    speechSynthesis.speak(u)
-  } catch {}
+  speak(text, 'chlapec')
 }
 
 const shuffle = <T,>(a: T[]) => {

@@ -19,11 +19,11 @@ html, body { margin: 0; }
 body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.5; }
 /* Lesné pozadie (ilustrácia od Jaruly) so svetlým závojom, aby text ostal čitateľný */
 body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
-  background: linear-gradient(var(--veil), var(--veil)), url(/les-maly.webp) center / cover no-repeat; }
-@media (min-width: 900px) { body::before { background-image: linear-gradient(var(--veil), var(--veil)), url(/les.webp); } }
-:root { --veil: rgba(238, 243, 248, .72); }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --veil: rgba(20, 26, 39, .78); } }
-:root[data-theme="dark"] { --veil: rgba(20, 26, 39, .78); }
+  background: radial-gradient(ellipse 100% 90% at 50% 45%, var(--veil) 55%, var(--veil-edge) 100%), url(/les-maly.webp) center / cover no-repeat; }
+@media (min-width: 900px) { body::before { background-image: radial-gradient(ellipse 70% 75% at 50% 45%, var(--veil) 40%, var(--veil-edge) 100%), url(/les.webp); } }
+:root { --veil: rgba(238, 243, 248, .72); --veil-edge: rgba(238, 243, 248, .06); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --veil: rgba(20, 26, 39, .78); --veil-edge: rgba(20, 26, 39, .25); } }
+:root[data-theme="dark"] { --veil: rgba(20, 26, 39, .78); --veil-edge: rgba(20, 26, 39, .25); }
 a { color: var(--sky); }
 h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; text-wrap: balance; }
 button { font: inherit; color: inherit; cursor: pointer; }
@@ -175,18 +175,22 @@ th:first-child, td:first-child { text-align: left; }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 
 /* Sprievodcovia: Čarozvedko a Čarozvedka */
-.guide-bar { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; margin-top: auto; min-height: 104px; }
-.guide-bar img { height: 104px; width: auto; animation: g-pop .35s ease-out; }
+.guide-bar { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; margin-top: auto; min-height: 140px; }
+.guide-bar img { height: 140px; width: auto; animation: g-pop .35s ease-out; }
 .guide-bar.m-joy img, .guide-bar.m-wow img { animation: g-hop .5s ease-out; }
 .guide-bar.m-try .g-boy { animation: g-wiggle .5s ease-out; }
 .g-bubble { flex: 1; max-width: 340px; align-self: center; text-align: center; font-family: var(--head); font-weight: 800; font-size: 20px;
   background: var(--soft); border: 2px solid var(--line); border-radius: 18px; padding: 8px 12px; opacity: 0; transform: scale(.9); transition: opacity .2s, transform .2s; }
 .g-bubble.on { opacity: 1; transform: none; }
 .guide-hello { display: flex; align-items: flex-end; justify-content: center; gap: 10px; margin: 4px 0 14px; }
-.guide-hello img { height: 170px; width: auto; filter: drop-shadow(0 4px 8px rgba(0,0,0,.15)); }
+.guide-hello img { height: 180px; width: auto; filter: drop-shadow(0 4px 8px rgba(0,0,0,.15)); }
 .guide-hello .g-boy { animation: g-wave 2.4s ease-in-out infinite; transform-origin: 50% 100%; }
-.guide-hello .g-bubble { flex: 0 1 260px; }
-@media (min-width: 900px) { .guide-bar img { height: 130px; } .guide-hello img { height: 220px; } }
+.guide-hello .g-say { flex: 0 1 280px; min-width: 150px; display: flex; flex-direction: column; align-items: center; gap: 6px; align-self: center; }
+.guide-hello .g-bubble { max-width: none; cursor: pointer; color: var(--ink); font-size: clamp(15px, 3.6vw, 20px); }
+.g-who { border: 0; background: none; padding: 0; cursor: pointer; flex: none; }
+.g-who:active img { transform: scale(.96); }
+.g-hint { font-size: 13px; font-weight: 800; color: var(--ink); text-align: center; background: color-mix(in srgb, var(--surface) 80%, transparent); border-radius: 999px; padding: 2px 10px; }
+@media (min-width: 900px) { .guide-bar { min-height: 180px; } .guide-bar img { height: 180px; } .guide-hello img { height: 290px; } }
 @keyframes g-pop { from { transform: translateY(8px) scale(.94); opacity: .4; } }
 @keyframes g-hop { 40% { transform: translateY(-14px); } }
 @keyframes g-wiggle { 25% { transform: rotate(-6deg); } 75% { transform: rotate(6deg); } }
@@ -217,3 +221,12 @@ th:first-child, td:first-child { text-align: left; }
 .kid-edit .ed { color: var(--sky); font-weight: 800; font-size: 13px; padding: 4px 8px; }
 .kid-edit[open] > summary .ed { opacity: .5; }
 .kid-edit .field { margin-top: 8px; }
+/* Čo najväčšie obrázky v hrách, aby sa ešte všetko zmestilo na obrazovku */
+.stage { font-size: clamp(46px, 11vw, 80px); }
+.opt:has(> .emo:only-child) { padding: 6px; }
+.opts:not(.path) .opt > .emo:only-child { width: clamp(76px, 22vw, 170px); height: clamp(76px, 22vw, 170px); vertical-align: 0; }
+.opts:not(.path) .opt > .emo.num:only-child { width: clamp(64px, 17vw, 100px); height: clamp(64px, 17vw, 100px); }
+.opt.word .emo { width: 1.5em; height: 1.5em; }
+/* Text na úvode čitateľný aj nad výraznejším lesom */
+.hero { background: color-mix(in srgb, var(--surface) 78%, transparent); border-radius: var(--r); padding: 14px 18px; backdrop-filter: blur(3px); }
+.hero p { color: var(--ink); }
