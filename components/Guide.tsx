@@ -1,5 +1,6 @@
 'use client'
 
+import { NAHRATE, VETY } from '@/lib/hlas'
 import { useEffect, useState } from 'react'
 
 // Sprievodcovia: Čarozvedko (chlapec) a Čarozvedka (dievča)
@@ -50,8 +51,17 @@ export const skVoices = () => {
   try { return speechSynthesis.getVoices().filter((v) => v.lang?.toLowerCase().startsWith('sk')) } catch { return [] }
 }
 
+let playing: HTMLAudioElement | null = null
 export function speak(text: string, who: 'chlapec' | 'dievca' = 'chlapec') {
   try {
+    playing?.pause(); playing = null
+    const rec = VETY[text.trim()]
+    if (rec && NAHRATE.has(rec.file)) {
+      try { speechSynthesis.cancel() } catch {}
+      playing = new Audio(`/hlas/${rec.file}`)
+      playing.play().catch(() => {})
+      return
+    }
     if (!('speechSynthesis' in window)) return
     speechSynthesis.cancel()
     const u = new SpeechSynthesisUtterance(text)

@@ -7,16 +7,18 @@ import { AREAS, GAMES, type Game } from '@/lib/games'
 import { MONTHS, THEMES, currentTheme, themeOf } from '@/lib/themes'
 import { Finished, GameView, LEVELS, type Level } from './Games'
 import { Icon, Stars, Ui, emo } from './Emo'
-import { GuideHello } from './Guide'
+import { GuideHello, speak } from './Guide'
 import { Metodika } from './Metodika'
 import { VoicePicker } from './VoicePicker'
 import { CVIKY, NAMETY } from '@/lib/namety'
+import { PIESNE } from '@/lib/piesne'
 
 // Poradové číslo týždňa (pondelok až nedeľa) od roku 1970
 const weekNo = () => Math.floor((Date.now() / 864e5 - 4 + new Date().getTimezoneOffset() / -1440) / 7)
 
 const TIPS = [
   { id: 'riekanka', name: 'Zdravotné cvičenia', desc: 'Riekanka s cvikmi pre 3 vekové skupiny.', img: '/ikony/zdravotne.webp', color: 'var(--leaf)' },
+  { id: 'piesne', name: 'Piesne a riekanky', desc: 'Ľudové a detské piesne, riekanky k téme.', img: '/ikony/tony.webp', color: 'var(--berry)' },
   { id: 'ranne', name: 'Ranné aktivity', desc: 'Čo robiť ráno pri príchode detí.', img: '/skriatok/d-ranne-vstavanie.webp', color: 'var(--sun)' },
   { id: 'hry', name: 'Hry a herné činnosti', desc: 'Námety, čo sa hrať k téme.', img: '/skriatok/d-hra-s-kockami.webp', color: 'var(--grape)' },
   { id: 'pohyb', name: 'Pohybové hry', desc: 'Hry s vysvetlením pravidiel.', img: '/ikony/pohyb.webp', color: 'var(--sky)' },
@@ -100,6 +102,20 @@ export default function Play({ classId, className, kids, initialBest }: {
       <section className="namety-view" style={{ ['--c' as string]: t.color }}>
         <button className="back" onClick={() => setTip(null)}><Ui n="spat" /> Späť</button>
         <div className="namety-head"><Icon pic="" img={t.img} /><div><h2>{t.name}</h2><span>Téma: {theme.name}</span></div></div>
+        {tip === 'piesne' && PIESNE[theme.id] && (
+          <>
+            <h3>Piesne</h3>
+            <ul className="namety-list">{PIESNE[theme.id].s.map(([n, o, t]) => (
+              <li key={n}><b>{n}</b><span className="rule">{o}</span>{t && <p className="verse-text">{t}</p>}</li>
+            ))}</ul>
+            <h3>Riekanky</h3>
+            <ul className="namety-list">{PIESNE[theme.id].r.map(([n, t]) => (
+              <li key={n}><b>{n}</b><p className="verse-text">{t}</p>
+                <button type="button" className="ghost" onClick={() => speak(t, 'dievca')}>{emo('🔊')} Prečítaj</button></li>
+            ))}</ul>
+            <p className="note">Pri ľudových a detských piesňach uvádzame názov, text nájdete v spevníku. Nové pesničky a riekanky sú napísané pre Objavko.</p>
+          </>
+        )}
         {tip === 'ranne' && <ul className="namety-list">{n.r.map((x) => <li key={x}>{x}</li>)}</ul>}
         {tip === 'hry' && <ul className="namety-list">{n.h.map(([a, b]) => <li key={a}><b>{a}</b>{b}</li>)}</ul>}
         {tip === 'pohyb' && <ul className="namety-list">{n.p.map(([a, b]) => <li key={a}><b>{a}</b><span className="rule">Pravidlá:</span> {b}</li>)}</ul>}
