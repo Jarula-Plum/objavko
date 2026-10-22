@@ -6,7 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { AREAS, GAMES, type Game } from '@/lib/games'
 import { MONTHS, THEMES, currentTheme, themeOf } from '@/lib/themes'
 import { Finished, GameView, LEVELS, type Level } from './Games'
-import { Stars, emo } from './Emo'
+import { Icon, Stars, emo } from './Emo'
 
 // Poradové číslo týždňa (pondelok až nedeľa) od roku 1970
 const weekNo = () => Math.floor((Date.now() / 864e5 - 4 + new Date().getTimezoneOffset() / -1440) / 7)
@@ -112,7 +112,7 @@ export default function Play({ classId, className, kids, initialBest }: {
         ))}
       </select>
       <div className="theme-now">
-        <span aria-hidden="true">{emo(theme.pic)}</span>
+        <span aria-hidden="true"><Icon pic={theme.pic} img={theme.img} /></span>
         <div>
           <strong>{theme.name}</strong>
           <span>{emo(theme.items.map((x) => x.e).join(' '))}</span>
@@ -127,7 +127,7 @@ export default function Play({ classId, className, kids, initialBest }: {
               const v = best[kid.id]?.[g.id] ?? 0
               return (
                 <button key={g.id} className="tile" style={{ ['--c' as string]: g.color }} onClick={() => { setGame(g); setRound((r) => r + 1) }}>
-                  <span className="pic">{emo(g.pic)}</span>
+                  <span className="pic"><Icon pic={g.pic} img={g.img} /></span>
                   <h3>{g.name}</h3>
                   <p>{g.desc}</p>
                   <span className="stars">{v ? <Stars n={v} /> : 'Ešte nehrané'}</span>

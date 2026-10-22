@@ -4,7 +4,7 @@ import Logo from '@/components/Logo'
 import { requireUser } from '@/lib/supabase/server'
 import { AREAS, AVATARS, GAMES, bestStars } from '@/lib/games'
 import { addChild, deleteClass, removeChild, renameClass } from '../../actions'
-import { Stars, emo } from '@/components/Emo'
+import { Icon, Stars, emo } from '@/components/Emo'
 
 type Props = { params: Promise<{ id: string }> }
 
@@ -63,7 +63,7 @@ export default async function ClassPage({ params }: Props) {
                 <h3>{area}</h3>
                 <ul>
                   {GAMES.filter((g) => g.area === area).map((g) => (
-                    <li key={g.id}><strong>{emo(g.pic)} {g.name}</strong> <span>· {g.std}</span></li>
+                    <li key={g.id}><strong><Icon pic={g.pic} img={g.img} /> {g.name}</strong> <span>· {g.std}</span></li>
                   ))}
                 </ul>
               </div>

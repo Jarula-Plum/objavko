@@ -17,6 +17,13 @@
 * { box-sizing: border-box; }
 html, body { margin: 0; }
 body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.5; }
+/* Lesné pozadie (ilustrácia od Jaruly) so svetlým závojom, aby text ostal čitateľný */
+body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(var(--veil), var(--veil)), url(/les-maly.webp) center / cover no-repeat; }
+@media (min-width: 900px) { body::before { background-image: linear-gradient(var(--veil), var(--veil)), url(/les.webp); } }
+:root { --veil: rgba(238, 243, 248, .72); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --veil: rgba(20, 26, 39, .78); } }
+:root[data-theme="dark"] { --veil: rgba(20, 26, 39, .78); }
 a { color: var(--sky); }
 h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; text-wrap: balance; }
 button { font: inherit; color: inherit; cursor: pointer; }
@@ -95,6 +102,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .opt.held { border-color: var(--sky); box-shadow: 0 0 0 4px color-mix(in srgb, var(--sky) 35%, transparent); }
 .stars-img { display: inline-flex; gap: 1px; vertical-align: middle; }
 .emo.off { opacity: .22; filter: grayscale(1); }
+.ico { display: inline-block; width: 1.3em; height: 1.3em; object-fit: contain; vertical-align: -0.3em; }
+.tile .pic .ico { width: 84px; height: 84px; }
+.theme-now .ico { width: 48px; height: 48px; }
+.label { text-shadow: 0 0 6px var(--bg), 0 0 2px var(--bg); }
 .stds { margin-top: 14px; }
 .stds summary { cursor: pointer; font-weight: 800; }
 .stds h3 { font-size: 15px; margin: 14px 0 4px; }

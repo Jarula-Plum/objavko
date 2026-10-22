@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Logo from '@/components/Logo'
 import { GAMES } from '@/lib/games'
-import { emo } from '@/components/Emo'
+import { Icon } from '@/components/Emo'
 
 export default function Home() {
   return (
@@ -20,7 +20,7 @@ export default function Home() {
       <div className="grid">
         {GAMES.map((g) => (
           <div key={g.id} className="tile" style={{ ['--c' as string]: g.color }}>
-            <span className="pic">{emo(g.pic)}</span>
+            <span className="pic"><Icon pic={g.pic} img={g.img} /></span>
             <h3>{g.name}</h3>
             <p>{g.desc}</p>
             <span className="stars">{g.area}</span>

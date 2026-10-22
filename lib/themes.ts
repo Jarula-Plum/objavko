@@ -4,7 +4,7 @@
 
 export type Item = { e: string; w: string; s?: number }
 // week = poradie témy v mesiaci podľa triednej pracovnej verzie ŠkVP; témy bez week sú navyše z celého ŠkVP.
-export type Theme = { id: string; name: string; pic: string; month: number; week?: number; items: Item[] }
+export type Theme = { id: string; name: string; pic: string; img?: string; month: number; week?: number; items: Item[] }
 export type Month = { n: number; name: string; title: string }
 
 const i = (e: string, w: string, s?: number): Item => (s ? { e, w, s } : { e, w })
@@ -173,13 +173,13 @@ export const THEMES: Theme[] = [
     i('☀️', 'SLNKO'), i('🍉', 'MELÓN'), i('🍦', 'ZMRZLINA'), i('🩱', 'PLAVKY'), i('🐚', 'MUŠĽA'), i('🕶️', 'OKULIARE'), i('⛵', 'LOĎ'), i('⛺', 'STAN'),
   ] },
   // Ďalšie témy, kedykoľvek počas roka
-  { id: 'obchod', name: 'Môj obchod (finančná gramotnosť)', pic: '🛒', month: 0, items: [
+  { id: 'obchod', img: '/ikony/tema-obchod.webp', name: 'Môj obchod (finančná gramotnosť)', pic: '🛒', month: 0, items: [
     i('🪙', 'MINCA'), i('💶', 'BANKOVKA'), i('👛', 'PEŇAŽENKA'), i('🛒', 'VOZÍK'), i('🏪', 'OBCHOD'), i('🐷', 'POKLADNIČKA'), i('🏷️', 'CENOVKA'), i('🧺', 'KOŠÍK'),
   ] },
-  { id: 'ai', name: 'Ja a umelá inteligencia', pic: '🤖', month: 0, items: [
+  { id: 'ai', img: '/ikony/tema-ai.webp', name: 'Ja a umelá inteligencia', pic: '🤖', month: 0, items: [
     i('🤖', 'ROBOT'), i('💻', 'POČÍTAČ'), i('📱', 'MOBIL'), i('🎧', 'SLÚCHADLÁ'), i('⌨️', 'KLÁVESNICA'), i('🖱️', 'MYŠ'), i('📺', 'TELEVÍZOR'), i('🧠', 'MOZOG'),
   ] },
-  { id: 'srdiecko', name: 'Čo cíti moje srdiečko a čo to tvoje?', pic: '💛', month: 0, items: [
+  { id: 'srdiecko', img: '/ikony/tema-srdiecko.webp', name: 'Čo cíti moje srdiečko a čo to tvoje?', pic: '💛', month: 0, items: [
     i('💛', 'SRDIEČKO'), i('😀', 'RADOSŤ'), i('😢', 'SMÚTOK'), i('😠', 'HNEV'), i('😨', 'STRACH'), i('😮', 'PREKVAPENIE'), i('🤗', 'OBJATIE'), i('😴', 'ÚNAVA'),
   ] },
 ]

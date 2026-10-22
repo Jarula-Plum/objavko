@@ -13,6 +13,7 @@ export type Game = {
   color: string
   desc: string
   area: Area
+  img?: string
   // Podoblasť a výkonový štandard ŠVP pre predprimárne vzdelávanie (2016), doslovne
   std: string
 }
@@ -30,7 +31,14 @@ export const AREAS = [
 export type Area = (typeof AREAS)[number]
 
 // Každá hra patrí do jednej oblasti a v každej téme týždňa sa skladá z obrázkov danej témy.
-export const GAMES: Game[] = [
+// Vlastné ilustrované ikonky (Higgsfield, od Jaruly) v public/ikony; ostatné hry majú 3D emoji
+const IKONY: string[] = [
+  'najdi', 'zive', 'pexeso', 'zmizlo', 'obdobia', 'emocie', 'empatia', 'spravanie', 'nakup', 'situacie', 'clovek', 'rezim',
+  'poloha', 'poradie', 'postupnost', 'tiene', 'nepatri', 'krokovanie', 'schody', 'autobus', 'stavby', 'veza', 'parkety',
+  'robotik', 'slabiky', 'rymy', 'okienka', 'pismena', 'dlhe', 'zacina', 'kukucka', 'posledna', 'hlasky', 'viac', 'velkost', 'pocty',
+]
+
+export const GAMES: Game[] = ([
   // Jazyk: postup podľa Eľkonina od rýmov cez slabiky k prvej, poslednej a všetkým hláskam
   { id: 'rymy', name: 'Čo sa rýmuje?', pic: '🎶', color: 'var(--berry)', desc: 'Nájdi slovo, ktoré znie podobne.', area: 'Jazyk a komunikácia', std: 'Fonologické uvedomovanie: Rozhodne, či sa dve slová rýmujú.' },
   { id: 'slabiky', name: 'Vytlieskaj slabiky', pic: '👏', color: 'var(--sky)', desc: 'Koľko slabík má slovo?', area: 'Jazyk a komunikácia', std: 'Fonologické uvedomovanie: Rozčlení zvolené slová na slabiky.' },
@@ -82,7 +90,7 @@ export const GAMES: Game[] = [
   { id: 'zdrave', name: 'Zdravé či nezdravé?', pic: '🥦', color: 'var(--leaf)', desc: 'Je to jedlo zdravé?', area: 'Zdravie a pohyb', std: 'Zdravie a zdravý životný štýl: Uvádza príklady zdravej a nezdravej výživy.' },
   { id: 'oblecenie', name: 'Čo si oblečiem?', pic: '🧥', color: 'var(--sky)', desc: 'Čo si vezmeš podľa počasia?', area: 'Zdravie a pohyb', std: 'Hygiena a sebaobslužné činnosti: Ovláda základné sebaobslužné činnosti.' },
   { id: 'hygiena', name: 'Čistotka', pic: '🧼', color: 'var(--berry)', desc: 'Čo potrebuješ na umývanie?', area: 'Zdravie a pohyb', std: 'Hygiena a sebaobslužné činnosti: Má osvojené základné hygienické návyky.' },
-]
+] as Game[]).map((g) => (IKONY.includes(g.id) ? { ...g, img: `/ikony/${g.id}.webp` } : g))
 
 export const AVATARS = ['🦊', '🐸', '🦄', '🐯', '🐼', '🐨', '🐰', '🐻', '🐱', '🐶', '🦁', '🐵', '🐧', '🐢', '🐝', '🐞', '🦉', '🐙']
 

@@ -45,3 +45,7 @@ export const Stars = ({ n }: { n: number }) => (
     {[0, 1, 2].map((k) => <img key={k} className={`emo ${k < n ? '' : 'off'}`} src={picUrl('⭐') ?? ''} alt="" draggable={false} />)}
   </span>
 )
+
+// Ikonka hry alebo témy: vlastný obrázok, ak ho máme, inak 3D emoji
+export const Icon = ({ pic, img }: { pic: string; img?: string }) =>
+  img ? <img className="ico" src={img} alt="" draggable={false} /> : <>{emo(pic)}</>
