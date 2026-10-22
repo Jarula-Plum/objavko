@@ -110,7 +110,7 @@ export default async function ClassPage({ params }: Props) {
                     <input type="hidden" name="id" value={k.id} />
                     <input type="hidden" name="class_id" value={id} />
                     <p className="note">Odobratím z triedy sa zmažú aj výsledky dieťaťa.</p>
-                    <button className="ghost" style={{ color: 'var(--bad)', alignSelf: 'flex-start' }}aria-label={`Odobrať ${k.name} z triedy`}>Odobrať z triedy</button>
+                    <button className="ghost" style={{ color: 'var(--bad)', alignSelf: 'flex-start' }} aria-label={`Odobrať ${k.name} z triedy`}>Odobrať z triedy</button>
                   </form>
                 </details>
               </li>
