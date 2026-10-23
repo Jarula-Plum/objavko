@@ -57,4 +57,12 @@ export const ZAPIS: Record<GameId, string> = {
   grafomotorika: 'Deti plynulo obťahovali línie, vlnovky, zúbky, oblúky a slučky. Rozvíjali grafomotoriku a správny úchop.',
   zdravotne: 'Deti cvičili zdravotné cviky podľa riekanky k téme týždňa. Precvičovali správne držanie tela a dýchanie.',
   diktaty: 'Deti podľa slovných pokynov kreslili obrázky na správne miesto.',
+  hadanky: 'Deti počúvali hádanky k téme týždňa, podľa opisu hádali odpoveď a vyberali správny obrázok. Rozvíjali počúvanie s porozumením a slovnú zásobu.',
+  pracovne: 'Deti vypracovali pracovný list k téme týždňa: spájali, krúžkovali a dokresľovali podľa pokynov. Rozvíjali grafomotoriku a pozornosť.',
+  pravda: 'Deti posudzovali, či tvrdenie o počte a vlastnostiach predmetov je pravdivé alebo nepravdivé.',
+  chyba: 'Deti určovali, koľko predmetov chýba do zadaného počtu. Precvičovali rozklad čísel do päť.',
+  kocka: 'Deti rozpoznávali počet bodiek na hracej kocke bez počítania po jednom a sčítali bodky na dvoch kockách.',
+  repa: 'Deti podľa rozprávky O repe určovali poradie postáv a používali slová prvý, posledný, pred, za a medzi.',
+  mnozstvo: 'Deti porovnávali množstvá a priraďovali k obrázkom slová nič, málo a veľa.',
+  triedenie: 'Deti triedili odpad do farebných kontajnerov na papier, plasty, sklo, kovy a bioodpad. Hovorili o ochrane prírody.',
 }

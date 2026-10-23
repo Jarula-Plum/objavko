@@ -14,6 +14,22 @@ import { CVIKY, NAMETY } from '@/lib/namety'
 import { PIESNE } from '@/lib/piesne'
 import { Piesen } from './Piesen'
 import { NACVIK, hudobneHry } from '@/lib/hudobne'
+import { rozpravky } from '@/lib/rozpravky'
+import { MALOVANE } from '@/lib/malovane'
+
+// Maľované čítanie: {obrázok|slovo} sa ukáže ako obrázok, ťuknutím ho Čarozvedka pomenuje
+const TOKEN = /\{([^|}]+)\|([^}]+)\}/g
+const nahlas = (t: string) => t.replace(TOKEN, (_, _e, w) => w)
+function Malovane({ text }: { text: string }) {
+  const parts = text.split(TOKEN)
+  return (
+    <p className="malovane">
+      {parts.map((p, k) => k % 3 === 0 ? p : k % 3 === 1
+        ? <button key={k} type="button" className="mal-pic" aria-label={parts[k + 1]} onClick={() => speak(parts[k + 1], 'dievca')}>{emo(p)}</button>
+        : null)}
+    </p>
+  )
+}
 
 // Poradové číslo týždňa (pondelok až nedeľa) od roku 1970
 const weekNo = () => Math.floor((Date.now() / 864e5 - 4 + new Date().getTimezoneOffset() / -1440) / 7)
@@ -25,6 +41,8 @@ const TIPS = [
   { id: 'hry', name: 'Hry a herné činnosti', desc: 'Námety, čo sa hrať k téme.', img: '/skriatok/d-hra-s-kockami.webp', color: 'var(--grape)' },
   { id: 'hudobne', name: 'Hudobno-pohybové hry', desc: 'Hry so spevom, hudbou a rytmom k téme.', img: '/ikony/rytmus.webp', color: 'var(--accent)' },
   { id: 'pohyb', name: 'Pohybové hry', desc: 'Hry s vysvetlením pravidiel.', img: '/ikony/pohyb.webp', color: 'var(--sky)' },
+  { id: 'rozpravky', name: 'Rozprávky', desc: 'Päť rozprávok k téme na čítanie aj počúvanie.', img: '/obrazky/kniha.webp', color: 'var(--grape)' },
+  { id: 'malovane', name: 'Maľované čítanie', desc: 'Deti „čítajú“ obrázky v príbehu.', img: '/skriatok/d-citanie.webp', color: 'var(--leaf)' },
 ] as const
 type TipId = (typeof TIPS)[number]['id']
 
@@ -135,6 +153,24 @@ export default function Play({ classId, className, kids, initialBest }: {
           </>
         )}
         {tip === 'pohyb' && <ul className="namety-list">{n.p.map(([a, b]) => <li key={a}><b>{a}</b><span className="rule">Pravidlá:</span> {b}</li>)}</ul>}
+        {tip === 'rozpravky' && (
+          <>
+            <ul className="namety-list">{rozpravky(theme.id).map((r) => (
+              <li key={r.n}><b>{r.n}</b><span className="note">{r.o}</span>
+                <details><summary>Čítať rozprávku</summary>{r.t.split('\n\n').map((o, k) => <p key={k}>{o}</p>)}</details>
+                <button type="button" className="ghost" onClick={() => speak(r.t.replace(/\n+/g, ' '), 'dievca')}>{emo('🔊')} Prečítaj</button></li>
+            ))}</ul>
+            <p className="note">Ľudové rozprávky a bájky sú prerozprávané vlastnými slovami a skrátené pre najmenších. Po rozprávke sa detí opýtajte, čo sa im páčilo, kto bol dobrý a čo by urobili ony.</p>
+          </>
+        )}
+        {tip === 'malovane' && MALOVANE[theme.id] && (
+          <>
+            <h3>{MALOVANE[theme.id][0]}</h3>
+            <Malovane text={MALOVANE[theme.id][1]} />
+            <button type="button" className="cta" onClick={() => speak(nahlas(MALOVANE[theme.id][1]), 'dievca')}>{emo('🔊')} Prečítaj celé</button>
+            <p className="note">Pani učiteľka číta text a pri obrázku zastaví, deti obrázok pomenujú. Ťuknutím na obrázok ho Čarozvedka povie nahlas. Staršie deti môžu „čítať“ samy a ukazovať prstom.</p>
+          </>
+        )}
         {tip === 'riekanka' && (
           <button className="cta" onClick={() => { setTip(null); setGame(GAMES.find((g) => g.id === 'zdravotne')!); setRound((r) => r + 1) }}>{emo('🤸')} Cvičiť so škriatkom</button>
         )}

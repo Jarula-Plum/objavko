@@ -1,6 +1,6 @@
 // Piesne a riekanky k téme.
 // s: piesne [názov, pôvod, vlastný text]; vlastný text majú len nové pesničky napísané pre Objavko
-// r: riekanky [názov, text]; riekanky sú pôvodné, napísané pre Objavko
+// r: riekanky [názov, text]; riekanky sú pôvodné, napísané pre Objavko, alebo ľudové (majú v názve „ľudová“)
 export type Piesne = { s: [string, string, string?][]; r: [string, string][] }
 
 export const L = 'slovenská ľudová'

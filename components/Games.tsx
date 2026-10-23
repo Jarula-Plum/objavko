@@ -5,9 +5,10 @@ import { type Game } from '@/lib/games'
 import { THEMES, firstLetter, rhymeKey, sounds, syllables, type Item, type Theme } from '@/lib/themes'
 import { Stars, Ui, emo, picUrl } from './Emo'
 import { GuideBar, cheer, moodOf, speak } from './Guide'
-import { Coloring, Dictation, Exercise, Tracing } from './Cvicenia'
+import { Coloring, Dictation, Exercise, Tracing, Worksheets } from './Cvicenia'
 import { ciel } from '@/lib/krokovanie'
 import { vtip } from '@/lib/vtipy'
+import { HADANKY } from '@/lib/hadanky'
 
 export function say(text: string) {
   cheer(moodOf(text), text)
@@ -287,7 +288,7 @@ const THINGS = [
   { e: '🧦', w: 'ponožka', m: 'LÁTKA' }, { e: '👕', w: 'tričko', m: 'LÁTKA' }, { e: '🧣', w: 'šál', m: 'LÁTKA' }, { e: '🧤', w: 'rukavice', m: 'LÁTKA' },
 ]
 // Človek a príroda: živé bytosti; jedlo, časti tela a rozprávkové bytosti sa v hre Živé či neživé nepýtame
-const LIVE = new Set(('DIEŤA MAČKA PES KRČEK RYBKA BABKA DEDKO KOHÚT JEŽ JEŽKO VEVERIČKA MEDVEĎ LÍŠKA KAČKA LABUŤ LASTOVIČKA ' +
+const LIVE = new Set(('DIEŤA MAČKA PES ŠKREČOK RYBKA BABKA DEDKO KOHÚT JEŽ JEŽKO VEVERIČKA MEDVEĎ LÍŠKA KAČKA LABUŤ LASTOVIČKA ' +
   'LEKÁRKA POLICAJT TUČNIAK KAPOR ZAJAC SRNKA SOVA SÝKORKA LYŽIAR KLAUN TANEČNICA HASIČ KUCHÁRKA FARMÁR UČITEĽKA STAVBÁR ' +
   'KOZMONAUT ŽABA RYBA BOBOR VYDRA KORYTNAČKA RAK KRAVA PRASA OVCA KOZA KÔŇ TULIPÁN KLÍČOK VČELA MOTÝĽ LIENKA KVET VTÁČIK ' +
   'KURIATKO ZAJAČIK BARANČEK STROM SMREK JELEŇ DIVIAK SLNEČNICA KAKTUS MAMA OTEC BÁBÄTKO SESTRA BRAT MRAVEC HÚSENICA KOBYLKA ' +
@@ -427,6 +428,34 @@ const MOVES: { t: string; p?: string }[] = [
 ]
 
 // Úroveň podľa veku: 1 = 3–4 roky, 2 = 4–5 rokov, 3 = 5–6 rokov
+// Postavy z rozprávky O repe v poradí, ako prichádzali ťahať (kym: tvar po predložkách za, pred, medzi)
+const REPA = [
+  { e: '👴', w: 'dedko', kym: 'dedkom' }, { e: '👵', w: 'babka', kym: 'babkou' }, { e: '👧', w: 'vnučka', kym: 'vnučkou' },
+  { e: '🐕', w: 'psík', kym: 'psíkom' }, { e: '🐈', w: 'mačka', kym: 'mačkou' }, { e: '🐁', w: 'myška', kym: 'myškou' },
+]
+// Triedenie odpadu: farby kontajnerov, ako sa najčastejšie používajú na Slovensku (v obci sa môžu líšiť)
+const BINS = [
+  { id: 'papier', n: 'papier', c: '#1E88E5' }, { id: 'plast', n: 'plasty', c: '#FDD835' }, { id: 'sklo', n: 'sklo', c: '#43A047' },
+  { id: 'kov', n: 'kovy', c: '#E53935' }, { id: 'bio', n: 'bioodpad', c: '#8D6E63' },
+]
+const TRASH = [
+  { e: '📰', w: 'starý časopis', bin: 'papier' }, { e: '📦', w: 'papierová krabica', bin: 'papier' }, { e: '🍾', w: 'sklenená fľaša', bin: 'sklo' },
+  { e: '🍯', w: 'prázdny pohár od medu', bin: 'sklo' }, { e: '🧴', w: 'plastová fľaška', bin: 'plast' }, { e: '🥤', w: 'plastový pohárik', bin: 'plast' },
+  { e: '🥫', w: 'plechovka', bin: 'kov' }, { e: '🍌', w: 'šupka z banánu', bin: 'bio' }, { e: '🍎', w: 'ohryzok z jablka', bin: 'bio' },
+]
+// Veta o počte so správnym tvarom: jeden obrázok, dva obrázky, päť obrázkov
+const countSentence = (n: number) =>
+  n === 1 ? 'Je tu jeden obrázok.' : n <= 4 ? `Sú tu ${['', '', 'dva', 'tri', 'štyri'][n]} obrázky.` : `Je tu ${NUM_WORDS[n]} obrázkov.`
+// Prázdne miesto (čiarkovaný rámček) pre chýbajúci obrázok
+const SLOT = { display: 'inline-block', width: '1em', height: '1em', border: '3px dashed #b0b0b0', borderRadius: 10, margin: '0 .08em', verticalAlign: 'middle' } as const
+// Kocka s bodkami v mriežke 3 × 3
+const DOTS: Record<number, number[]> = { 1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8], 5: [0, 2, 4, 6, 8], 6: [0, 2, 3, 5, 6, 8] }
+const dice = (n: number) => (
+  <span style={{ display: 'inline-grid', gridTemplateColumns: 'repeat(3, .32em)', gridTemplateRows: 'repeat(3, .32em)', gap: '.06em', padding: '.12em', margin: '0 .1em', background: '#fff', border: '3px solid #555', borderRadius: '.18em', verticalAlign: 'middle' }}>
+    {Array.from({ length: 9 }, (_, k) => <i key={k} style={{ borderRadius: '50%', background: DOTS[n].includes(k) ? '#333' : 'transparent' }} />)}
+  </span>
+)
+
 export type Level = 1 | 2 | 3
 export const LEVELS: { n: Level; name: string; pic: string }[] = [
   { n: 1, name: '3–4 roky', pic: '🐣' }, { n: 2, name: '4–5 rokov', pic: '🐥' }, { n: 3, name: '5–6 rokov', pic: '🐓' },
@@ -435,7 +464,8 @@ const rand = (lo: number, hi: number) => lo + Math.floor(Math.random() * (hi - l
 const nums = (lo: number, hi: number) => Array.from({ length: hi - lo + 1 }, (_, k) => lo + k)
 
 // Hry, ktoré si náročnosť nastavujú samy; ostatným sa podľa úrovne uberie počet možností
-const OWN_LEVELS: Game['id'][] = ['protiklady', 'predlozky', 'krokovanie', 'robotik', 'rymy', 'pocty', 'slabiky', 'viac', 'velkost', 'poradie', 'poloha', 'pohyb', 'rytmus']
+const OWN_LEVELS: Game['id'][] = ['protiklady', 'predlozky', 'krokovanie', 'robotik', 'rymy', 'pocty', 'slabiky', 'viac', 'velkost', 'poradie', 'poloha', 'pohyb', 'rytmus',
+  'pravda', 'chyba', 'kocka', 'repa', 'mnozstvo', 'triedenie']
 
 function makeRounds(id: Game['id'], theme: Theme, lv: Level): Round[] {
   const rounds = baseRounds(id, theme, lv)
@@ -668,6 +698,24 @@ function baseRounds(id: Game['id'], theme: Theme, lv: Level): Round[] {
       return {
         prompt: <>Ktoré slovo je <b>dlhšie</b>? Vytlieskaj ich.</>, speech: `Ktoré slovo je dlhšie? ${a.w.toLowerCase()}, alebo ${b.w.toLowerCase()}? Vytlieskaj ich.`,
         options: shuffle([a, b]).map((x) => ({ content: <span style={{ fontSize: 48 }}>{x.e}<small className="cap">{x.w.toLowerCase()}</small></span>, correct: x === long, label: x.w.toLowerCase(), word: true })),
+      }
+    })
+  }
+  if (id === 'hadanky') {
+    // Najprv hádanky o obrázkoch z témy, chýbajúce doplníme inými hádankami s obrázkom
+    const all = new Map<string, Item>()
+    for (const t of THEMES) for (const x of t.items) if (!all.has(x.w.toLowerCase())) all.set(x.w.toLowerCase(), x)
+    const mine = new Set(theme.items.map((x) => x.w.toLowerCase()))
+    const known = HADANKY.filter(([w]) => all.has(w))
+    const order = [...shuffle(known.filter(([w]) => mine.has(w))), ...shuffle(known.filter(([w]) => !mine.has(w)))]
+    const used: string[] = []
+    const chosen = order.filter(([w]) => !used.includes(w) && used.push(w)).slice(0, 5)
+    return chosen.map(([w, t]) => {
+      const ok = all.get(w)!
+      const pool = theme.items.filter((x) => x.w.toLowerCase() !== w)
+      return {
+        prompt: <span className="riddle">{t}</span>, speech: t,
+        options: shuffle([ok, ...pick(pool, 3)]).map((o) => ({ content: o.e, correct: o === ok, label: o.w.toLowerCase() })),
       }
     })
   }
@@ -987,6 +1035,102 @@ function baseRounds(id: Game['id'], theme: Theme, lv: Level): Round[] {
       }
     })
   }
+  // Hry doplnené podľa materiálov pani učiteľky (Matika, rozprávky O repe a O hrnčeku, triedenie odpadu)
+  if (id === 'pravda') {
+    // Výroková logika: dieťa rozhoduje, či je tvrdenie pravda. Mladší len „Toto je…“, starší aj počet a porovnanie.
+    const items = shuffle(theme.items)
+    const kinds = [['je'], ['je', 'pocet'], ['je', 'pocet', 'viac']][lv - 1]
+    return range.map((i) => {
+      const x = items[i % items.length], kind = kinds[i % kinds.length], yes = Math.random() < 0.5
+      if (kind === 'pocet') {
+        const n = rand(1, 6), said = yes ? n : shuffle(nums(1, 6).filter((k) => k !== n))[0]
+        const veta = countSentence(said)
+        return { prompt: <>Je to <b>pravda</b>? {veta}</>, stage: Array(n).fill(x.e).join(''), speech: `Je to pravda? ${veta}`, options: yesNo(yes, 'Pravda', 'Nepravda') }
+      }
+      if (kind === 'viac') {
+        const a = rand(1, 6)
+        let b = rand(1, 6)
+        while (b === a) b = rand(1, 6)
+        const veta = 'Vľavo je viac ako vpravo.'
+        return {
+          prompt: <>Je to <b>pravda</b>? {veta}</>, stage: <><span className="grp">{Array(a).fill(x.e).join('')}</span>{'  |  '}<span className="grp">{Array(b).fill(x.e).join('')}</span></>,
+          speech: `Je to pravda? ${veta}`, options: yesNo(a > b, 'Pravda', 'Nepravda'),
+        }
+      }
+      const shown = yes ? x : items.find((y) => y.w !== x.w) ?? x
+      const veta = `Toto je ${x.w.toLowerCase()}.`
+      return { prompt: <>Je to <b>pravda</b>? {veta}</>, stage: shown.e, speech: `Je to pravda? ${veta}`, options: yesNo(shown === x, 'Pravda', 'Nepravda') }
+    })
+  }
+  if (id === 'chyba') {
+    // Koľko chýba do daného počtu (rodinka má mať šesť členov…)
+    const top = [3, 5, 6][lv - 1]
+    const items = shuffle(theme.items)
+    return range.map((i) => {
+      const x = items[i % items.length], have = rand(1, top - 1), miss = top - have
+      const choice = shuffle([miss, ...pick(nums(1, top - 1).filter((k) => k !== miss), Math.min(lv, top - 2))])
+      return {
+        prompt: <>Má ich byť <b>{NUM_WORDS[top]}</b>. Koľko ich chýba?</>,
+        stage: <>{Array(have).fill(x.e).join('')}{Array.from({ length: miss }, (_, k) => <span key={k} style={SLOT} />)}</>,
+        speech: `Má ich byť ${NUM_WORDS[top]}. Koľko ich chýba?`,
+        options: choice.map((k) => ({ content: num(k), correct: k === miss, label: NUM_WORDS[k] })),
+      }
+    })
+  }
+  if (id === 'kocka') {
+    // Počet bodiek na kocke na prvý pohľad; najstarší sčítajú dve kocky
+    return range.map(() => {
+      const a = lv === 1 ? rand(1, 3) : rand(1, 6), b = lv === 3 ? rand(1, 4) : 0, sum = a + b
+      const top = lv === 1 ? 3 : lv === 2 ? 6 : 10
+      const choice = shuffle([sum, ...pick(nums(1, top).filter((k) => k !== sum), lv + 1)])
+      return {
+        prompt: lv === 3 ? <>Koľko bodiek je <b>spolu</b>?</> : <>Koľko <b>bodiek</b> je na kocke?</>,
+        stage: <>{dice(a)}{b > 0 && dice(b)}</>,
+        speech: lv === 3 ? 'Koľko bodiek je na oboch kockách spolu?' : 'Koľko bodiek je na kocke?',
+        options: choice.map((k) => ({ content: num(k), correct: k === sum, label: NUM_WORDS[k] ?? String(k) })),
+      }
+    })
+  }
+  if (id === 'repa') {
+    // Orientácia v rade podľa rozprávky O repe: prvý, posledný, pred, za, medzi
+    const row = REPA.slice(0, lv === 1 ? 4 : 6), last = row.length - 1
+    const basic = [{ q: 'Kto ťahá repu prvý?', who: 0 }, { q: 'Kto prišiel posledný?', who: last }, { q: 'Kto je druhý?', who: 1 }, { q: 'Kto je tretí?', who: 2 }]
+    const more: { q: string; who: number }[] = []
+    if (lv > 1) for (let k = 1; k <= last; k++) more.push({ q: `Kto je hneď za ${row[k - 1].kym}?`, who: k }, { q: `Kto je hneď pred ${row[k].kym}?`, who: k - 1 })
+    if (lv > 2) for (let k = 1; k < last; k++) more.push({ q: `Kto stojí medzi ${row[k - 1].kym} a ${row[k + 1].kym}?`, who: k })
+    const asks = lv === 1 ? [...shuffle(basic), basic[0]] : [basic[1], ...shuffle(more).slice(0, 4)]
+    return asks.slice(0, 5).map((a) => ({
+      prompt: <>{a.q}</>, speech: a.q,
+      stage: <span className="seq">{emo('')}{row.map((c) => <span key={c.w}>{c.e}</span>)}</span>,
+      options: shuffle([a.who, ...pick(row.map((_, k) => k).filter((k) => k !== a.who), lv + 1)]).map((k) => ({ content: row[k].e, correct: k === a.who, label: row[k].w })),
+    }))
+  }
+  if (id === 'mnozstvo') {
+    // Nič, málo, veľa – podľa rozprávky O hrnčeku, var!
+    const items = shuffle(theme.items)
+    const asks = lv === 1 ? ['veľa', 'málo'] : ['veľa', 'málo', 'nič']
+    return range.map((i) => {
+      const x = items[i % items.length], ask = asks[i % asks.length]
+      const groups = shuffle(asks).map((g) => ({ g, n: g === 'nič' ? 0 : g === 'málo' ? rand(1, 2) : rand(7, 10) }))
+      return {
+        prompt: <>Kde je <b>{ask}</b>?</>, speech: `Kde je ${ask}?`,
+        // „nič“ je prázdny hrnček (Jarkin obrázok), ako v rozprávke O hrnčeku, var!
+        options: groups.map(({ g, n }) => ({ content: <span className="grp">{n ? Array(n).fill(x.e).join('') : ''}</span>, correct: g === ask, label: g, word: true })),
+      }
+    })
+  }
+  if (id === 'triedenie') {
+    const order = shuffle(TRASH)
+    return range.map((i) => {
+      const t = order[i % order.length]
+      return {
+        prompt: <>Do ktorého <b>kontajnera</b> patrí {t.w}?</>, stage: t.e, speech: `Do ktorého kontajnera patrí ${t.w}?`,
+        options: shuffle(BINS.filter((b) => lv > 1 || b.id !== 'bio')).map((b) => ({
+          content: <span className="bin"><span className="swatch" style={{ background: b.c }} /><small className="cap">{b.n}</small></span>, correct: b.id === t.bin, label: b.n,
+        })),
+      }
+    })
+  }
   // pismena
   const order = shuffle(theme.items)
   return range.map((i) => {
@@ -1013,6 +1157,9 @@ const STEPS = [
   [{ e: '🪥', w: 'Vezmem kefku.' }, { e: '🦷', w: 'Čistím si zuby.' }, { e: '💦', w: 'Vypláchnem ústa.' }, { e: '😁', w: 'Zuby sa lesknú.' }],
   [{ e: '🧦', w: 'Oblečiem si ponožky.' }, { e: '👟', w: 'Obujem si topánky.' }, { e: '🎀', w: 'Zaviažem šnúrky.' }, { e: '🏃', w: 'Idem von.' }],
   [{ e: '⚪', w: 'Gúľam veľkú guľu.' }, { e: '⚪', w: 'Položím na ňu menšiu guľu.' }, { e: '🥕', w: 'Dám mu mrkvový nos.' }, { e: '⛄', w: 'Snehuliak je hotový.' }],
+  // Cesta za chlebom a strom počas roka (podľa prezentácií pani učiteľky)
+  [{ e: '🌱', w: 'Zasejeme zrnká.' }, { e: '🌽', w: 'Obilie dozreje.' }, { e: '🥣', w: 'Z múky zamiesime cesto.' }, { e: '🍞', w: 'Upečieme chlieb.' }],
+  [{ e: '', w: 'Na jar strom kvitne.' }, { e: '', w: 'V lete je strom zelený.' }, { e: '', w: 'Na jeseň padá lístie.' }, { e: '', w: 'V zime je strom pod snehom.' }],
 ]
 const HUES = [0, 210, 130, 280, 30]
 
@@ -1205,8 +1352,9 @@ function Boxes({ game, theme, level, by, onDone, onBack }: {
 export function GameView({ game, theme, level, onDone, onBack }: {
   game: Game; theme: Theme; level: Level; onDone: (s: number) => void; onBack: () => void
 }) {
-  const [rounds] = useState(() => (['omalovanky', 'grafomotorika', 'diktaty', 'zdravotne', 'pexeso', 'skladacka', 'zvuky', 'veza', 'odtiene', 'postup', 'okienka', 'hlasky'].includes(game.id) ? [] : makeRounds(game.id, theme, level)))
+  const [rounds] = useState(() => (['omalovanky', 'pracovne', 'grafomotorika', 'diktaty', 'zdravotne', 'pexeso', 'skladacka', 'zvuky', 'veza', 'odtiene', 'postup', 'okienka', 'hlasky'].includes(game.id) ? [] : makeRounds(game.id, theme, level)))
   if (game.id === 'omalovanky') return <Coloring game={game} theme={theme} level={level} onDone={onDone} onBack={onBack} />
+  if (game.id === 'pracovne') return <Worksheets game={game} theme={theme} level={level} onDone={onDone} onBack={onBack} />
   if (game.id === 'grafomotorika') return <Tracing game={game} theme={theme} level={level} onDone={onDone} onBack={onBack} />
   if (game.id === 'zdravotne') return <Exercise game={game} theme={theme} level={level} onDone={onDone} onBack={onBack} />
   if (game.id === 'diktaty') return <Dictation game={game} theme={theme} level={level} onDone={onDone} onBack={onBack} />

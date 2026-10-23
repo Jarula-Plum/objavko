@@ -60,6 +60,12 @@ export const METODIKA: Record<GameId, Metodika> = {
     postup: 'Po uhádnutí požiadajte dieťa, aby povedalo, podľa čoho to spoznalo, a čo o predmete vie. Podporujte celé vety a opis vlastností (farba, tvar, na čo slúži).',
     dif: 'Mladšie deti hádajú pri väčšom odkrytí. Staršie deti hádajú z menšej časti a samy dávajú hádanky kamarátom.',
   },
+  hadanky: {
+    ciel: 'Dieťa pozorne vypočuje hádanku, podľa opisu vlastností uhádne odpoveď a vyberie správny obrázok.',
+    rozvija: ['počúvanie s porozumením', 'slovnú zásobu a pomenovanie vlastností', 'usudzovanie a predstavivosť', 'vzťah k ľudovej slovesnosti'],
+    postup: 'Hádanku prečítajte pomaly a pokojne, kým deti hľadajú odpoveď. Po uhádnutí sa opýtajte, podľa čoho to spoznali. Ľudové hádanky sú krátke a obrazné, vysvetlite deťom, čo v nich znamenajú prirovnania.',
+    dif: 'Mladšie deti vyberajú z dvoch obrázkov, staršie z troch až štyroch. Najstaršie deti vymýšľajú vlastnú hádanku o veci z triedy a ostatní hádajú.',
+  },
   pocty: {
     ciel: 'Dieťa v obore do 10 určí počítaním po jednej počet predmetov a priradí k nemu číslo.',
     rozvija: ['predstavu prirodzeného čísla', 'počítanie po jednej s priraďovaním (jeden predmet, jedno číslo)', 'pochopenie, že posledné vyslovené číslo udáva počet', 'zrakové vnímanie čísla ako znaku'],
@@ -318,6 +324,48 @@ export const METODIKA: Record<GameId, Metodika> = {
     postup: 'Omaľovánku je možné vyfarbiť na tablete alebo vytlačiť. Pri tlačenej verzii sledujte správny úchop ceruzky (štipkový úchop).',
     dif: 'Mladšie deti vyfarbujú jeden veľký obrázok. Staršie deti viac menších obrázkov s detailmi.',
   },
+  pravda: {
+    ciel: 'Dieťa rozhodne, či je vyslovené tvrdenie pravdivé.',
+    rozvija: ['logické myslenie (výroková logika)', 'počúvanie s porozumením', 'určovanie počtu a porovnávanie', 'odôvodňovanie vlastného názoru'],
+    postup: 'Po každej odpovedi sa spýtajte „Prečo?“. Hru môžete hrať aj v triede bez tabletu: pri pravde deti drepnú, pri nepravde ostanú stáť. Tvrdenia vymýšľajte aj zo života triedy („V našej triede je stôl.“).',
+    dif: 'Mladšie deti rozhodujú, čo je na obrázku. Staršie aj o počte obrázkov a o tom, kde je viac.',
+  },
+  chyba: {
+    ciel: 'Dieťa zistí, koľko predmetov chýba do daného počtu.',
+    rozvija: ['určovanie počtu', 'predstavu o rozklade čísla', 'riešenie kontextových úloh', 'pozornosť'],
+    postup: 'Najprv hrajte s predmetmi: zvieracia rodinka má mať šesť členov, chýbajúce zvieratká sú schované za plotom, pod vedrom. Potom prejdite na tablet. Pri odpovedi nechajte dieťa ukázať prázdne miesta prstom.',
+    dif: 'Mladšie deti do troch, stredné do piatich, najstaršie do šiestich.',
+  },
+  kocka: {
+    ciel: 'Dieťa určí počet bodiek na kocke na prvý pohľad, najstaršie sčíta dve kocky.',
+    rozvija: ['vnímanie počtu bez počítania (do 6)', 'pozornosť', 'sčítanie (najstarší)', 'prepojenie počtu a čísla'],
+    postup: 'Spojte s pohybom: hoďte veľkou kockou a deti urobia toľko krokov (alebo drepov), koľko bodiek padlo. Najstarší hádžu dvoma kockami.',
+    dif: 'Mladšie deti 1 až 3 bodky, stredné 1 až 6, najstaršie súčet dvoch kociek.',
+  },
+  repa: {
+    ciel: 'Dieťa určí v rade postáv, kto je prvý, posledný, pred, za a medzi.',
+    rozvija: ['orientáciu v usporiadanom rade', 'porozumenie slovám pred, za, medzi', 'reprodukciu rozprávky', 'pozornosť'],
+    postup: 'Najprv rozprávku O repe zahrajte: deti sa postupne pripájajú do radu a ťahajú. Potom sa pýtajte, kto prišiel posledný, kto je hneď za psíkom. Až potom hrajte na tablete.',
+    dif: 'Mladšie deti: prvý, druhý, tretí, posledný. Staršie: pred a za. Najstaršie aj medzi.',
+  },
+  mnozstvo: {
+    ciel: 'Dieťa rozlíši odhadom nič, málo a veľa.',
+    rozvija: ['odhad množstva bez počítania', 'slovnú zásobu (nič, málo, dosť, veľa)', 'porovnávanie skupín', 'prepojenie s rozprávkou'],
+    postup: 'Prečítajte rozprávku O hrnčeku, var! a pri jedení či nalievaní sa pýtajte: „Je to málo, dosť, alebo veľa?“ Pripomeňte čarovné slová prosím a ďakujem.',
+    dif: 'Mladšie deti rozlišujú málo a veľa. Staršie aj nič.',
+  },
+  triedenie: {
+    ciel: 'Dieťa priradí odpad do správneho kontajnera podľa farby.',
+    rozvija: ['environmentálne povedomie', 'triedenie podľa vlastnosti (materiál)', 'farby', 'zodpovednosť za prostredie'],
+    postup: 'Farby v aplikácii sú najčastejšie na Slovensku: modrý papier, žltý plasty, zelený sklo, červený kovy, hnedý bioodpad. Ak vaša obec triedi inak (napríklad plasty a kovy spolu), povedzte to deťom. Spojte s pohybovou hrou: štafeta s prenášaním čistých odpadkov do farebných škatúľ.',
+    dif: 'Mladšie deti triedia papier, plasty, sklo a kovy. Staršie aj bioodpad.',
+  },
+  pracovne: {
+    ciel: 'Dieťa samostatne vypracuje pracovný list k téme: spojí dvojice, spočíta obrázky, porovná, kde je viac, rieši úlohu s pridávaním, porovná veľkosť, pokračuje v rade a nájde odlišný obrázok.',
+    rozvija: ['logické myslenie a priraďovanie', 'určovanie počtu do 10', 'zrakové vnímanie a pozornosť', 'koordináciu oko – ruka pri spájaní a krúžkovaní', 'porozumenie pokynu'],
+    postup: 'Pokyn si dieťa vypočuje v aplikácii a list vypracuje prstom na tablete alebo na vytlačenom papieri. Na konci sa spýtajte, ako postupovalo, a spolu list skontrolujte. Pri tlačenej verzii sledujte úchop ceruzky.',
+    dif: 'Mladšie deti majú menej obrázkov a jednoduchšie úlohy (2 až 3 dvojice, počty do 3). Staršie deti viac obrázkov, počty do 8 a zložitejšie rady (ABC, AAB).',
+  },
   grafomotorika: {
     ciel: 'Dieťa plynulo obťahuje línie, vlnovky, zúbky, oblúky a slučky.',
     rozvija: ['grafomotorické zručnosti (predpoklady na písanie)', 'koordináciu oko – ruka', 'plynulosť pohybu ruky', 'smer zľava doprava'],
@@ -327,7 +375,7 @@ export const METODIKA: Record<GameId, Metodika> = {
   zdravotne: {
     ciel: 'Dieťa vykonáva zdravotné cviky podľa riekanky k téme týždňa.',
     rozvija: ['správne držanie tela', 'rovnováhu a koordináciu', 'správne dýchanie', 'rytmické cítenie (pohyb s riekankou)'],
-    postup: 'Cvičte na začiatku dňa alebo ako pohybovú chvíľku. Riekanku hovorte spolu s deťmi. Dbajte na správne prevedenie cviku, nie na rýchlosť.',
+    postup: 'Cvičte na začiatku dňa alebo ako pohybovú chvíľku: rozohriatie (hra, chôdza, beh), dychové cvičenie, zdravotné cviky, relaxácia (napr. handrová bábika) a pokojná hra na záver. Riekanku hovorte spolu s deťmi. Každý cvik 3 až 5-krát, dbajte na správne prevedenie, nie na rýchlosť. Pri uvoľnení najprv sval napnite a potom uvoľnite. Vyhýbajte sa dlhým výdržiam v podrepe a vo vzpore, mostu, visom a zoskokom vyšším ako po pás.',
     dif: 'Úroveň 3–4 roky má jednoduché cviky, 4–5 rokov stredne náročné a 5–6 rokov náročnejšie cviky na rovnováhu a výdrž.',
   },
   diktaty: {

@@ -30,7 +30,7 @@ export const THEMES: Theme[] = [
     i('🧒', 'DIEŤA'), i('🧸', 'MACKO'), i('⚽', 'LOPTA'), i('🖍️', 'PASTELKA'), i('🧩', 'SKLADAČKA'), i('🎒', 'RUKSAK'), i('📚', 'KNIHA'), i('🥁', 'BUBON'),
   ] },
   { id: 'domcek', name: 'Domček, domček, kto v tebe býva', pic: '🏠', month: 9, week: 2, items: [
-    i('🏠', 'DOM'), i('🚪', 'DVERE'), i('🛋️', 'KRESLO'), i('🛏️', 'POSTEĽ'), i('🐕', 'PES'), i('🐈', 'MAČKA'), i('🐹', 'KRČEK'), i('🐠', 'RYBKA'),
+    i('🏠', 'DOM'), i('🚪', 'DVERE'), i('🛋️', 'KRESLO'), i('🛏️', 'POSTEĽ'), i('🐕', 'PES'), i('🐈', 'MAČKA'), i('🐹', 'ŠKREČOK'), i('🐠', 'RYBKA'),
   ] },
   { id: 'moj-den', img: '/skriatok/d-ranne-vstavanie.webp', name: 'Môj deň', pic: '⏰', month: 9, week: 3, items: [
     i('⏰', 'BUDÍK'), i('🪥', 'KEFKA'), i('🍞', 'CHLIEB'), i('🥛', 'MLIEKO'), i('🛁', 'VAŇA'), i('🛏️', 'POSTEĽ'), i('🌙', 'MESIAC'), i('☀️', 'SLNKO'),
@@ -102,6 +102,11 @@ export const THEMES: Theme[] = [
     i('\uE1E3', 'KRUH'), i('\uE1E4', 'ŠTVOREC'), i('\uE1E5', 'TROJUHOLNÍK'), i('\uE1E6', 'OBDĹŽNIK'), i('\uE1E7', 'OVÁL'), i('\uE1E8', 'KOSOŠTVOREC'),
     i('\uE1E9', 'PÄŤUHOLNÍK'), i('\uE1EA', 'ŠESŤUHOLNÍK'), i('\uE1EB', 'GUĽA'), i('\uE1EC', 'KOCKA'), i('\uE1ED', 'VALEC'), i('\uE1EE', 'KUŽEĽ'),
     i('⭐', 'HVIEZDA'), i('❤️', 'SRDCE'), i('🌈', 'DÚHA'), i('🖍️', 'PASTELKA'),
+  ] },
+  // 1. január: Deň vzniku Slovenskej republiky
+  { id: 'slovensko', name: 'Slovensko, krásna krajina', pic: '🏔️', month: 1, items: [
+    i('🏔️', 'TATRY'), i('🏰', 'HRAD'), i('🏞️', 'DUNAJ'), i('🏘️', 'DEDINA'), i('⛪', 'KOSTOL'), i('🌲', 'SMREK'),
+    i('🐻', 'MEDVEĎ'), i('🐑', 'OVCA'), i('🧀', 'SYR'), i('🎻', 'HUSLE'), i('💃', 'TANEČNICA'),
   ] },
   // Február
   { id: 'fasiangy', name: 'Fašiangy, Turíce', pic: '🎭', month: 2, week: 1, items: [
