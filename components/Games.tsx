@@ -3,6 +3,12 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { useFx } from './Fx'
 import { reward } from '@/lib/fx'
+import ClickSpark from './reactbits/ClickSpark'
+import CountUp from './reactbits/CountUp'
+import SplitText from './reactbits/SplitText'
+
+// Iskričky pri ťuknutí (React Bits): dieťa hneď vidí, kam ťuklo
+const ISKRY = ['#FFC83D', '#FF7A59', '#4CC38A', '#5AA9FF', '#C17BFF']
 import { type Game } from '@/lib/games'
 import { THEMES, firstLetter, rhymeKey, sounds, syllables, type Item, type Theme } from '@/lib/themes'
 import { Stars, Ui, emo, picUrl } from './Emo'
@@ -61,6 +67,7 @@ function Shell({ game, onBack, speech, dots, onRepeat, children }: {
   const root = useRef<HTMLElement>(null)
   useFx(root)
   return (
+    <ClickSpark sparkColor={ISKRY} shape="star" sparkSize={12} sparkRadius={34} sparkCount={9} duration={520}>
     <section ref={root} className="game" style={{ ['--c' as string]: game.color }}>
       <div className="ghead">
         <button className="back" onClick={() => { try { speechSynthesis.cancel() } catch {} ; onBack() }}><Ui n="spat" /> Späť</button>
@@ -76,6 +83,7 @@ function Shell({ game, onBack, speech, dots, onRepeat, children }: {
       {children}
       <GuideBar />
     </section>
+    </ClickSpark>
   )
 }
 
@@ -101,7 +109,8 @@ export function Finished({ game, starsN, kidName, onAgain, onBack }: {
       <div className="done-box" ref={box}>
         <div className="big-stars"><Stars n={starsN} /></div>
         <img className="reward" src={['/obrazky/lucerna.webp', '/obrazky/kristal.webp', '/obrazky/truhlica.webp'][Math.max(0, starsN - 1)]} alt="" />
-        <h2 style={{ fontSize: 36 }}>{praise} {kidName}</h2>
+        <SplitText tag="h2" text={`${praise} ${kidName}`} className="done-title" trigger="load" effect="pop" splitType="chars" delay={35} />
+        {starsN > 0 && <p className="done-count">Hviezdičky: <CountUp from={0} to={starsN} duration={1.2} delay={0.4} trigger="load" /> z 3</p>}
         {starsN === 3 && <p className="jupi">Jupíí, to sa ti podarilo!</p>}
         <div className="row" style={{ justifyContent: 'center' }}>
           <button className="cta" onClick={onAgain}><Ui n="znova" /> Hrať znova</button>

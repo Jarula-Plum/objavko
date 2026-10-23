@@ -19,7 +19,9 @@ export async function GET(req: Request) {
   const who = q.get('w') === 'dievca' ? 'dievca' : 'chlapec'
   if (!text || text.length > 1500) return new Response('Zlý text', { status: 400 })
   const v = HLAS[who]
-  const ssml = `<speak version="1.0" xml:lang="sk-SK"><voice name="${v.name}"><prosody pitch="${v.pitch}" rate="${v.rate}">${xml(text)}</prosody></voice></speak>`
+  // ' … ' (medzera, tri bodky, medzera) je zamlčaný obrázok v maľovanom čítaní: dve sekundy ticho, kým ho deti pomenujú
+  const body = xml(text).replace(/ … /g, ' <break time="2000ms"/> ')
+  const ssml = `<speak version="1.0" xml:lang="sk-SK"><voice name="${v.name}"><prosody pitch="${v.pitch}" rate="${v.rate}">${body}</prosody></voice></speak>`
   const r = await fetch(`https://${region}.tts.speech.microsoft.com/cognitiveservices/v1`, {
     method: 'POST',
     headers: {

@@ -18,10 +18,16 @@ import { rozpravky } from '@/lib/rozpravky'
 import { MALOVANE } from '@/lib/malovane'
 import { breathe } from '@/lib/fx'
 import { posunNa } from './Posun'
+import SplitText from './reactbits/SplitText'
+import RotatingText from './reactbits/RotatingText'
+
+// Úvodná obrazovka: meniace sa slovo „Dnes budeme …“ (React Bits)
+const DNES = ['počítať', 'hádať', 'spievať', 'kresliť', 'čarovať', 'objavovať']
 
 // Maľované čítanie: {obrázok|slovo} sa ukáže ako obrázok, ťuknutím ho Čarozvedka pomenuje
 const TOKEN = /\{([^|}]+)\|([^}]+)\}/g
-const nahlas = (t: string) => t.replace(TOKEN, (_, _e, w) => w)
+// Pri čítaní celého textu obrázky zamlčíme: Čarozvedka na ich mieste zastaví a slovo povie dieťa
+const nahlas = (t: string) => t.replace(TOKEN, ' … ')
 function Malovane({ text }: { text: string }) {
   const parts = text.split(TOKEN)
   return (
@@ -124,7 +130,7 @@ export default function Play({ classId, className, kids, initialBest }: {
     return (
       <section className="namety-view" style={{ ['--c' as string]: t.color }}>
         <button className="back" onClick={() => setTip(null)}><Ui n="spat" /> Späť</button>
-        <div className="namety-head"><Icon pic="" img={t.img} /><div><h2>{t.name}</h2><span>Téma: {theme.name}</span></div></div>
+        <div className="namety-head"><Icon pic="" img={t.img} /><div><SplitText key={t.id} tag="h2" text={t.name} trigger="load" effect="rise" splitType="chars" delay={25} textAlign="left" /><span>Téma: {theme.name}</span></div></div>
         {tip === 'piesne' && PIESNE[theme.id] && (
           <>
             <h3>Piesne</h3>
@@ -170,7 +176,7 @@ export default function Play({ classId, className, kids, initialBest }: {
             <h3>{MALOVANE[theme.id][0]}</h3>
             <Malovane text={MALOVANE[theme.id][1]} />
             <button type="button" className="cta" onClick={() => { const m = document.querySelector('.malovane'); if (m) posunNa(m, -90); speak(nahlas(MALOVANE[theme.id][1]), 'dievca') }}>{emo('🔊')} Prečítaj celé</button>
-            <p className="note">Pani učiteľka číta text a pri obrázku zastaví, deti obrázok pomenujú. Ťuknutím na obrázok ho Čarozvedka povie nahlas. Staršie deti môžu „čítať“ samy a ukazovať prstom.</p>
+            <p className="note">Pri čítaní celého príbehu Čarozvedka obrázky zamlčí a na ich mieste chvíľu počká, aby ich deti pomenovali samy. Keď dieťa ťukne na obrázok, Čarozvedka mu ho povie. Staršie deti môžu „čítať“ samy a ukazovať prstom.</p>
           </>
         )}
         {tip === 'riekanka' && (
@@ -242,6 +248,7 @@ export default function Play({ classId, className, kids, initialBest }: {
           </div>
         </section>
       )}
+      <p className="dnes">Dnes budeme <RotatingText texts={DNES} mainClassName="dnes-slovo" effect="slide" rotationInterval={2200} staggerDuration={0.02} splitBy="characters" /></p>
       <div className="label">Hry pre {kid.name} · {LEVELS[level - 1].name}</div>
       {AREAS.map((area) => (
         <section key={area} className="area">

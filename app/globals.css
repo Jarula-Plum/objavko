@@ -391,3 +391,9 @@ th:first-child, td:first-child { text-align: left; }
 .cls-edit > summary { cursor: pointer; font-weight: 700; color: var(--muted); font-size: 15px; }
 .cls-edit .del { cursor: pointer; color: var(--bad); font-weight: 700; font-size: 15px; margin-top: 8px; }
 .jupi { font-family: var(--font-fairy), cursive; color: #1f4d2b; font-size: clamp(26px, 6vw, 38px); margin: -6px 0 10px; animation: krok-pop .6s ease-out; }
+
+/* React Bits: koniec hry, „Dnes budeme …“ */
+.done-title { font-size: 36px; margin: 0; }
+.done-count { font-family: var(--display); font-weight: 800; font-size: 22px; margin: 0; color: var(--ink, inherit); }
+.dnes { font-family: var(--display); font-weight: 800; font-size: clamp(20px, 3.2vw, 28px); margin: 18px 0 4px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.dnes-slovo { display: inline-flex; overflow: hidden; padding: 2px 12px; border-radius: 14px; background: var(--sun); color: #3b2a00; }
