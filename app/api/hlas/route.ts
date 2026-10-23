@@ -30,7 +30,8 @@ export async function GET(req: Request) {
     },
     body: ssml,
   })
-  if (!r.ok) return new Response('Azure neodpovedá', { status: 502 })
+  // stav od Azure (401 zlý kľúč alebo región, 429 vyčerpaný limit) pomôže pri hľadaní chyby
+  if (!r.ok) return new Response(`Azure neodpovedá: ${r.status} (${region})`, { status: 502 })
   return new Response(await r.arrayBuffer(), {
     headers: {
       'Content-Type': 'audio/mpeg',
