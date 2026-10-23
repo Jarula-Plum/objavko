@@ -17,6 +17,7 @@ import { NACVIK, hudobneHry } from '@/lib/hudobne'
 import { rozpravky } from '@/lib/rozpravky'
 import { MALOVANE } from '@/lib/malovane'
 import { breathe } from '@/lib/fx'
+import { posunNa } from './Posun'
 
 // Maľované čítanie: {obrázok|slovo} sa ukáže ako obrázok, ťuknutím ho Čarozvedka pomenuje
 const TOKEN = /\{([^|}]+)\|([^}]+)\}/g
@@ -158,8 +159,8 @@ export default function Play({ classId, className, kids, initialBest }: {
           <>
             <ul className="namety-list">{rozpravky(theme.id).map((r) => (
               <li key={r.n}><b>{r.n}</b><span className="note">{r.o}</span>
-                <details><summary>Čítať rozprávku</summary>{r.t.split('\n\n').map((o, k) => <p key={k}>{o}</p>)}</details>
-                <button type="button" className="ghost" onClick={() => speak(r.t.replace(/\n+/g, ' '), 'dievca')}>{emo('🔊')} Prečítaj</button></li>
+                <details onToggle={(e) => { if (e.currentTarget.open) posunNa(e.currentTarget.parentElement!) }}><summary>Čítať rozprávku</summary>{r.t.split('\n\n').map((o, k) => <p key={k}>{o}</p>)}</details>
+                <button type="button" className="ghost" onClick={(e) => { posunNa(e.currentTarget.parentElement!); speak(r.t.replace(/\n+/g, ' '), 'dievca') }}>{emo('🔊')} Prečítaj</button></li>
             ))}</ul>
             <p className="note">Ľudové rozprávky a bájky sú prerozprávané vlastnými slovami a skrátené pre najmenších. Po rozprávke sa detí opýtajte, čo sa im páčilo, kto bol dobrý a čo by urobili ony.</p>
           </>
@@ -168,7 +169,7 @@ export default function Play({ classId, className, kids, initialBest }: {
           <>
             <h3>{MALOVANE[theme.id][0]}</h3>
             <Malovane text={MALOVANE[theme.id][1]} />
-            <button type="button" className="cta" onClick={() => speak(nahlas(MALOVANE[theme.id][1]), 'dievca')}>{emo('🔊')} Prečítaj celé</button>
+            <button type="button" className="cta" onClick={() => { const m = document.querySelector('.malovane'); if (m) posunNa(m, -90); speak(nahlas(MALOVANE[theme.id][1]), 'dievca') }}>{emo('🔊')} Prečítaj celé</button>
             <p className="note">Pani učiteľka číta text a pri obrázku zastaví, deti obrázok pomenujú. Ťuknutím na obrázok ho Čarozvedka povie nahlas. Staršie deti môžu „čítať“ samy a ukazovať prstom.</p>
           </>
         )}
@@ -232,7 +233,7 @@ export default function Play({ classId, className, kids, initialBest }: {
           <h2>Námety k téme pre pani učiteľku</h2>
           <div className="grid">
             {TIPS.map((t) => (
-              <button key={t.id} className="tile" style={{ ['--c' as string]: t.color }} onClick={() => { setTip(t.id); window.scrollTo(0, 0) }}>
+              <button key={t.id} className="tile" style={{ ['--c' as string]: t.color }} onClick={() => { setTip(t.id); posunNa(0) }}>
                 <span className="pic"><Icon pic="" img={t.img} /></span>
                 <h3>{t.name}</h3>
                 <p>{t.desc}</p>

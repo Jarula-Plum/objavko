@@ -94,6 +94,25 @@ export function speak(text: string, who: 'chlapec' | 'dievca' = 'chlapec') {
       a.play().catch(() => talk(rec.who, false))
       return
     }
+    // Nenahraté vety číta Lukáš alebo Viktória cez Azure (api/hlas); ak si pani učiteľka vybrala vlastný hlas, alebo
+    // Azure nie je dostupný (bez internetu, bez kľúča), číta hlas zariadenia
+    if (cloud && !voiceCfg()[who]?.voice) {
+      try { speechSynthesis.cancel() } catch {}
+      const a = new Audio(`/api/hlas?w=${who}&t=${encodeURIComponent(text.trim())}`)
+      playing = a
+      a.onplay = () => talk(who, true)
+      a.onended = a.onpause = () => talk(who, false)
+      a.onerror = () => { if (playing !== a) return; cloud = false; playing = null; device(text, who) }
+      a.play().catch(() => talk(who, false))
+      return
+    }
+    device(text, who)
+  } catch {}
+}
+
+let cloud = true
+function device(text: string, who: 'chlapec' | 'dievca') {
+  try {
     if (!('speechSynthesis' in window)) return
     speechSynthesis.cancel()
     const u = new SpeechSynthesisUtterance(text)
