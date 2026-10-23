@@ -99,8 +99,9 @@ export function speak(text: string, who: 'chlapec' | 'dievca' = 'chlapec') {
     const u = new SpeechSynthesisUtterance(text)
     u.lang = 'sk-SK'
     const sk = skVoices()
-    const male = sk.find((v) => /filip|luk[aá]s|male|muž/i.test(v.name))
-    const female = sk.find((v) => /laura|zuzana|viktória|viktoria|female|žena/i.test(v.name))
+    // Najkrajšie sú neurónové hlasy Microsoftu (Edge): Lukáš a Viktória; potom ostatné slovenské hlasy
+    const male = sk.find((v) => /luk[aá]s/i.test(v.name)) ?? sk.find((v) => /filip|male|muž/i.test(v.name))
+    const female = sk.find((v) => /viktória|viktoria/i.test(v.name)) ?? sk.find((v) => /laura|zuzana|female|žena/i.test(v.name))
     const own = voiceCfg()[who]
     const chosen = own?.voice ? speechSynthesis.getVoices().find((v) => v.voiceURI === own.voice) : undefined
     const voice = chosen ?? (who === 'chlapec' ? male ?? sk[0] : female ?? sk.find((v) => v !== male) ?? sk[0])
