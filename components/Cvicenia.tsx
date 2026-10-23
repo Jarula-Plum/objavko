@@ -8,6 +8,7 @@ import { GuideBar, cheer, speak } from './Guide'
 import type { Level } from './Games'
 import { CVIKY, NAMETY, type CvikId } from '@/lib/namety'
 import { OMALOVANKY } from '@/lib/omalovanky'
+import { spill } from '@/lib/fx'
 
 // Cvičenia: omaľovánky, grafomotorika a kresliace diktáty.
 // Kreslí sa na plátno prstom alebo myšou; obrysy ležia navrchu (násobenie), farba pod nimi.
@@ -63,7 +64,8 @@ function Sheet({ draw, tool, color, size, sheetKey, onReady }: {
   const fill = (x: number, y: number) => {
     const m = mask.current; if (!m || m[y * W + x]) return
     const ctx = paint.current!.getContext('2d')!
-    const img = ctx.getImageData(0, 0, W, W)
+    // vyplnené miesto nakreslíme najprv do samostatnej vrstvy a tá sa potom rozleje z miesta ťuknutia
+    const img = ctx.createImageData(W, W)
     const c = parseInt(color.slice(1), 16), R = c >> 16, G = (c >> 8) & 255, B = c & 255
     const seen = new Uint8Array(W * W)
     const stack = [y * W + x]
@@ -80,8 +82,10 @@ function Sheet({ draw, tool, color, size, sheetKey, onReady }: {
         if (dn < W * W) { const ok = !m[dn] && !seen[dn]; if (ok && !down) stack.push(dn); down = ok }
       }
     }
-    // farbu natiahneme aj pod tenký okraj čiary, aby nezostal biely lem
-    ctx.putImageData(img, 0, 0)
+    const layer = document.createElement('canvas')
+    layer.width = W; layer.height = W
+    layer.getContext('2d')!.putImageData(img, 0, 0)
+    spill(ctx, layer, x, y)
   }
   const line = (a: { x: number; y: number }, b: { x: number; y: number }) => {
     const ctx = paint.current!.getContext('2d')!

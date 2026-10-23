@@ -16,6 +16,7 @@ import { Piesen } from './Piesen'
 import { NACVIK, hudobneHry } from '@/lib/hudobne'
 import { rozpravky } from '@/lib/rozpravky'
 import { MALOVANE } from '@/lib/malovane'
+import { breathe } from '@/lib/fx'
 
 // Maľované čítanie: {obrázok|slovo} sa ukáže ako obrázok, ťuknutím ho Čarozvedka pomenuje
 const TOKEN = /\{([^|}]+)\|([^}]+)\}/g
@@ -25,7 +26,7 @@ function Malovane({ text }: { text: string }) {
   return (
     <p className="malovane">
       {parts.map((p, k) => k % 3 === 0 ? p : k % 3 === 1
-        ? <button key={k} type="button" className="mal-pic" aria-label={parts[k + 1]} onClick={() => speak(parts[k + 1], 'dievca')}>{emo(p)}</button>
+        ? <button key={k} type="button" className="mal-pic" aria-label={parts[k + 1]} onClick={(e) => { breathe(e.currentTarget); speak(parts[k + 1], 'dievca') }}>{emo(p)}</button>
         : null)}
     </p>
   )

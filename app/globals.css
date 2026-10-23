@@ -138,7 +138,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .opt { min-width: 96px; min-height: 96px; border: 3px solid var(--line); background: var(--surface); border-radius: 22px; font-family: var(--display); font-weight: 800; font-size: 44px; display: grid; place-items: center; padding: 8px 16px; transition: transform .12s; }
 .opt:active { transform: scale(.94); }
 .opt.right { border-color: var(--good); background: color-mix(in srgb, var(--good) 18%, var(--surface)); }
-.opt.wrong { border-color: var(--bad); animation: shake .35s; }
+.opt.wrong { border-color: var(--bad); }
 .swatch { width: 96px; height: 96px; border-radius: 50%; border: 5px solid var(--surface); box-shadow: 0 0 0 3px var(--line); display: block; }
 .shadow { filter: brightness(0); opacity: .78; }
 @keyframes shake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
@@ -181,7 +181,6 @@ th:first-child, td:first-child { text-align: left; }
 /* Sprievodcovia: Čarozvedko a Čarozvedka */
 .guide-bar { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; margin-top: auto; min-height: 140px; }
 .guide-bar img { height: 140px; width: auto; animation: g-pop .35s ease-out; }
-.guide-bar.m-joy img, .guide-bar.m-wow img { animation: g-hop .5s ease-out; }
 .guide-bar.m-try .g-boy { animation: g-wiggle .5s ease-out; }
 .g-bubble { flex: 1; max-width: 340px; align-self: center; text-align: center; font-family: var(--head); font-weight: 800; font-size: 20px;
   background: var(--soft); border: 2px solid var(--line); border-radius: 18px; padding: 8px 12px; opacity: 0; transform: scale(.9); transition: opacity .2s, transform .2s; }
@@ -205,7 +204,9 @@ th:first-child, td:first-child { text-align: left; }
 .ui { width: 1.5em; height: 1.5em; vertical-align: -0.42em; margin: -4px 2px -4px -4px; }
 .back, .speak, .cta, .ghost { display: inline-flex; align-items: center; gap: 4px; }
 .prompt .pose { display: block; height: 120px; width: auto; margin: 0 auto 6px; }
-.done-box .reward { width: 120px; height: 120px; animation: g-hop .8s ease-out; }
+.done-box .reward { width: 120px; height: 120px; }
+/* GSAP: hviezdičky pri správnej odpovedi (lib/fx.ts) */
+.fx-star { position: fixed; width: 26px; height: 26px; margin: -13px 0 0 -13px; pointer-events: none; z-index: 50; }
 /* Jarkine obrázky: väčší samostatný obrázok v úlohe, drevené číslice a scénky s krabicou a loptou */
 .stage > .emo:only-child { width: clamp(110px, 34vw, 170px); height: clamp(110px, 34vw, 170px); }
 .opt .emo.num { width: 1.3em; height: 1.3em; vertical-align: middle; }

@@ -1,6 +1,8 @@
 'use client'
 
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useFx } from './Fx'
+import { reward } from '@/lib/fx'
 import { type Game } from '@/lib/games'
 import { THEMES, firstLetter, rhymeKey, sounds, syllables, type Item, type Theme } from '@/lib/themes'
 import { Stars, Ui, emo, picUrl } from './Emo'
@@ -56,8 +58,10 @@ const drum = (n: number, wait: number) => { for (let k = 0; k < n; k++) tone(140
 function Shell({ game, onBack, speech, dots, onRepeat, children }: {
   game: Game; onBack: () => void; speech: string; dots?: { i: number; log: boolean[] }; onRepeat?: () => void; children: ReactNode
 }) {
+  const root = useRef<HTMLElement>(null)
+  useFx(root)
   return (
-    <section className="game" style={{ ['--c' as string]: game.color }}>
+    <section ref={root} className="game" style={{ ['--c' as string]: game.color }}>
       <div className="ghead">
         <button className="back" onClick={() => { try { speechSynthesis.cancel() } catch {} ; onBack() }}><Ui n="spat" /> Späť</button>
         {dots && (
@@ -87,9 +91,14 @@ export function Finished({ game, starsN, kidName, onAgain, onBack }: {
     cheer('wow', `${praise} ${kidName}! Jupíí, to sa ti podarilo!`)
     speak(`${praise} Jupíí, to sa ti podarilo!`, who)
   }, [praise, starsN, kidName])
+  const box = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const b = box.current; if (!b) return
+    reward([...b.querySelectorAll('.big-stars img:not(.off)')], b.querySelector('.reward'))
+  }, [])
   return (
     <Shell game={game} onBack={onBack} speech={praise}>
-      <div className="done-box">
+      <div className="done-box" ref={box}>
         <div className="big-stars"><Stars n={starsN} /></div>
         <img className="reward" src={['/obrazky/lucerna.webp', '/obrazky/kristal.webp', '/obrazky/truhlica.webp'][Math.max(0, starsN - 1)]} alt="" />
         <h2 style={{ fontSize: 36 }}>{praise} {kidName}</h2>
