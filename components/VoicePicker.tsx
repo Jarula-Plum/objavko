@@ -29,6 +29,7 @@ export function VoicePicker() {
       <summary>Nastavenie hlasu Čarozvedka a Čarozvedky</summary>
       {!voices.length && <p className="note">Tento prehliadač nemá žiadne hlasy na čítanie.</p>}
       {voices.length > 0 && !list.length && <p className="note">Slovenský hlas tu nie je. Zapni „Ukázať všetky hlasy“ alebo si v nastaveniach zariadenia doinštaluj slovenský hlas.</p>}
+      {voices.filter((v) => v.lang?.toLowerCase().startsWith('sk')).length === 1 && <p className="note">Tento prehliadač má len jeden slovenský hlas, Čarozvedko a Čarozvedka sa líšia iba výškou. Na počítači s Windows ponúka krajšie slovenské hlasy (Viktória a Lukáš) prehliadač Microsoft Edge.</p>}
       {WHO.map((w) => {
         const c = { ...w.def, ...cfg[w.id] }
         return (

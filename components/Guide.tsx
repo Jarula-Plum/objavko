@@ -106,7 +106,9 @@ export function speak(text: string, who: 'chlapec' | 'dievca' = 'chlapec') {
     const voice = chosen ?? (who === 'chlapec' ? male ?? sk[0] : female ?? sk.find((v) => v !== male) ?? sk[0])
     if (voice) u.voice = voice
     u.rate = own?.rate ?? 0.95
-    u.pitch = own?.pitch ?? (who === 'chlapec' ? (male ? 1.45 : 1.25) : 1.3)
+    // Windows v Chrome má často jediný slovenský hlas (Filip): postavy potom rozlíšime aspoň výškou hlasu
+    const jeden = !own?.voice && sk.length < 2
+    u.pitch = own?.pitch ?? (jeden ? (who === 'chlapec' ? 1.2 : 1.8) : who === 'chlapec' ? (male ? 1.45 : 1.25) : 1.3)
     u.onstart = () => talk(who, true)
     u.onend = u.onerror = () => talk(who, false)
     talk(who === 'chlapec' ? 'dievca' : 'chlapec', false)
