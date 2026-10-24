@@ -107,6 +107,7 @@ export const THEMES: Theme[] = [
   { id: 'slovensko', name: 'Slovensko, krásna krajina', pic: '🏔️', month: 1, items: [
     i('🏔️', 'TATRY'), i('🏰', 'HRAD'), i('🏞️', 'DUNAJ'), i('🏘️', 'DEDINA'), i('⛪', 'KOSTOL'), i('🌲', 'SMREK'),
     i('🐻', 'MEDVEĎ'), i('🐑', 'OVCA'), i('🧀', 'SYR'), i('🎻', 'HUSLE'), i('💃', 'TANEČNICA'),
+    i('', 'VLAJKA'), i('', 'ZNAK'), i('', 'FUJARA'), i('', 'HALUŠKY'), i('', 'KAMZÍK'), i('', 'SALAŠ'),
   ] },
   // Február
   { id: 'fasiangy', name: 'Fašiangy, Turíce', pic: '🎭', month: 2, week: 1, items: [

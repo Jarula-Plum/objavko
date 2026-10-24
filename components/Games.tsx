@@ -1142,7 +1142,8 @@ function baseRounds(id: Game['id'], theme: Theme, lv: Level): Round[] {
     })
   }
   if (id === 'triedenie') {
-    const order = shuffle(TRASH)
+    // najmenší nemajú hnedý kontajner, preto im neponúkame ani bioodpad
+    const order = shuffle(TRASH.filter((t) => lv > 1 || t.bin !== 'bio'))
     return range.map((i) => {
       const t = order[i % order.length]
       return {
@@ -1371,10 +1372,15 @@ function Boxes({ game, theme, level, by, onDone, onBack }: {
   )
 }
 
+// Hry s vlastným priebehom (bez kôl s odpoveďami); ostatné hry sú kvíz z makeRounds
+export const BEZ_KOL: Game['id'][] = ['omalovanky', 'pracovne', 'grafomotorika', 'diktaty', 'zdravotne', 'pexeso', 'skladacka', 'zvuky', 'veza', 'odtiene', 'postup', 'okienka', 'hlasky']
+// Pre testy (tests/hry.test.ts): kolá kvízu bez vykresľovania
+export const kola = (id: Game['id'], theme: Theme, lv: Level) => makeRounds(id, theme, lv)
+
 export function GameView({ game, theme, level, onDone, onBack }: {
   game: Game; theme: Theme; level: Level; onDone: (s: number) => void; onBack: () => void
 }) {
-  const [rounds] = useState(() => (['omalovanky', 'pracovne', 'grafomotorika', 'diktaty', 'zdravotne', 'pexeso', 'skladacka', 'zvuky', 'veza', 'odtiene', 'postup', 'okienka', 'hlasky'].includes(game.id) ? [] : makeRounds(game.id, theme, level)))
+  const [rounds] = useState(() => (BEZ_KOL.includes(game.id) ? [] : makeRounds(game.id, theme, level)))
   if (game.id === 'omalovanky') return <Coloring game={game} theme={theme} level={level} onDone={onDone} onBack={onBack} />
   if (game.id === 'pracovne') return <Worksheets game={game} theme={theme} level={level} onDone={onDone} onBack={onBack} />
   if (game.id === 'grafomotorika') return <Tracing game={game} theme={theme} level={level} onDone={onDone} onBack={onBack} />

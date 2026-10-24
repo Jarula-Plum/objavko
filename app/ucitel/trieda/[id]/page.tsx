@@ -6,6 +6,7 @@ import { requireUser } from '@/lib/supabase/server'
 import { AREAS, AVATARS, GAMES, bestStars } from '@/lib/games'
 import { addChild, deleteClass, removeChild, renameClass, updateChild } from '../../actions'
 import { Icon, Stars, Ui, emo } from '@/components/Emo'
+import { Pokrok } from '@/components/Pokrok'
 
 type Props = { params: Promise<{ id: string }> }
 
@@ -18,7 +19,7 @@ export default async function ClassPage({ params }: Props) {
     .from('children').select('id, name, avatar').eq('class_id', id).order('created_at')
   const ids = (kids ?? []).map((k) => k.id)
   const { data: results } = ids.length
-    ? await supabase.from('results').select('child_id, game_id, stars').in('child_id', ids)
+    ? await supabase.from('results').select('child_id, game_id, stars, played_at').in('child_id', ids)
     : { data: [] }
   const best = bestStars(results ?? [])
 
@@ -34,7 +35,10 @@ export default async function ClassPage({ params }: Props) {
       <div className="cols">
         <section className="panel">
           <h2 style={{ fontSize: 26 }}>Trieda {cls.name} · prehľad pokroku</h2>
+          {kids?.length ? <Pokrok kids={kids} results={results ?? []} /> : null}
           {kids?.length ? (
+            <details className="stds">
+            <summary>Všetky hry v tabuľke</summary>
             <div className="tbl">
               <table>
                 <thead>
@@ -53,6 +57,7 @@ export default async function ClassPage({ params }: Props) {
                 </tbody>
               </table>
             </div>
+            </details>
           ) : (
             <p className="note">V triede zatiaľ nie sú deti. Pridaj ich vpravo.</p>
           )}
