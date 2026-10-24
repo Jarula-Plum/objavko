@@ -77,3 +77,6 @@ export const rozpravky = (temaId: string): Rozpravka[] =>
 
 // Kontrola pre vývoj: id, ktoré v zozname rozprávok chýba
 export const CHYBAJUCE = Object.values(K_TEME).flat().filter((id) => !VSETKY[id])
+
+// Počet rôznych rozprávok (na úvodnú stránku)
+export const POCET_ROZPRAVOK = Object.keys(VSETKY).length
