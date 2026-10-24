@@ -397,3 +397,5 @@ th:first-child, td:first-child { text-align: left; }
 .done-count { font-family: var(--display); font-weight: 800; font-size: 22px; margin: 0; color: var(--ink, inherit); }
 .dnes { font-family: var(--display); font-weight: 800; font-size: clamp(20px, 3.2vw, 28px); margin: 18px 0 4px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .dnes-slovo { display: inline-flex; overflow: hidden; padding: 2px 12px; border-radius: 14px; background: var(--sun); color: #3b2a00; }
+.bin { display: inline-flex; flex-direction: column; align-items: center; gap: 4px; }
+.bin-img { width: 104px; height: 104px; object-fit: contain; display: block; }

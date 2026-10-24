@@ -39,6 +39,7 @@ const IKONY: string[] = [
   'najdi', 'zive', 'pexeso', 'zmizlo', 'obdobia', 'emocie', 'empatia', 'spravanie', 'nakup', 'situacie', 'clovek', 'rezim',
   'poloha', 'poradie', 'postupnost', 'tiene', 'nepatri', 'krokovanie', 'schody', 'autobus', 'stavby', 'veza', 'parkety',
   'robotik', 'slabiky', 'rymy', 'okienka', 'pismena', 'dlhe', 'zacina', 'kukucka', 'posledna', 'hlasky', 'viac', 'velkost', 'pocty',
+  'hadanky', 'pravda', 'chyba', 'kocka', 'repa', 'mnozstvo', 'skladacka', 'triedenie', 'pracovne',
 ]
 
 export const GAMES: Game[] = ([

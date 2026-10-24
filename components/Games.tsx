@@ -452,9 +452,12 @@ const REPA = [
   { e: '🐕', w: 'psík', kym: 'psíkom' }, { e: '🐈', w: 'mačka', kym: 'mačkou' }, { e: '🐁', w: 'myška', kym: 'myškou' },
 ]
 // Triedenie odpadu: farby kontajnerov, ako sa najčastejšie používajú na Slovensku (v obci sa môžu líšiť)
+// img: Jarkin obrázok kontajnera; kým nie je, ukáže sa farebný krúžok
 const BINS = [
-  { id: 'papier', n: 'papier', c: '#1E88E5' }, { id: 'plast', n: 'plasty', c: '#FDD835' }, { id: 'sklo', n: 'sklo', c: '#43A047' },
-  { id: 'kov', n: 'kovy', c: '#E53935' }, { id: 'bio', n: 'bioodpad', c: '#8D6E63' },
+  { id: 'papier', n: 'papier', c: '#1E88E5', img: '/obrazky/kontajner-papier.webp' },
+  { id: 'plast', n: 'plasty', c: '#FDD835', img: '/obrazky/kontajner-plasty.webp' },
+  { id: 'sklo', n: 'sklo', c: '#43A047', img: '/obrazky/kontajner-sklo.webp' },
+  { id: 'kov', n: 'kovy', c: '#E53935', img: '' }, { id: 'bio', n: 'bioodpad', c: '#8D6E63', img: '' },
 ]
 const TRASH = [
   { e: '📰', w: 'starý časopis', bin: 'papier' }, { e: '📦', w: 'papierová krabica', bin: 'papier' }, { e: '🍾', w: 'sklenená fľaša', bin: 'sklo' },
@@ -1144,7 +1147,7 @@ function baseRounds(id: Game['id'], theme: Theme, lv: Level): Round[] {
       return {
         prompt: <>Do ktorého <b>kontajnera</b> patrí {t.w}?</>, stage: t.e, speech: `Do ktorého kontajnera patrí ${t.w}?`,
         options: shuffle(BINS.filter((b) => lv > 1 || b.id !== 'bio')).map((b) => ({
-          content: <span className="bin"><span className="swatch" style={{ background: b.c }} /><small className="cap">{b.n}</small></span>, correct: b.id === t.bin, label: b.n,
+          content: <span className="bin">{b.img ? <img className="bin-img" src={b.img} alt="" draggable={false} /> : <span className="swatch" style={{ background: b.c }} />}<small className="cap">{b.n}</small></span>, correct: b.id === t.bin, label: b.n,
         })),
       }
     })
