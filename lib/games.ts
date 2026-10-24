@@ -127,3 +127,14 @@ export function bestStars(results: { child_id: string; game_id: string; stars: n
   }
   return best
 }
+
+// Podoblasť ŠVP pre prehľadnú úvodnú obrazovku: berie sa zo štandardu (text pred dvojbodkou),
+// hry nad rámec ŠVP a cvičenia zaradíme k najbližšej podoblasti
+const PODOBLAST: Partial<Record<GameId, string>> = {
+  hlasky: 'Fonologické uvedomovanie', posledna: 'Fonologické uvedomovanie',
+  hadanky: 'Slovná zásoba a komunikácia', protiklady: 'Slovná zásoba a komunikácia', kukucka: 'Slovná zásoba a komunikácia',
+  nakup: 'Svet okolo nás', triedenie: 'Svet okolo nás', clovek: 'Svet okolo nás', rezim: 'Svet okolo nás',
+  grafomotorika: 'Kreslíme a píšeme', diktaty: 'Kreslíme a píšeme',
+  omalovanky: 'Vyfarbujeme a tlačíme', pracovne: 'Vyfarbujeme a tlačíme', zdravotne: 'Cvičíme',
+}
+export const podoblast = (g: Game) => PODOBLAST[g.id] ?? g.std.split(':')[0].trim()

@@ -24,7 +24,8 @@ export function PlynulyPosun() {
 
 // Plynulo posunie stránku k prvku alebo na začiatok; bez Lenisu obyčajný posun
 export function posunNa(ciel: Element | number, odsadenie = -16) {
-  if (lenis) { lenis.scrollTo(ciel as HTMLElement | number, { offset: odsadenie, duration: 0.9 }); return }
+  // obsah mohol práve narásť (rozbalená oblasť), Lenis si preto najprv prepočíta výšku stránky
+  if (lenis) { lenis.resize(); lenis.scrollTo(ciel as HTMLElement | number, { offset: odsadenie, duration: 0.9 }); return }
   if (typeof ciel === 'number') window.scrollTo(0, ciel)
   else ciel.scrollIntoView({ block: 'start' })
 }

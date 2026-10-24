@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
-import { AREAS, GAMES, isGirl, type Game } from '@/lib/games'
+import { AREAS, GAMES, isGirl, podoblast, type Area, type Game, type GameId } from '@/lib/games'
 import { MONTHS, THEMES, currentTheme, themeOf } from '@/lib/themes'
 import { Finished, GameView, LEVELS, type Level } from './Games'
 import { Icon, Stars, Ui, emo } from './Emo'
@@ -56,6 +56,16 @@ type TipId = (typeof TIPS)[number]['id']
 
 type Kid = { id: string; name: string; avatar: string }
 
+// Hry sú na úvode schované v oblastiach ŠVP a ich podoblastiach; obrázok oblasti je ikona jej typickej hry
+const OBLAST_OBRAZOK: Record<Area, GameId> = {
+  'Jazyk a komunikácia': 'rymy', 'Matematika a práca s informáciami': 'pocty', 'Človek a príroda': 'obdobia',
+  'Človek a spoločnosť': 'emocie', 'Človek a svet práce': 'profesie', 'Umenie a kultúra': 'rytmus',
+  'Zdravie a pohyb': 'zdrave', 'Cvičenia': 'omalovanky',
+}
+const pocetHier = (n: number) => `${n} ${n === 1 ? 'hra' : n < 5 ? 'hry' : 'hier'}`
+// počkáme, kým sa sekcia vykreslí, a posunieme sa k nej
+const posunNaId = (id: string) => setTimeout(() => { const el = document.getElementById(id); if (el) posunNa(el) }, 60)
+
 export default function Play({ classId, className, kids, initialBest }: {
   classId: string; className: string; kids: Kid[]; initialBest: Record<string, Record<string, number>>
 }) {
@@ -66,6 +76,8 @@ export default function Play({ classId, className, kids, initialBest }: {
   const [best, setBest] = useState(initialBest)
   const [saveError, setSaveError] = useState(false)
   const [tip, setTip] = useState<TipId | null>(null)
+  const [oblast, setOblast] = useState<Area | null>(null)
+  const [pod, setPod] = useState<string | null>(null)
   const [themeId, setThemeId] = useState(() => currentTheme().id)
   const theme = themeOf(themeId) ?? currentTheme()
 
@@ -250,24 +262,66 @@ export default function Play({ classId, className, kids, initialBest }: {
       )}
       <p className="dnes">Dnes budeme <RotatingText texts={DNES} mainClassName="dnes-slovo" effect="slide" rotationInterval={2200} staggerDuration={0.02} splitBy="characters" /></p>
       <div className="label">Hry pre {kid.name} · {LEVELS[level - 1].name}</div>
-      {AREAS.map((area) => (
-        <section key={area} className="area">
-          <h2>{area}</h2>
-          <div className="grid">
-            {GAMES.filter((g) => g.area === area).map((g) => {
-              const v = best[kid.id]?.[g.id] ?? 0
-              return (
-                <button key={g.id} className="tile" style={{ ['--c' as string]: g.color }} onClick={() => { setGame(g); setRound((r) => r + 1) }}>
-                  <span className="pic"><Icon pic={g.pic} img={g.img} /></span>
-                  <h3>{g.name}</h3>
-                  <p>{g.desc}</p>
-                  <span className="stars">{v ? <Stars n={v} /> : 'Ešte nehrané'}</span>
-                </button>
-              )
-            })}
-          </div>
-        </section>
-      ))}
+      <div className="grid oblasti-grid">
+        {AREAS.map((area) => {
+          const g0 = GAMES.find((g) => g.id === OBLAST_OBRAZOK[area])!
+          const hry = GAMES.filter((g) => g.area === area)
+          const hrane = hry.filter((g) => best[kid.id]?.[g.id]).length
+          return (
+            <button key={area} className="tile oblast-tile" aria-pressed={area === oblast} style={{ ['--c' as string]: g0.color }}
+              onClick={() => { const nova = area === oblast ? null : area; setOblast(nova); setPod(null); if (nova) posunNaId('podoblasti') }}>
+              <span className="pic"><Icon pic={g0.pic} img={g0.img} /></span>
+              <h3>{area}</h3>
+              <span className="stars">{pocetHier(hry.length)}{hrane ? ` · zahrané ${hrane}` : ''}</span>
+            </button>
+          )
+        })}
+      </div>
+      {oblast && (() => {
+        const hry = GAMES.filter((g) => g.area === oblast)
+        const casti = [...new Set(hry.map(podoblast))]
+        // malú oblasť (do 5 hier) alebo jedinú podoblasť ukážeme hneď celú, inak dieťa najprv vyberie podoblasť
+        const hned = casti.length === 1 || hry.length <= 5
+        const zobraz = hned ? casti : pod ? [pod] : []
+        return (
+          <section id="podoblasti" className="area">
+            <h2>{oblast}</h2>
+            {!hned && (
+              <div className="podoblasti">
+                {casti.map((p) => {
+                  const jej = hry.filter((g) => podoblast(g) === p)
+                  return (
+                    <button key={p} type="button" className="podoblast" aria-pressed={p === pod}
+                      onClick={() => { setPod(p === pod ? null : p); if (p !== pod) posunNaId('hry-podoblasti') }}>
+                      <span className="podoblast-obr" aria-hidden="true">{jej.slice(0, 3).map((g) => <Icon key={g.id} pic={g.pic} img={g.img} />)}</span>
+                      <strong>{p}</strong>
+                      <span>{pocetHier(jej.length)}</span>
+                    </button>
+                  )
+                })}
+              </div>
+            )}
+            {zobraz.length ? zobraz.map((p) => (
+              <div key={p} id={hned ? undefined : 'hry-podoblasti'} className="podoblast-hry">
+                {casti.length > 1 && <h3 className="podoblast-nadpis">{p}</h3>}
+                <div className="grid">
+                  {hry.filter((g) => podoblast(g) === p).map((g) => {
+                    const v = best[kid.id]?.[g.id] ?? 0
+                    return (
+                      <button key={g.id} className="tile" style={{ ['--c' as string]: g.color }} onClick={() => { setGame(g); setRound((r) => r + 1) }}>
+                        <span className="pic"><Icon pic={g.pic} img={g.img} /></span>
+                        <h3>{g.name}</h3>
+                        <p>{g.desc}</p>
+                        <span className="stars">{v ? <Stars n={v} /> : 'Ešte nehrané'}</span>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+            )) : <p className="note">Ťukni na časť a ukážu sa hry.</p>}
+          </section>
+        )
+      })()}
     </>
   )
 }

@@ -463,3 +463,17 @@ th:first-child, td:first-child { text-align: left; }
   .lp-kroky, .lp-oblasti { grid-template-columns: 1fr; }
   .lp-zoznam { grid-template-columns: 1fr; }
 }
+
+/* Úvod detí: oblasti ŠVP → podoblasti → hry */
+.oblasti-grid .oblast-tile { min-height: 170px; }
+.oblasti-grid .oblast-tile h3 { font-size: 20px; }
+.oblast-tile[aria-pressed="true"] { outline: 4px solid var(--c); outline-offset: 2px; transform: translateY(-3px); }
+.podoblasti { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; margin-bottom: 18px; }
+.podoblast { border: 2px solid var(--line); background: var(--surface); border-radius: var(--r); padding: 12px 14px; text-align: left; display: flex; flex-direction: column; gap: 4px; color: inherit; font: inherit; cursor: pointer; }
+.podoblast strong { font-size: 17px; }
+.podoblast > span:last-child { font-size: 13px; color: var(--muted); font-weight: 700; }
+.podoblast[aria-pressed="true"] { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, var(--surface)); }
+.podoblast-obr { display: flex; gap: 4px; font-size: 30px; line-height: 1; }
+.podoblast-obr .ico { width: 40px; height: 40px; }
+.podoblast-nadpis { font-size: 18px; margin: 0 0 10px; }
+.podoblast-hry + .podoblast-hry { margin-top: 18px; }
