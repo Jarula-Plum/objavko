@@ -25,6 +25,8 @@ export const OWN_PIC = {
   's-utecha': '\uE206', 's-nesieme': '\uE207', 's-rozhovor': '\uE208', 's-lopta': '\uE209', 's-upratovanie': '\uE20A', 's-ucitelka': '\uE20B',
   'strom-jar': '\uE210', 'strom-leto': '\uE211', 'strom-jesen': '\uE212', 'strom-zima': '\uE213', 'velkonocny-kosik': '\uE214',
   'macko-balon': '\uE215', 'den-zeme': '\uE216',
+  // d\u00E1vka 2 z Higgsfieldu: triedenie odpadu, rozpr\u00E1vka O repe, cesta chleba
+  'bananova-supka': '\uE240', ohryzok: '\uE241', 'zavarovaci-pohar': '\uE242', repa: '\uE243', vnucka: '\uE244', myska: '\uE245', klas: '\uE246', cesto: '\uE247',
   'dieta-01': '\uE220', 'dieta-02': '\uE221', 'dieta-03': '\uE222', 'dieta-04': '\uE223', 'dieta-05': '\uE224', 'dieta-06': '\uE225', 'dieta-07': '\uE226', 'dieta-08': '\uE227', 'dieta-09': '\uE228', 'dieta-10': '\uE229', 'dieta-11': '\uE22A', 'dieta-12': '\uE22B', 'dieta-13': '\uE22C', 'dieta-14': '\uE22D', 'dieta-15': '\uE22E', 'dieta-16': '\uE22F', 'dieta-17': '\uE230', 'dieta-18': '\uE231', 'dieta-19': '\uE232', 'dieta-20': '\uE233',
   zvrk: '\uE11B', lopatka: '\uE11C', bager: '\uE11D', vrtulnik: '\uE11E', vlak: '\uE11F', lod: '\uE120',
 } as const
@@ -55,7 +57,7 @@ const OWN: Record<string, string> = {
   '🌍': 'zem', '🚀': 'raketa-vesmir', '🪐': 'planeta', '🧑‍🚀': 'kozmonaut', '☄️': 'kometa',
   '🦢': 'labut',
   '👁️': 'oko', '👂': 'ucho', '👃': 'nos', '👄': 'usta', '👅': 'jazyk', '🦷': 'zuby', '✋': 'dlan', '🦵': 'noha', '🧍': 'skriatok-telo',
-  '❓': 'otaznik', '🎂': 'torta', '🎭': 'maska', '🎄': 'stromcek', '👢': 'mikulasska-cizma', '👨‍👩‍👧': 'rodina',
+  '❓': 'otaznik', '🎂': 'torta', '🎭': 'maska', '🎄': 'stromcek', '👢': 'mikulasska-cizma', '👨‍👩‍👧': 'rodina', '👵': 'babka', '👴': 'dedko',
   '🦔': 'jez', '🐿️': 'vevericka', '🦊': 'liska', '🐇': 'zajac', '🦉': 'sova', '🐻': 'medved', '🦡': 'jazvec', '🐺': 'vlk', '🐗': 'diviak',
   ...Object.fromEntries(Object.entries(OWN_PIC).map(([n, c]) => [c, n])),
 }

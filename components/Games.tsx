@@ -448,8 +448,8 @@ const MOVES: { t: string; p?: string }[] = [
 // Úroveň podľa veku: 1 = 3–4 roky, 2 = 4–5 rokov, 3 = 5–6 rokov
 // Postavy z rozprávky O repe v poradí, ako prichádzali ťahať (kym: tvar po predložkách za, pred, medzi)
 const REPA = [
-  { e: '👴', w: 'dedko', kym: 'dedkom' }, { e: '👵', w: 'babka', kym: 'babkou' }, { e: '👧', w: 'vnučka', kym: 'vnučkou' },
-  { e: '🐕', w: 'psík', kym: 'psíkom' }, { e: '🐈', w: 'mačka', kym: 'mačkou' }, { e: '🐁', w: 'myška', kym: 'myškou' },
+  { e: '👴', w: 'dedko', kym: 'dedkom' }, { e: '👵', w: 'babka', kym: 'babkou' }, { e: '', w: 'vnučka', kym: 'vnučkou' },
+  { e: '🐕', w: 'psík', kym: 'psíkom' }, { e: '🐈', w: 'mačka', kym: 'mačkou' }, { e: '', w: 'myška', kym: 'myškou' },
 ]
 // Triedenie odpadu: farby kontajnerov, ako sa najčastejšie používajú na Slovensku (v obci sa môžu líšiť)
 // img: Jarkin obrázok kontajnera; kým nie je, ukáže sa farebný krúžok
@@ -457,12 +457,13 @@ const BINS = [
   { id: 'papier', n: 'papier', c: '#1E88E5', img: '/obrazky/kontajner-papier.webp' },
   { id: 'plast', n: 'plasty', c: '#FDD835', img: '/obrazky/kontajner-plasty.webp' },
   { id: 'sklo', n: 'sklo', c: '#43A047', img: '/obrazky/kontajner-sklo.webp' },
-  { id: 'kov', n: 'kovy', c: '#E53935', img: '' }, { id: 'bio', n: 'bioodpad', c: '#8D6E63', img: '' },
+  { id: 'kov', n: 'kovy', c: '#E53935', img: '/obrazky/kontajner-kovy.webp' },
+  { id: 'bio', n: 'bioodpad', c: '#8D6E63', img: '/obrazky/kontajner-bio.webp' },
 ]
 const TRASH = [
   { e: '📰', w: 'starý časopis', bin: 'papier' }, { e: '📦', w: 'papierová krabica', bin: 'papier' }, { e: '🍾', w: 'sklenená fľaša', bin: 'sklo' },
-  { e: '🍯', w: 'prázdny pohár od medu', bin: 'sklo' }, { e: '🧴', w: 'plastová fľaška', bin: 'plast' }, { e: '🥤', w: 'plastový pohárik', bin: 'plast' },
-  { e: '🥫', w: 'plechovka', bin: 'kov' }, { e: '🍌', w: 'šupka z banánu', bin: 'bio' }, { e: '🍎', w: 'ohryzok z jablka', bin: 'bio' },
+  { e: '', w: 'prázdny pohár od džemu', bin: 'sklo' }, { e: '🧴', w: 'plastová fľaška', bin: 'plast' }, { e: '🥤', w: 'plastový pohárik', bin: 'plast' },
+  { e: '🥫', w: 'plechovka', bin: 'kov' }, { e: '', w: 'šupka z banánu', bin: 'bio' }, { e: '', w: 'ohryzok z jablka', bin: 'bio' },
 ]
 // Veta o počte so správnym tvarom: jeden obrázok, dva obrázky, päť obrázkov
 const countSentence = (n: number) =>
@@ -1122,7 +1123,7 @@ function baseRounds(id: Game['id'], theme: Theme, lv: Level): Round[] {
     const asks = lv === 1 ? [...shuffle(basic), basic[0]] : [basic[1], ...shuffle(more).slice(0, 4)]
     return asks.slice(0, 5).map((a) => ({
       prompt: <>{a.q}</>, speech: a.q,
-      stage: <span className="seq">{emo('')}{row.map((c) => <span key={c.w}>{c.e}</span>)}</span>,
+      stage: <span className="seq">{emo('')}{row.map((c) => <span key={c.w}>{c.e}</span>)}</span>,
       options: shuffle([a.who, ...pick(row.map((_, k) => k).filter((k) => k !== a.who), lv + 1)]).map((k) => ({ content: row[k].e, correct: k === a.who, label: row[k].w })),
     }))
   }
@@ -1179,7 +1180,7 @@ const STEPS = [
   [{ e: '🧦', w: 'Oblečiem si ponožky.' }, { e: '👟', w: 'Obujem si topánky.' }, { e: '🎀', w: 'Zaviažem šnúrky.' }, { e: '🏃', w: 'Idem von.' }],
   [{ e: '⚪', w: 'Gúľam veľkú guľu.' }, { e: '⚪', w: 'Položím na ňu menšiu guľu.' }, { e: '🥕', w: 'Dám mu mrkvový nos.' }, { e: '⛄', w: 'Snehuliak je hotový.' }],
   // Cesta za chlebom a strom počas roka (podľa prezentácií pani učiteľky)
-  [{ e: '🌱', w: 'Zasejeme zrnká.' }, { e: '🌽', w: 'Obilie dozreje.' }, { e: '🥣', w: 'Z múky zamiesime cesto.' }, { e: '🍞', w: 'Upečieme chlieb.' }],
+  [{ e: '🌱', w: 'Zasejeme zrnká.' }, { e: '', w: 'Obilie dozreje.' }, { e: '', w: 'Z múky zamiesime cesto.' }, { e: '🍞', w: 'Upečieme chlieb.' }],
   [{ e: '', w: 'Na jar strom kvitne.' }, { e: '', w: 'V lete je strom zelený.' }, { e: '', w: 'Na jeseň padá lístie.' }, { e: '', w: 'V zime je strom pod snehom.' }],
 ]
 const HUES = [0, 210, 130, 280, 30]

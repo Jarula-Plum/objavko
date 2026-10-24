@@ -7,7 +7,7 @@ import { Ui, emo, keyOf, picUrl } from './Emo'
 import { GuideBar, cheer, speak } from './Guide'
 import type { Level } from './Games'
 import { CVIKY, NAMETY, type CvikId } from '@/lib/namety'
-import { OMALOVANKY } from '@/lib/omalovanky'
+import { EXTRA_OMAL, OMALOVANKY } from '@/lib/omalovanky'
 import { spill } from '@/lib/fx'
 
 // Cvičenia: omaľovánky, grafomotorika a kresliace diktáty.
@@ -164,7 +164,7 @@ const printColoring = async (pics: string[], level: Level, title: string) => {
   const c = document.createElement('canvas'); c.width = PW; c.height = PH
   const ctx = c.getContext('2d')!
   ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, PW, PH)
-  const ims = await Promise.all(pics.map((e) => load(lineUrl(e))))
+  const ims = await Promise.all(pics.map((u) => load(u)))
   const n = ims.length
   const slots = n === 1 ? [[0, (PH - PW) / 2, PW]]
     : n === 2 ? [[(PW - 1080) / 2, 0, 1080], [(PW - 1080) / 2, 1100, 1080]]
@@ -184,19 +184,23 @@ export function Coloring({ game, theme, level, onDone, onBack }: {
   game: Game; theme: Theme; level: Level; onDone: (s: number) => void; onBack: () => void
 }) {
   const n = [1, 2, 4][level - 1]
-  const pool = theme.items.filter(hasLines)
-  const [order] = useState(() => shuffle(pool))
+  // Čo vyfarbujeme: obrázky z témy týždňa, Čarozvedko a Čarozvedka, alebo obrázky z hier (ikonky)
+  const [skupina, setSkupina] = useState<'tema' | 'carozvedko' | 'hry'>('tema')
+  const pool = useMemo(() => skupina === 'tema'
+    ? theme.items.filter(hasLines).map((x) => ({ w: x.w, url: lineUrl(x.e) }))
+    : EXTRA_OMAL.filter((x) => x.skupina === skupina).map((x) => ({ w: x.nazov, url: `/omalovanky/extra/${x.meno}.webp` })), [skupina, theme])
+  const order = useMemo(() => shuffle(pool), [pool])
   const [page, setPage] = useState(0)
-  const items = Array.from({ length: n }, (_, k) => order[(page * n + k) % order.length]).filter((x, k, a) => a.indexOf(x) === k)
+  const items = order.length ? Array.from({ length: n }, (_, k) => order[(page * n + k) % order.length]).filter((x, k, a) => a.indexOf(x) === k) : []
   const [tool, setTool] = useState<'fill' | 'brush'>('fill')
   const [color, setColor] = useState(PALETTE[0])
   const linesRef = useRef<HTMLCanvasElement | null>(null)
-  const names = items.map((x) => x.w.toLowerCase())
+  const names = [...new Set(items.map((x) => x.w.toLowerCase()))]
   const speech = `Vyfarbi ${names.length > 1 ? 'obrázky' : 'obrázok'}: ${names.join(', ')}. Ťukni na farbu a potom do obrázka.`
   useEffect(() => { say(speech) }, [speech])
 
   const draw = useCallback<Layer>(async (ctx) => {
-    const ims = await Promise.all(items.map((x) => load(lineUrl(x.e))))
+    const ims = await Promise.all(items.map((x) => load(x.url)))
     const slots = n === 1 ? [[100, 100, 800]] : n === 2 ? [[20, 255, 470], [510, 255, 470]] : [[20, 20, 470], [510, 20, 470], [20, 510, 470], [510, 510, 470]]
     const thick = [2, 1, 0][level - 1]
     ims.forEach((im, k) => {
@@ -208,17 +212,25 @@ export function Coloring({ game, theme, level, onDone, onBack }: {
       ctx.globalCompositeOperation = 'source-over'
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, level])
+  }, [page, level, skupina])
 
-  if (!pool.length) return <Frame game={game} speech="" onBack={onBack}><p className="note">V tejto téme zatiaľ nie sú omaľovánky.</p></Frame>
+  const vyber = (
+    <div className="tool-modes omal-skupiny" role="radiogroup" aria-label="Čo vyfarbíme">
+      {([['tema', 'Téma týždňa'], ['carozvedko', 'Čarozvedko a Čarozvedka'], ['hry', 'Obrázky z hier']] as const).map(([id, t]) => (
+        <button key={id} className={skupina === id ? 'on' : ''} aria-pressed={skupina === id} onClick={() => { setSkupina(id); setPage(0) }}>{t}</button>
+      ))}
+    </div>
+  )
+  if (!pool.length) return <Frame game={game} speech="" onBack={onBack}>{vyber}<p className="note">V tejto téme zatiaľ nie sú omaľovánky.</p></Frame>
   return (
     <Frame game={game} speech={speech} onBack={onBack}>
+      {vyber}
       <div className="prompt">{emo(`Vyfarbi: `)}<b>{names.join(', ')}</b></div>
       <Tools tool={tool} setTool={setTool} color={color} setColor={setColor} allowFill />
-      <Sheet draw={draw} tool={tool} color={color} size={[34, 24, 16][level - 1]} sheetKey={`c${page}-${level}`} onReady={(c) => { linesRef.current = c }} />
+      <Sheet draw={draw} tool={tool} color={color} size={[34, 24, 16][level - 1]} sheetKey={`c${page}-${level}-${skupina}`} onReady={(c) => { linesRef.current = c }} />
       <div className="row sheet-actions">
         <button className="ghost" onClick={() => setPage((p) => p + 1)}><Ui n="dalej" /> Iný obrázok</button>
-        <button className="ghost" onClick={() => printColoring(items.map((x) => x.e), level, `Omaľovánka: ${names.join(', ')}`)}>{emo('🖨️')} Vytlačiť</button>
+        <button className="ghost" onClick={() => printColoring(items.map((x) => x.url), level, `Omaľovánka: ${names.join(', ')}`)}>{emo('🖨️')} Vytlačiť</button>
         <button className="cta" onClick={() => onDone(3)}>{emo('✅')} Hotovo</button>
       </div>
     </Frame>
